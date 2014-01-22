@@ -22,8 +22,8 @@ public class Pickup {
         spinWheelsMotor = new Talon(Wiring.pickupWheels);
     }
 
-    public void togglePickupPosition() {
-
+    public void movePickup(double value) {
+        elevationMotor.set(value);
     }
 
     public void spinWheels(boolean backwards) {

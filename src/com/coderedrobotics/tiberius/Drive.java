@@ -14,7 +14,7 @@ public class Drive {
 
     public Drive() {
         left = new Talon(Wiring.leftTalonPort);
-        right = new Talon(Wiring.rightTalonPort);
+        right = new Talon(Wiring.rightDriveTalonPort);
     }
 
     public void move(double left, double right) {

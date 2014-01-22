@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.coderedrobotics.tiberius.statics;
 
 import com.coderedrobotics.tiberius.libs.HID.HID;
@@ -23,9 +18,12 @@ public class KeyMap {
     
     private final Axis leftDriveAxis = LogitechF310.STICK_LEFT_Y;
     private final Axis rightDriveAxis = LogitechF310.STICK_RIGHT_Y;
-    private final Button fireBallButton = LogitechF310.A;
-    private final Button spinPickupWheelsButton = LogitechF310.X;
-    private final Button spinPickupWheelsBackwardsButton = LogitechF310.Y;
+    private final Button fireBallButton = LogitechF310.TRIGGER_RIGHT;
+    private final Button spinPickupWheelsButton = LogitechF310.Y;
+    private final Button spinPickupWheelsBackwardsButton = LogitechF310.B;
+    private final Button elevationUp = LogitechF310.DPAD_UP;
+    private final Button elevationDown = LogitechF310.DPAD_DOWN;
+    private final Button togglePickup = LogitechF310.A;
     
     private HID getHID(int port){
         if (!singleControllerMode){
@@ -51,22 +49,34 @@ public class KeyMap {
     }
     
     public double getLeftDriveAxis() {
-        return getHID(1).axis(LogitechF310.STICK_LEFT_Y);
+        return getHID(1).axis(leftDriveAxis);
     }
     
     public double getRightDriveAxis() {
-        return getHID(1).axis(LogitechF310.STICK_RIGHT_Y);
+        return getHID(1).axis(rightDriveAxis);
     }
     
     public boolean getFireBallButton(){
-        return getHID(2).button(LogitechF310.A);
+        return getHID(2).button(fireBallButton);
     }
     
     public boolean getSpinPickupWheelsButton(){
-        return getHID(2).button(LogitechF310.X);
+        return getHID(2).button(spinPickupWheelsButton);
     }
     
     public boolean getSpinPickupWheelsBackwardsButton(){
-        return getHID(2).button(LogitechF310.Y);
+        return getHID(2).button(spinPickupWheelsBackwardsButton);
+    }
+    
+    public boolean getTogglePickupButton(){
+        return getHID(2).button(togglePickup);
+    }
+    
+    public boolean getElevationUpButton(){
+        return getHID(2).button(elevationUp);
+    }
+    
+    public boolean getElevationDownButton(){
+        return getHID(2).button(elevationDown);
     }
 }
