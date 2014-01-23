@@ -14,7 +14,7 @@ public class Drive {
     Talon right;
     DerivativeCalculator leftCalculator;
     DerivativeCalculator rightCalculator;
-    
+
     public Drive() {
         left = new Talon(Wiring.leftTalonPort);
         right = new Talon(Wiring.rightDriveTalonPort);
@@ -23,8 +23,8 @@ public class Drive {
     }
 
     public void move(double left, double right) {
-        this.left.set(leftCalculator.calculate(left));
-        this.right.set(rightCalculator.calculate(right));
-        
+        this.left.set((leftCalculator.calculate(left) * 180d) + left);
+        this.right.set((rightCalculator.calculate(right) * 180d) + right);
+
     }
 }
