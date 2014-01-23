@@ -11,9 +11,9 @@ public class Wiring {
      */
     public static final int leftTalonPort = 1;
     public static final int rightDriveTalonPort = 2;
-    public static final int chooChooMotor = 0;
-    public static final int pickupElevation = 0;
-    public static final int pickupWheels = 0;
+    public static final int chooChooMotor = 3;
+    public static final int pickupElevation = 4;
+    public static final int pickupWheels = 5;
 
     /*
      * ----------- DIGITAL I/O PORTS -------------------------

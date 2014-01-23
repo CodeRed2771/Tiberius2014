@@ -20,19 +20,16 @@ public class Tiberius extends IterativeRobot {
     }
 
     public void autonomousInit() {
-        Debug.println("[INFO] Autonomous Init Called", Debug.STANDARD);
+        
     }
 
     public void autonomousPeriodic() {
-        Debug.println("[INFO] Autonomous Periodic Enabled", Debug.STANDARD);
     }
 
     public void teleopInit() {
-        Debug.println("[INFO] Teleop Init Called", Debug.STANDARD);
     }
 
     public void teleopPeriodic() {
-        Debug.println("[INFO] Teleop Periodic Enabled", Debug.STANDARD);
         drive.move(keyMap.getLeftDriveAxis(), keyMap.getRightDriveAxis());
 
         chooChoo.step(keyMap.getFireBallButton());
@@ -53,21 +50,17 @@ public class Tiberius extends IterativeRobot {
             pickup.movePickup(0);
         }
     }
-    
-    public void testInit(){
-        Debug.println("[INFO] Test Init Called", Debug.STANDARD);
+
+    public void testInit() {
     }
 
     public void testPeriodic() {
-        Debug.println("[INFO] Test Periodic Enabled", Debug.STANDARD);
     }
 
     public void disabledInit() {
-        Debug.println("[INFO] Disabled Init Called", Debug.STANDARD);
     }
 
     public void disabledPeriodic() {
-        Debug.println("[INFO] Disabled Periodic Enabled", Debug.STANDARD);
     }
 
 }
