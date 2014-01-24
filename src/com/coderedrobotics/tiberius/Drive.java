@@ -13,12 +13,12 @@ public class Drive {
     Talon right;
 
     public Drive() {
-        left = new Talon(Wiring.leftTalonPort);
+        left = new Talon(Wiring.leftDriveTalonPort);
         right = new Talon(Wiring.rightDriveTalonPort);
     }
 
     public void move(double left, double right) {
-        this.left.set(-MathUtils.pow(left,3));
-        this.right.set(MathUtils.pow(right,3));
+        this.left.set(MathUtils.pow(left,3));
+        this.right.set(-MathUtils.pow(right,3));
     }
 }
