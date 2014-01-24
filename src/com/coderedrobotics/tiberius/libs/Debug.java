@@ -7,7 +7,7 @@ package com.coderedrobotics.tiberius.libs;
 public class Debug {
 
     public static boolean debugMode = true;
-    private static int debugLevel = 3;
+    private static int debugLevel = 5;
     private static boolean errorsDisplayed;
     public static int CRITICAL = 1;
     public static int WARNING = 2;
