@@ -20,10 +20,14 @@ public class KeyMap {
     private final Axis rightDriveAxis = LogitechF310.STICK_RIGHT_Y;
     private final Button fireBallButton = LogitechF310.TRIGGER_RIGHT;
     private final Button spinPickupWheelsButton = LogitechF310.Y;
+    private final Button spinPickupWheelsStopButton = LogitechF310.X;
     private final Button spinPickupWheelsBackwardsButton = LogitechF310.B;
-    private final Button elevationUp = LogitechF310.DPAD_UP;
-    private final Button elevationDown = LogitechF310.DPAD_DOWN;
+    private final Button pickupRetract = LogitechF310.DPAD_UP;
+    private final Button pickupExtend = LogitechF310.DPAD_DOWN;
     private final Button togglePickup = LogitechF310.A;
+    
+    private HID.ButtonState pickupButtonToggleState;
+    private HID.ButtonState pickupButtonPressedState;
     
     private HID getHID(int port){
         if (!singleControllerMode){
@@ -64,19 +68,23 @@ public class KeyMap {
         return getHID(2).button(spinPickupWheelsButton);
     }
     
+    public boolean getSpinPickupWheelsStopButton(){
+        return getHID(2).button(spinPickupWheelsStopButton);
+    }
+    
     public boolean getSpinPickupWheelsBackwardsButton(){
         return getHID(2).button(spinPickupWheelsBackwardsButton);
     }
     
-    public boolean getTogglePickupButton(){
-        return getHID(2).button(togglePickup);
+    public boolean getPickupToggleButton(){
+        return (getHID(2).buttonToggled(togglePickup, pickupButtonPressedState, pickupButtonToggleState));
     }
     
-    public boolean getElevationUpButton(){
-        return getHID(2).button(elevationUp);
+    public boolean getPickupRetractButton(){
+        return getHID(2).button(pickupRetract);
     }
     
-    public boolean getElevationDownButton(){
-        return getHID(2).button(elevationDown);
+    public boolean getPickupExtendButton(){
+        return getHID(2).button(pickupExtend);
     }
 }

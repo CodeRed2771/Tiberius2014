@@ -1,6 +1,7 @@
 package com.coderedrobotics.tiberius;
 
 import com.coderedrobotics.tiberius.libs.Debug;
+import com.coderedrobotics.tiberius.libs.HID.HID;
 import com.coderedrobotics.tiberius.statics.KeyMap;
 import edu.wpi.first.wpilibj.IterativeRobot;
 
@@ -10,10 +11,13 @@ public class Tiberius extends IterativeRobot {
     KeyMap keyMap;
     ChooChoo chooChoo;
     Pickup pickup;
+  
+   
 
     public void robotInit() {
         Debug.println("[INFO] TIBERIUS CODE DOWNLOAD COMPLETE.", Debug.STANDARD);
         keyMap = new KeyMap();
+        keyMap.setSingleControllerMode(true);
         drive = new Drive();
         chooChoo = new ChooChoo();
         pickup = new Pickup();
@@ -33,22 +37,29 @@ public class Tiberius extends IterativeRobot {
         drive.move(keyMap.getLeftDriveAxis(), keyMap.getRightDriveAxis());
 
         chooChoo.step(keyMap.getFireBallButton());
-
+   
         if (keyMap.getSpinPickupWheelsButton()) {
-            pickup.spinWheels(false);
+            pickup.spinWheels(pickup.pickupWheelsForward);
         } else if (keyMap.getSpinPickupWheelsBackwardsButton()) {
-            pickup.spinWheels(true);
-        } else {
+            pickup.spinWheels(pickup.pickupWheelsReverse);
+        } else if (keyMap.getSpinPickupWheelsStopButton()){
             pickup.stopWheels();
         }
 
-        if (keyMap.getElevationUpButton()) {
-            pickup.movePickup(1);
-        } else if (keyMap.getElevationDownButton()) {
-            pickup.movePickup(-1);
+ 
+        if (keyMap.getPickupRetractButton()) {
+            pickup.movePickup(pickup.pickupArmExtend);
+        } else if (keyMap.getPickupExtendButton()) {
+            pickup.movePickup(pickup.pickupArmRetract);
         } else {
-            pickup.movePickup(0);
+            pickup.movePickup(pickup.pickupArmStop);
         }
+        
+        if (keyMap.getPickupToggleButton()) {
+            pickup.togglePickup();
+        }
+        
+        pickup.step();
     }
 
     public void testInit() {

@@ -31,4 +31,5 @@ public class Wiring {
     /*
      * -----------  ANALOG INPUTS -------------------------
      */
+    public static final int armPositionSensorPort = 1;
 }

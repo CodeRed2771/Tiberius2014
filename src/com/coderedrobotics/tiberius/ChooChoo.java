@@ -34,13 +34,13 @@ public class ChooChoo {
  
         }
         
-        if (isFiring || sensor.get()) {
+        if (isFiring || !sensor.get()) {
             chooChooMotor.set(.3);
         } else {
             chooChooMotor.set(0);
         }
         
-        if (sensor.get()) {
+        if (!sensor.get()) {
             isFiring = false;
         }
     }
