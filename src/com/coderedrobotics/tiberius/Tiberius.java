@@ -20,7 +20,7 @@ public class Tiberius extends IterativeRobot {
     }
 
     public void autonomousInit() {
-        
+
     }
 
     public void autonomousPeriodic() {
@@ -49,6 +49,13 @@ public class Tiberius extends IterativeRobot {
         } else {
             pickup.movePickup(0);
         }
+
+        keyMap.checkFor2Players();
+
+        Debug.printDriverStationMessage(1, 1, "LEFT DRIVE: " + String.valueOf(keyMap.getLeftDriveAxis()));
+        Debug.printDriverStationMessage(2, 1, "RIGHT DRIVE: " + String.valueOf(keyMap.getRightDriveAxis()));
+        Debug.printDriverStationMessage(3, 1, String.valueOf(keyMap.getElevationUpButton()));
+        Debug.printDriverStationMessage(3, 10, String.valueOf(keyMap.getElevationDownButton()));
     }
 
     public void testInit() {

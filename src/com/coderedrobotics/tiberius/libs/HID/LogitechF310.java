@@ -2,13 +2,13 @@ package com.coderedrobotics.tiberius.libs.HID;
 
 public class LogitechF310 extends HID {
 
-    public static final Axis STICK_LEFT_X = new Axis(1, 0.1);
-    public static final Axis STICK_LEFT_Y = new Axis(2, 0.1);
+    public static final Axis STICK_LEFT_X = new Axis(1, 0.02);
+    public static final Axis STICK_LEFT_Y = new Axis(2, 0.02);
     public static final Axis TRIGGERS = new Axis(3);
-    public static final Axis STICK_RIGHT_X = new Axis(4, 0.1);
-    public static final Axis STICK_RIGHT_Y = new Axis(5, 0.1);
-    public static final Axis DPAD_X = new Axis(6, 0.1);//the mode button is why
-    public static final Axis DPAD_Y = new Axis(7, 0.1);//we need a deadzone
+    public static final Axis STICK_RIGHT_X = new Axis(4, 0.02);
+    public static final Axis STICK_RIGHT_Y = new Axis(5, 0.02);
+    public static final Axis DPAD_X = new Axis(6, 0.02); //the mode button is why
+    public static final Axis DPAD_Y = new Axis(7, 0.02); //we need a deadzone
     public static final Button STICK_LEFT_LEFT = new AxisButton(STICK_LEFT_X, true);
     public static final Button STICK_LEFT_RIGHT = new AxisButton(STICK_LEFT_X, false);
     public static final Button STICK_LEFT_UP = new AxisButton(STICK_LEFT_Y, true);

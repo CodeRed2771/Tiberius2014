@@ -1,10 +1,13 @@
 package com.coderedrobotics.tiberius.libs;
 
+import edu.wpi.first.wpilibj.DriverStationLCD;
+import edu.wpi.first.wpilibj.DriverStationLCD.Line;
+
 /**
  *
  * @author Michael Spoehr
  */
-public class Debug {
+public final class Debug {
 
     public static boolean debugMode = true;
     private static int debugLevel = 5;
@@ -15,6 +18,8 @@ public class Debug {
     public static int EXTENDED = 4;
     public static int EVERYTHING = 5;
     public static int DISABLEPRINT = 6;
+    
+    private static final DriverStationLCD lcd = DriverStationLCD.getInstance();
     // Note: if debug level for incomming print is set to 0, it will override
     // the debug level, even if it is set to 6.
 
@@ -80,5 +85,39 @@ public class Debug {
 
     public static void forcePrintErr(Exception e) {
         System.err.println(e);
+    }
+    
+    public static void printDriverStationMessage(int line, int column, String text) {
+        Line lineline;
+        switch (line) {
+            case 1:
+                lineline = DriverStationLCD.Line.kUser1;
+                break;
+            case 2:
+                lineline = DriverStationLCD.Line.kUser2;
+                break;
+            case 3:
+                lineline = DriverStationLCD.Line.kUser3;
+                break;
+            case 4:
+                lineline = DriverStationLCD.Line.kUser4;
+                break;
+            case 5:
+                lineline = DriverStationLCD.Line.kUser5;
+                break;
+            case 6:
+                lineline = DriverStationLCD.Line.kUser6;
+                break;
+            default:
+                printErr(new Exception("That line doesn't exist."));
+                return;
+        }
+        lcd.println(lineline, column, text);
+        lcd.updateLCD();
+    }
+    
+    public static void clearDriverStationMessages(){
+        lcd.clear();
+        lcd.updateLCD();
     }
 }

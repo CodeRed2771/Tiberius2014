@@ -24,6 +24,7 @@ public class KeyMap {
     private final Button elevationUp = LogitechF310.DPAD_UP;
     private final Button elevationDown = LogitechF310.DPAD_DOWN;
     private final Button togglePickup = LogitechF310.A;
+    private final Button singleControllerModeToggle = LogitechF310.X;
     
     private HID getHID(int port){
         if (!singleControllerMode){
@@ -78,5 +79,12 @@ public class KeyMap {
     
     public boolean getElevationDownButton(){
         return getHID(2).button(elevationDown);
+    }
+    
+    public void checkFor2Players(){
+        if ((getHID(1).button(singleControllerModeToggle) 
+                && getHID(2).button(singleControllerModeToggle))){
+            singleControllerMode = !singleControllerMode;
+        }
     }
 }
