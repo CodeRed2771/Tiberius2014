@@ -87,4 +87,11 @@ public class KeyMap {
     public boolean getPickupExtendButton(){
         return getHID(2).button(pickupExtend);
     }
+    
+    public void checkFor2Players(){
+        if ((getHID(1).button(singleControllerModeToggle) 
+                && getHID(2).button(singleControllerModeToggle))){
+            singleControllerMode = !singleControllerMode;
+        }
+    }
 }
