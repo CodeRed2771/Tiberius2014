@@ -112,5 +112,6 @@ public class HID {
 
         private ButtonState() {
         }
+
     }
 }

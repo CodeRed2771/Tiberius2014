@@ -17,10 +17,11 @@ import edu.wpi.first.wpilibj.AnalogPotentiometer;
  */
 public class Pickup {
 
-    Talon elevationMotor;
+    Talon pickupArmMotor;
     Talon spinWheelsMotor;
     AnalogPotentiometer armPositionSensor;
-    
+    private static final double pickupArmSensorRetractedReading = .51; // 3"
+    private static final double pickupArmSensorExtendedReading = 1.19; // 7"
     public double pickupWheelsForward = 0.4;
     public double pickupWheelsReverse = -0.4;
     public double pickupArmExtend = 0.4;
@@ -30,36 +31,70 @@ public class Pickup {
     private boolean isRetracting;
 
     public Pickup() {
-        elevationMotor = new Talon(Wiring.pickupElevation);
+        pickupArmMotor = new Talon(Wiring.pickupElevation);
         spinWheelsMotor = new Talon(Wiring.pickupWheels);
         armPositionSensor = new AnalogPotentiometer(Wiring.armPositionSensorPort);
         isExtending = false;
         isRetracting = false;
     }
-    
-   public void step() {
+
+    public void step() {
+
+        // now check if any movement is called for
         if (isExtending) {
-            movePickup(pickupArmExtend);
+            if (isExtended()) {
+                Debug.println("Pickup.togglePickup: EXTENSION COMPLETE", Debug.STANDARD);
+                isExtending = false;
+                pickupArmMotor.set(0);
+            } else {
+                pickupArmMotor.set(pickupArmExtend);
+            }
         } else if (isRetracting) {
-            movePickup(pickupArmRetract);
-        } else {
-            movePickup(pickupArmStop);
-        }
-        
-        Debug.println("ANALOG SENSOR OUTPUT: " + armPositionSensor.get(), Debug.STANDARD);
+            if (isRetracted()) { 
+                Debug.println("Pickup.togglePickup: RETRACTION COMPLETE", Debug.STANDARD);
+                isRetracting = false;
+                pickupArmMotor.set(0);
+            } else {
+            pickupArmMotor.set(pickupArmRetract);
+            }
+        } 
+
+     //   Debug.println("Pickup.Step armPos: " + armPositionSensor.get() + " isRetracted: " + isRetracted() + " isExtended: " + isExtended() + " isRetracting: " + isRetracting + " isExtending: " + isExtending, Debug.STANDARD);
 
     }
-    
+
     public boolean isRetracted() {
-        return true;
+        return (armPositionSensor.get() <= pickupArmSensorRetractedReading);
     }
-    
+
     public boolean isExtended() {
-        return true;
+        return (armPositionSensor.get() >= pickupArmSensorExtendedReading);
     }
+
     public void movePickup(double value) {
-        if (!(isExtending || isRetracting)) {
-            elevationMotor.set(value);
+        /*
+         * if the value is 0, we don't want to pass it through if we are
+         * currently extending or retracting automatically because the 0 is
+         * coming from the main program due to lack of controller input.
+         */
+        if (value == 0) {
+            if (isExtending || isRetracting) {
+                pickupArmMotor.set(value);
+            }
+        } else {
+            if (value == pickupArmExtend) {
+                if (isExtended()) {
+                    pickupArmMotor.set(0); // we are extended, so stop the motor
+                } else {
+                    pickupArmMotor.set(value);
+                }
+            } else if (value == pickupArmRetract) {
+                if (isRetracted()) {
+                    pickupArmMotor.set(0); // we are retracted, so stop the motor
+                } else {
+                    pickupArmMotor.set(value);
+                }
+            }
         }
     }
 
@@ -76,8 +111,11 @@ public class Pickup {
 
     public void togglePickup() {
         if (isExtending || isExtended()) {
+            Debug.println("Pickup.togglePickup: Now RETRACTING", Debug.STANDARD);
             retractPickup();
         } else {
+            Debug.println("Pickup.togglePickup: Now EXTENDING", Debug.STANDARD);
+
             extendPickup();
         }
     }
@@ -88,5 +126,9 @@ public class Pickup {
 
     public void stopWheels() {
         spinWheelsMotor.set(0);
+        
+        isRetracting = false;    // for safety sake, we'll stop the arm too
+        isExtending = false;     // for safety sake, we'll stop the arm too
+        pickupArmMotor.set(0);   // for safety sake, we'll stop the arm too
     }
 }
