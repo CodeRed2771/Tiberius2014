@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.coderedrobotics.tiberius.libs;
 
 import edu.wpi.first.wpilibj.Encoder;
@@ -9,9 +5,9 @@ import edu.wpi.first.wpilibj.PIDSource;
 
 /**
  *
- * @author laptop
+ * @author Austin
  */
-public class SpeedEncoderShell implements PIDSource{
+public class SpeedEncoderShell implements PIDSource {
 
     Encoder encoder = null;
     private long lastTime;

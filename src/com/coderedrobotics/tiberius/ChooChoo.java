@@ -1,12 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.coderedrobotics.tiberius;
 
 import com.coderedrobotics.tiberius.libs.Debug;
-import com.coderedrobotics.tiberius.statics.KeyMap;
 import com.coderedrobotics.tiberius.statics.Wiring;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Talon;
@@ -31,15 +25,15 @@ public class ChooChoo {
         if (fire) {
             isFiring = true;
             Debug.println("[INFO] Fire Button Pressed", Debug.STANDARD);
- 
+
         }
-        
+
         if (isFiring || !sensor.get()) {
             chooChooMotor.set(.3);
         } else {
             chooChooMotor.set(0);
         }
-        
+
         if (!sensor.get()) {
             isFiring = false;
         }

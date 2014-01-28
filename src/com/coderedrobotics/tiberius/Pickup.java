@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- * test comment.
- */
 package com.coderedrobotics.tiberius;
 
 import com.coderedrobotics.tiberius.libs.Debug;
@@ -30,6 +24,12 @@ public class Pickup {
     private boolean isExtending;
     private boolean isRetracting;
 
+    /**
+     * The Pickup object controls the robot's Pickup arm and all of its
+     * components. This includes the pickup wheels and all sensors required to
+     * automate the pickup process.
+     * 
+     */
     public Pickup() {
         pickupArmMotor = new Talon(Wiring.pickupElevation);
         spinWheelsMotor = new Talon(Wiring.pickupWheels);
@@ -50,17 +50,16 @@ public class Pickup {
                 pickupArmMotor.set(pickupArmExtend);
             }
         } else if (isRetracting) {
-            if (isRetracted()) { 
+            if (isRetracted()) {
                 Debug.println("Pickup.togglePickup: RETRACTION COMPLETE", Debug.STANDARD);
                 isRetracting = false;
                 pickupArmMotor.set(0);
             } else {
-            pickupArmMotor.set(pickupArmRetract);
+                pickupArmMotor.set(pickupArmRetract);
             }
-        } 
+        }
 
-     //   Debug.println("Pickup.Step armPos: " + armPositionSensor.get() + " isRetracted: " + isRetracted() + " isExtended: " + isExtended() + " isRetracting: " + isRetracting + " isExtending: " + isExtending, Debug.STANDARD);
-
+        //   Debug.println("Pickup.Step armPos: " + armPositionSensor.get() + " isRetracted: " + isRetracted() + " isExtended: " + isExtended() + " isRetracting: " + isRetracting + " isExtending: " + isExtending, Debug.STANDARD);
     }
 
     public boolean isRetracted() {
@@ -126,7 +125,7 @@ public class Pickup {
 
     public void stopWheels() {
         spinWheelsMotor.set(0);
-        
+
         isRetracting = false;    // for safety sake, we'll stop the arm too
         isExtending = false;     // for safety sake, we'll stop the arm too
         pickupArmMotor.set(0);   // for safety sake, we'll stop the arm too

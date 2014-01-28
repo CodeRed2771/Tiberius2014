@@ -1,14 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.coderedrobotics.tiberius.libs;
 
 import edu.wpi.first.wpilibj.PIDOutput;
 
 /**
  *
- * @author laptop
+ * @author Austin
  */
 public class PIDIntegralCalculator implements PIDOutput {
 

@@ -1,15 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.coderedrobotics.tiberius.libs.HID;
 
 /**
  *
- * @author laptop
+ * @author Austin
  */
-public class SaitekJoystick extends HID{
-    
+public class SaitekJoystick extends HID {
+
     public static final Axis X = new Axis(1, 0.1);
     public static final Axis Y = new Axis(2, 0.1);
     public static final Axis THORTTLE = new Axis(3);

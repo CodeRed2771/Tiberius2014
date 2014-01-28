@@ -18,7 +18,7 @@ public final class Debug {
     public static int EXTENDED = 4;
     public static int EVERYTHING = 5;
     public static int DISABLEPRINT = 6;
-    
+
     private static final DriverStationLCD lcd = DriverStationLCD.getInstance();
     // Note: if debug level for incomming print is set to 0, it will override
     // the debug level, even if it is set to 6.
@@ -86,7 +86,7 @@ public final class Debug {
     public static void forcePrintErr(Exception e) {
         System.err.println(e);
     }
-    
+
     public static void printDriverStationMessage(int line, int column, String text) {
         Line lineline;
         switch (line) {
@@ -115,8 +115,8 @@ public final class Debug {
         lcd.println(lineline, column, text);
         lcd.updateLCD();
     }
-    
-    public static void clearDriverStationMessages(){
+
+    public static void clearDriverStationMessages() {
         lcd.clear();
         lcd.updateLCD();
     }

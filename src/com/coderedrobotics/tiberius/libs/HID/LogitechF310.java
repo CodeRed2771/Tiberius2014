@@ -1,5 +1,9 @@
 package com.coderedrobotics.tiberius.libs.HID;
 
+/**
+ *
+ * @author Austin
+ */
 public class LogitechF310 extends HID {
 
     public static final Axis STICK_LEFT_X = new Axis(1, 0.02);
@@ -34,6 +38,16 @@ public class LogitechF310 extends HID {
     public static final Button STICK_LEFT = new Button(9);
     public static final Button STICK_RIGHT = new Button(10);
 
+    /**
+     * The <code>LogitechF310</code> represents a model of gamepad, and stores
+     * constants that corresponds to inputs (such as an axis or button) to be
+     * passed into the HID object. This object should <b>not</b> be initialized
+     * if you are using a <code>KeyMap</code> object along with the
+     * <code>HID</code> object.
+     *
+     * @param port The port (1-4) that the controller is connected to in the
+     * Driver Station.
+     */
     public LogitechF310(int port) {
         super(port);
     }
