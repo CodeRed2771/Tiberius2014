@@ -79,7 +79,7 @@ public class KeyMap {
     }
     
     public boolean getPickupToggleButton() {
-        return (getHID(2).buttonPressed(fireBallButton, pickupButtonPressedState));
+        return (getHID(2).buttonPressed(togglePickup, pickupButtonPressedState));
     }
     
     public boolean getPickupRetractAutoButton() {
