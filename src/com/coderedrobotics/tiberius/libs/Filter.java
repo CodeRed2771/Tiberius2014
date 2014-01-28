@@ -1,12 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.coderedrobotics.tiberius.libs;
 
 /**
  *
- * @author laptop
+ * @author Austin
  */
 public class Filter {
 

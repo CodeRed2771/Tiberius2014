@@ -1,6 +1,5 @@
 package com.coderedrobotics.tiberius.statics;
 
-import com.coderedrobotics.tiberius.libs.Debug;
 import com.coderedrobotics.tiberius.libs.HID.HID;
 import com.coderedrobotics.tiberius.libs.HID.HID.Axis;
 import com.coderedrobotics.tiberius.libs.HID.HID.Button;
@@ -14,7 +13,9 @@ public class KeyMap {
 
     public static HID gamepad1 = new HID(1);
     public static HID gamepad2 = new HID(2);
+
     private boolean singleControllerMode;
+
     private final Axis leftDriveAxis = LogitechF310.STICK_LEFT_Y;
     private final Axis rightDriveAxis = LogitechF310.STICK_RIGHT_Y;
     private final Button fireBallButton = LogitechF310.TRIGGER_RIGHT;
@@ -25,8 +26,9 @@ public class KeyMap {
     private final Button pickupExtend = LogitechF310.DPAD_DOWN;
     private final Button pickupAutoRetract = LogitechF310.BACK;
     private final Button togglePickup = LogitechF310.A;
-    private HID.ButtonState pickupButtonToggleState = HID.newButtonState();
-    private HID.ButtonState pickupButtonPressedState = HID.newButtonState();
+
+    private final HID.ButtonState pickupButtonToggleState = HID.newButtonState();
+    private final HID.ButtonState pickupButtonPressedState = HID.newButtonState();
 
     public KeyMap() {
     }
@@ -54,6 +56,14 @@ public class KeyMap {
         return singleControllerMode;
     }
 
+    public void toggleSingleControllerMode() {
+        singleControllerMode = !singleControllerMode;
+    }
+
+    public boolean getSwitchControllerModeButtons() {
+        return (getHID(1).button(LogitechF310.BACK) && getHID(2).button(LogitechF310.BACK));
+    }
+
     public double getLeftDriveAxis() {
         return getHID(1).axis(leftDriveAxis);
     }
@@ -77,14 +87,15 @@ public class KeyMap {
     public boolean getSpinPickupWheelsBackwardsButton() {
         return getHID(2).button(spinPickupWheelsBackwardsButton);
     }
-    
+
     public boolean getPickupToggleButton() {
         return (getHID(2).buttonPressed(togglePickup, pickupButtonPressedState));
     }
-    
+
     public boolean getPickupRetractAutoButton() {
         return getHID(2).button(pickupAutoRetract);
     }
+
     public boolean getPickupRetractButton() {
         return getHID(2).button(pickupRetract);
     }

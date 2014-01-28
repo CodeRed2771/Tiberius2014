@@ -1,19 +1,19 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.coderedrobotics.tiberius.libs.HID;
 
 import edu.wpi.first.wpilibj.Joystick;
 
 /**
  *
- * @author laptop
+ * @author Austin
  */
 public class HID {
 
     Joystick joystick;
 
+    /**
+     *
+     * @param port
+     */
     public HID(int port) {
         joystick = new Joystick(port);
     }

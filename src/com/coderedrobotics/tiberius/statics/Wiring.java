@@ -19,7 +19,7 @@ public class Wiring {
      * ----------- DIGITAL I/O PORTS -------------------------
      */
     public static final int chooChooArmedSensor = 5;
-    
+
     /*
      * ----------- RELAYS ---------------------------------
      */
