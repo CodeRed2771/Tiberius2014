@@ -78,7 +78,7 @@ public class Pickup {
          * coming from the main program due to lack of controller input.
          */
         if (value == 0) {
-            if (isExtending || isRetracting) {
+            if (!(isExtending || isRetracting)) {
                 pickupArmMotor.set(value);
             }
         } else {
