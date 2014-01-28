@@ -77,11 +77,11 @@ public class KeyMap {
     public boolean getSpinPickupWheelsBackwardsButton() {
         return getHID(2).button(spinPickupWheelsBackwardsButton);
     }
-
+    
     public boolean getPickupToggleButton() {
-        //return (getHID(2).buttonToggled(togglePickup, pickupButtonPressedState, pickupButtonToggleState));
-        return getHID(2).button(togglePickup);
+        return (getHID(2).buttonPressed(fireBallButton, pickupButtonPressedState));
     }
+    
     public boolean getPickupRetractAutoButton() {
         return getHID(2).button(pickupAutoRetract);
     }

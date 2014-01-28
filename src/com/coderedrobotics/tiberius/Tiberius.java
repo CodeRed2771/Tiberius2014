@@ -56,15 +56,9 @@ public class Tiberius extends IterativeRobot {
         }
         
         if (keyMap.getPickupToggleButton()) { 
-            pickup.extendPickup();
-            // pickup.togglePickup();
+             pickup.togglePickup();
         }
-        // this part is temporary until we get the toggle to work
-        if (keyMap.getPickupRetractAutoButton()) {
-            pickup.retractPickup();
-        }
-
-        
+      
         pickup.step();
     }
 
