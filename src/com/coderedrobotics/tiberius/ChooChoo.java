@@ -18,7 +18,7 @@ public class ChooChoo {
 
     public ChooChoo() {
         sensor = new DigitalInput(Wiring.chooChooArmedSensor);
-        chooChooMotor = new Talon(Wiring.chooChooMotor);
+        chooChooMotor = new Talon(Wiring.chooChooMotorPort);
     }
 
     public void step(boolean fire) {

@@ -14,12 +14,12 @@ public class Pickup {
     Talon pickupArmMotor;
     Talon spinWheelsMotor;
     AnalogPotentiometer armPositionSensor;
-    private static final double pickupArmSensorRetractedReading = 1.19; // 7"  (.17v per inch)
-    private static final double pickupArmSensorExtendedReading = 2.21; // 13"
-    public double pickupWheelsForward = 0.4;
-    public double pickupWheelsReverse = -0.4;
-    public double pickupArmExtend = 0.4;
-    public double pickupArmRetract = -0.4;
+    private static final double pickupArmSensorRetractedReading = .6; // 7"  (.17v per inch)
+    private static final double pickupArmSensorExtendedReading = 1.1; // 13"
+    public double pickupWheelsForward = 0.75;
+    public double pickupWheelsReverse = -0.75;
+    public double pickupArmExtend = 0.35;
+    public double pickupArmRetract = -0.35;
     public double pickupArmStop = 0;
     private boolean isExtending;
     private boolean isRetracting;
@@ -31,8 +31,8 @@ public class Pickup {
      * 
      */
     public Pickup() {
-        pickupArmMotor = new Talon(Wiring.pickupElevation);
-        spinWheelsMotor = new Talon(Wiring.pickupWheels);
+        pickupArmMotor = new Talon(Wiring.pickupArmMotorPort);
+        spinWheelsMotor = new Talon(Wiring.pickupWheelsMotorPort);
         armPositionSensor = new AnalogPotentiometer(Wiring.armPositionSensorPort);
         isExtending = false;
         isRetracting = false;
@@ -59,7 +59,7 @@ public class Pickup {
             }
         }
 
-        //   Debug.println("Pickup.Step armPos: " + armPositionSensor.get() + " isRetracted: " + isRetracted() + " isExtended: " + isExtended() + " isRetracting: " + isRetracting + " isExtending: " + isExtending, Debug.STANDARD);
+        Debug.println("Pickup.Step armPos: " + armPositionSensor.get() + " isRetracted: " + isRetracted() + " isExtended: " + isExtended() + " isRetracting: " + isRetracting + " isExtending: " + isExtending, Debug.STANDARD);
     }
 
     public boolean isRetracted() {
