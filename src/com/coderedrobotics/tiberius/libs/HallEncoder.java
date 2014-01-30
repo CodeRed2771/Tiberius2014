@@ -155,6 +155,7 @@ public class HallEncoder implements Runnable, PIDSource {
                 int delay;
                 if (angle != oldAngle) {
                     delay = (int) ((time - oldTime) / ((angle - oldAngle) * 6));
+                    delay = Math.abs(delay);
                 } else {
                     delay = 50;
                 }
