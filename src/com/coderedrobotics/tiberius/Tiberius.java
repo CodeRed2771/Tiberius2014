@@ -1,6 +1,7 @@
 package com.coderedrobotics.tiberius;
 
 import com.coderedrobotics.tiberius.libs.Debug;
+import com.coderedrobotics.tiberius.libs.dash.DashBoard;
 import com.coderedrobotics.tiberius.statics.KeyMap;
 import edu.wpi.first.wpilibj.IterativeRobot;
 
@@ -10,15 +11,18 @@ public class Tiberius extends IterativeRobot {
     KeyMap keyMap;
     ChooChoo chooChoo;
     Pickup pickup;
+    DashBoard dashBoard;
 
     int testStage = 0;
     long testStartTime = 0;
 
     public void robotInit() {
         Debug.println("[INFO] TIBERIUS CODE DOWNLOAD COMPLETE.", Debug.STANDARD);
+        
         keyMap = new KeyMap();
         keyMap.setSingleControllerMode(true); // For ease of testing
-        drive = new Drive();
+        dashBoard = new DashBoard();
+        drive = new Drive(dashBoard);
         chooChoo = new ChooChoo();
         pickup = new Pickup();
     }
