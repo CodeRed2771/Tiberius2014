@@ -167,13 +167,20 @@ public class HallEncoder implements Runnable, PIDSource {
                 try {
                     Thread.sleep(delay);
                 } catch (InterruptedException ex) {
-                } catch (IllegalArgumentException e) {
-                    System.out.println("Error:" + delay);
+                }
+                time = System.currentTimeMillis() - time;
+                if (time > 60) {
+                System.out.println(time);
                 }
             } else {
+                long time = System.currentTimeMillis();
                 try {
                     Thread.sleep(pollDelay);
                 } catch (InterruptedException ex) {
+                }
+                time = System.currentTimeMillis() - time;
+                if (time > 60) {
+                System.out.println(time);
                 }
             }
         }

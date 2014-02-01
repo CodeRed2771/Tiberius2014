@@ -184,7 +184,6 @@ public class PIDControllerAIAO {
 
                 dashBoard.streamPacket(m_result, "PIDO" + name);
                 dashBoard.streamPacket(m_error, "PIDE" + name);
-                System.out.println("this is a println"+m_result);
             }
 
             pidOutput.pidWrite(result);

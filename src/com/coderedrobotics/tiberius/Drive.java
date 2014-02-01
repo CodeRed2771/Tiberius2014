@@ -36,8 +36,8 @@ public class Drive {
     public void move(double left, double right) {
         //this.left.set(-MathUtils.pow(left, 3));
         //this.right.set(MathUtils.pow(right, 3));
-        leftController.setSetpoint(-left*0.02);
-        rightController.setSetpoint(right*0.02);
+        leftController.setSetpoint(-left*0.025);
+        rightController.setSetpoint(right*0.025);
         //System.out.println(rightEncoder.getRaw());
     }
 }
