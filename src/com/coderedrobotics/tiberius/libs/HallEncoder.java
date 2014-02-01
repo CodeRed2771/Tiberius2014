@@ -95,7 +95,7 @@ public class HallEncoder implements Runnable, PIDSource {
         angle = 0;
     }
 
-    private void poll() {
+    private synchronized void poll() {
         double a = this.a.getValue();
         double b = this.b.getValue();
         double trim;
@@ -155,16 +155,20 @@ public class HallEncoder implements Runnable, PIDSource {
                 int delay;
                 if (angle != oldAngle) {
                     delay = (int) ((time - oldTime) / ((angle - oldAngle) * 6));
-                    delay = Math.abs(delay);
+                    if (delay == -2147483648) {
+                        delay = 2147483647;
+                    }
+                    delay = Math.min(Math.abs(delay), 50);
                 } else {
                     delay = 50;
                 }
-                delay = Math.min(Math.abs(delay), 50);
                 oldAngle = angle;
                 oldTime = time;
                 try {
                     Thread.sleep(delay);
                 } catch (InterruptedException ex) {
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Error:" + delay);
                 }
             } else {
                 try {

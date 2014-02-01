@@ -56,7 +56,7 @@ public class Connection implements SimpleSock {
                         connection.openDataOutputStream());
                 dataInputStream = new InputStreamBuffer(
                         connection.openDataInputStream());
-                System.out.println("dataInputStream");
+                System.out.println("OpenedDataStreams");
             } catch (IOException ex) {
                 retry = true;
             }
