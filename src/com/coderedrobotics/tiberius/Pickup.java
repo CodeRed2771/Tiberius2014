@@ -17,11 +17,11 @@ public class Pickup {
     private static final double pickupArmSensorRetractedReading = .6;// (.17v per inch)
     private static final double pickupArmSensorExtendedReading = .95;
     private static final double pickupArmSensorShootPosition = .8;
-    public double pickupWheelsForward = -0.75;
-    public double pickupWheelsReverse = 0.75;
-    public double pickupArmExtend = -0.35;
-    public double pickupArmRetract = 0.35;
-    public double pickupArmStop = 0;
+    public final double pickupWheelsForward = -0.75;
+    public final double pickupWheelsReverse = 0.75;
+    public final double pickupArmExtend = -0.35;
+    public final double pickupArmRetract = 0.35;
+    public final double pickupArmStop = 0;
     private boolean isExtending;
     private boolean isRetracting;
     private boolean isMovingToShootPosition;

@@ -13,6 +13,9 @@ public class ChooChoo {
 
     DigitalInput sensor;
     Talon chooChooMotor;
+    
+    public final double motorSpinSpeed = .7;
+    
     private boolean isFiring = false;
 
     public ChooChoo() {
@@ -33,7 +36,7 @@ public class ChooChoo {
     public void step() {
 
         if (isFiring || !sensor.get()) {
-            chooChooMotor.set(.7);
+            chooChooMotor.set(motorSpinSpeed);
         } else {
             chooChooMotor.set(0);
         }
