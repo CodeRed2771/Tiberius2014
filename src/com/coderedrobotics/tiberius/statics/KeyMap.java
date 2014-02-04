@@ -22,8 +22,8 @@ public class KeyMap {
     private final Button spinPickupWheelsButton = LogitechF310.Y;
     private final Button spinPickupWheelsStopButton = LogitechF310.X;
     private final Button spinPickupWheelsBackwardsButton = LogitechF310.B;
-    private final Button pickupRetract = LogitechF310.DPAD_UP;
-    private final Button pickupExtend = LogitechF310.DPAD_DOWN;
+    private final Button pickupRetract = LogitechF310.DPAD_LEFT;
+    private final Button pickupExtend = LogitechF310.DPAD_RIGHT;
     private final Button pickupAutoRetract = LogitechF310.BACK;
     private final Button togglePickup = LogitechF310.A;
 

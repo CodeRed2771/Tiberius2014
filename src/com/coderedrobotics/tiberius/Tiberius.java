@@ -39,8 +39,14 @@ public class Tiberius extends IterativeRobot {
     public void teleopPeriodic() {
         drive.move(keyMap.getLeftDriveAxis(), keyMap.getRightDriveAxis());
 
-        chooChoo.step(keyMap.getFireBallButton());
-
+        if (keyMap.getFireBallButton()) {
+            pickup.setShootingPosition();
+            if (pickup.isSafeForShooting()) {
+                chooChoo.fire();
+            }
+        } 
+        chooChoo.step();
+        
         if (keyMap.getSpinPickupWheelsButton()) {
             pickup.spinWheels(pickup.pickupWheelsForward);
         } else if (keyMap.getSpinPickupWheelsBackwardsButton()) {
@@ -88,7 +94,7 @@ public class Tiberius extends IterativeRobot {
                 break;
             case 2:
                 drive.move(0, 0);
-                chooChoo.step(true);
+                chooChoo.fire();
                 break;
             case 3:
                 pickup.spinWheels(pickup.pickupWheelsForward);
@@ -106,7 +112,7 @@ public class Tiberius extends IterativeRobot {
             default:
                 pickup.stopWheels();
                 pickup.movePickup(pickup.pickupArmStop);
-                chooChoo.step(false);
+                chooChoo.stop();
                 drive.move(0, 0);
                 break;
         }
@@ -117,5 +123,4 @@ public class Tiberius extends IterativeRobot {
 
     public void disabledPeriodic() {
     }
-
 }

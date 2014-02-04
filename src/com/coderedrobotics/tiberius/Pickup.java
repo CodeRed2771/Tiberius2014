@@ -14,15 +14,17 @@ public class Pickup {
     Talon pickupArmMotor;
     Talon spinWheelsMotor;
     AnalogPotentiometer armPositionSensor;
-    private static final double pickupArmSensorRetractedReading = 1.19; // 7"  (.17v per inch)
-    private static final double pickupArmSensorExtendedReading = 2.21; // 13"
-    public double pickupWheelsForward = 0.4;
-    public double pickupWheelsReverse = -0.4;
-    public double pickupArmExtend = 0.4;
-    public double pickupArmRetract = -0.4;
+    private static final double pickupArmSensorRetractedReading = .6;// (.17v per inch)
+    private static final double pickupArmSensorExtendedReading = .95;
+    private static final double pickupArmSensorShootPosition = .8;
+    public double pickupWheelsForward = -0.75;
+    public double pickupWheelsReverse = 0.75;
+    public double pickupArmExtend = -0.35;
+    public double pickupArmRetract = 0.35;
     public double pickupArmStop = 0;
     private boolean isExtending;
     private boolean isRetracting;
+    private boolean isMovingToShootPosition;
 
     /**
      * The Pickup object controls the robot's Pickup arm and all of its
@@ -31,11 +33,12 @@ public class Pickup {
      * 
      */
     public Pickup() {
-        pickupArmMotor = new Talon(Wiring.pickupElevation);
-        spinWheelsMotor = new Talon(Wiring.pickupWheels);
+        pickupArmMotor = new Talon(Wiring.pickupArmMotorPort);
+        spinWheelsMotor = new Talon(Wiring.pickupWheelsMotorPort);
         armPositionSensor = new AnalogPotentiometer(Wiring.armPositionSensorPort);
         isExtending = false;
         isRetracting = false;
+        isMovingToShootPosition = false;
     }
 
     public void step() {
@@ -53,13 +56,22 @@ public class Pickup {
             if (isRetracted()) {
                 Debug.println("Pickup.togglePickup: RETRACTION COMPLETE", Debug.STANDARD);
                 isRetracting = false;
+                stopWheels();
                 pickupArmMotor.set(0);
             } else {
                 pickupArmMotor.set(pickupArmRetract);
             }
+        } else if (isMovingToShootPosition) {
+            if (isSafeForShooting()) {                
+                Debug.println("Pickup.MovingToShoot: SHOOTING EXTENSION COMPLETE", Debug.STANDARD);
+                pickupArmMotor.set(0);
+                isMovingToShootPosition = false;
+            } else {
+                pickupArmMotor.set(pickupArmExtend);
+            }
         }
 
-        //   Debug.println("Pickup.Step armPos: " + armPositionSensor.get() + " isRetracted: " + isRetracted() + " isExtended: " + isExtended() + " isRetracting: " + isRetracting + " isExtending: " + isExtending, Debug.STANDARD);
+      //  Debug.println("Pickup.Step armPos: " + armPositionSensor.get() + " isRetracted: " + isRetracted() + " isExtended: " + isExtended() + " isRetracting: " + isRetracting + " isExtending: " + isExtending, Debug.STANDARD);
     }
 
     public boolean isRetracted() {
@@ -70,6 +82,14 @@ public class Pickup {
         return (armPositionSensor.get() >= pickupArmSensorExtendedReading);
     }
 
+    public boolean isSafeForShooting() {
+        return (armPositionSensor.get() >= pickupArmSensorShootPosition);
+    }
+    public void setShootingPosition() {
+        isRetracting = false;
+        isExtending = false;
+        isMovingToShootPosition = true;
+    }
     public void movePickup(double value) {
         /*
          * if the value is 0, we don't want to pass it through if we are

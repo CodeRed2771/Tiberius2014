@@ -13,23 +13,27 @@ public class ChooChoo {
 
     DigitalInput sensor;
     Talon chooChooMotor;
-
     private boolean isFiring = false;
 
     public ChooChoo() {
         sensor = new DigitalInput(Wiring.chooChooArmedSensor);
-        chooChooMotor = new Talon(Wiring.chooChooMotor);
+        chooChooMotor = new Talon(Wiring.chooChooMotorPort);
     }
 
-    public void step(boolean fire) {
-        if (fire) {
-            isFiring = true;
-            Debug.println("[INFO] Fire Button Pressed", Debug.STANDARD);
+    public void fire() {
+        isFiring = true;
+        Debug.println("[INFO] Fire Button Pressed", Debug.STANDARD);
+    }
+    
+    public void stop() {
+        isFiring = false;
+        chooChooMotor.set(0);
+    }
 
-        }
+    public void step() {
 
         if (isFiring || !sensor.get()) {
-            chooChooMotor.set(.3);
+            chooChooMotor.set(.7);
         } else {
             chooChooMotor.set(0);
         }
