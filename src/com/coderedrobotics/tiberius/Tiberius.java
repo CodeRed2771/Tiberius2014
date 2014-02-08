@@ -78,6 +78,7 @@ public class Tiberius extends IterativeRobot {
 
         if (elapsedTime > 3000) {
             testStage++;
+            testStartTime = System.currentTimeMillis();
         }
 
         switch (testStage) {

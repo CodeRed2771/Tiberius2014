@@ -15,7 +15,7 @@ public class Pickup {
     Talon spinWheelsMotor;
     AnalogPotentiometer armPositionSensor;
     private static final double pickupArmSensorRetractedReading = .6;// (.17v per inch)
-    private static final double pickupArmSensorExtendedReading = .95;
+    private static final double pickupArmSensorExtendedReading = 1.39;
     private static final double pickupArmSensorShootPosition = .8;
     public final double pickupWheelsForward = -0.75;
     public final double pickupWheelsReverse = 0.75;
@@ -42,6 +42,8 @@ public class Pickup {
     }
 
     public void step() {
+        
+        System.out.println(armPositionSensor.get());
 
         // now check if any movement is called for
         if (isExtending) {
