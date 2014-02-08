@@ -18,8 +18,6 @@ public class Pickup {
     private static final double pickupArmSensorExtendedReading = 1.48;
     private static final double pickupArmSensorShootPosition = 1.36;
     
-    
-    
     public final double pickupWheelsForward = 0.75;
     public final double pickupWheelsReverse = -0.75;
     public final double pickupArmExtend = -0.35;

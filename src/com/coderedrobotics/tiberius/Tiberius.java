@@ -29,6 +29,7 @@ public class Tiberius extends IterativeRobot {
     }
 
     public void teleopInit() {
+        chooChoo.cock();
     }
 
     public void teleopPeriodic() {
