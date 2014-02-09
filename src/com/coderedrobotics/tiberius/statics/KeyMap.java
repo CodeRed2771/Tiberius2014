@@ -24,8 +24,10 @@ public class KeyMap {
     private final Button spinPickupWheelsBackwardsButton = LogitechF310.B;
     private final Button pickupRetract = LogitechF310.DPAD_LEFT;
     private final Button pickupExtend = LogitechF310.DPAD_RIGHT;
-    private final Button pickupAutoRetract = LogitechF310.BACK;
+    //private final Button pickupAutoRetract = LogitechF310.BACK;
     private final Button togglePickup = LogitechF310.A;
+    private final Button petalRetract = LogitechF310.BACK;
+    private final Button petalExtend = LogitechF310.START;
 
     private final HID.ButtonState pickupButtonToggleState = HID.newButtonState();
     private final HID.ButtonState pickupButtonPressedState = HID.newButtonState();
@@ -61,7 +63,8 @@ public class KeyMap {
     }
 
     public boolean getSwitchControllerModeButtons() {
-        return (getHID(1).button(LogitechF310.BACK) && getHID(2).button(LogitechF310.BACK));
+        return (false);
+        // return (getHID(1).button(LogitechF310.BACK) && getHID(2).button(LogitechF310.BACK));
     }
 
     public double getLeftDriveAxis() {
@@ -92,9 +95,9 @@ public class KeyMap {
         return (getHID(2).buttonPressed(togglePickup, pickupButtonPressedState));
     }
 
-    public boolean getPickupRetractAutoButton() {
-        return getHID(2).button(pickupAutoRetract);
-    }
+   // public boolean getPickupRetractAutoButton() {
+   //     return getHID(2).button(pickupAutoRetract);
+   // }
 
     public boolean getPickupRetractButton() {
         return getHID(2).button(pickupRetract);
@@ -102,5 +105,13 @@ public class KeyMap {
 
     public boolean getPickupExtendButton() {
         return getHID(2).button(pickupExtend);
+    }
+    
+    public boolean getPetalExtendButton() {
+        return getHID(2).button(petalExtend);
+    }
+    
+    public boolean getPetalRetractButton() {
+        return getHID(2).button(petalRetract);
     }
 }
