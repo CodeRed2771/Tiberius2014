@@ -119,16 +119,24 @@ public class HallEncoder implements Runnable, PIDSource {
         yScaler.trim(-trim);
         a = aScaler.scale(a);
         b = bScaler.scale(b);
-        dashBoard.streamPacket(a, "HallRaw1a" + name);
-        dashBoard.streamPacket(b, "HallRaw2a" + name);
         double x = a + b;
         double y = a - b;
         xScaler.checkCaps(x);
         yScaler.checkCaps(y);
         x = xScaler.scale(x);
-        y = xScaler.scale(y);
-        dashBoard.streamPacket(x, "HallWave1a" + name);
-        dashBoard.streamPacket(y, "HallWave2a" + name);
+        y = yScaler.scale(y);
+        if (dashBoard != null) {
+            dashBoard.streamPacket(a, "HallRaw1a" + name);
+            dashBoard.streamPacket(b, "HallRaw2a" + name);
+            dashBoard.streamPacket(x, "HallWave1a" + name);
+            dashBoard.streamPacket(y, "HallWave2a" + name);
+        }
+        if (x == Double.NaN) {
+            x = 0;
+        }
+        if (y == Double.NaN) {
+            y = 0;
+        }
         int phase;
         double z;
         if (x * x > y * y) {
@@ -153,14 +161,21 @@ public class HallEncoder implements Runnable, PIDSource {
             z = 0.25d - z;
         }
         z += phase * 0.25;
-        double old = angle % 1;
+        double old = ((angle % 1) + 1) % 1;
         double dif = z - old;
-        dif = dif % 1;
+        dif = ((dif % 1) + 1) % 1;
         if (dif > 0.5) {
             dif -= 1;
         }
         angle += dif;
-        dashBoard.streamPacket(angle % 1, "HallRawOut" + name);
+
+        if (angle == Double.NaN) {
+            System.exit(35);
+        }
+        //System.out.println("numbers: " + z + "\t" + angle);
+        if (dashBoard != null) {
+            dashBoard.streamPacket(((angle % 1) + 1) % 1, "HallRawOut" + name);
+        }
     }
 
     public void run() {

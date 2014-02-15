@@ -26,9 +26,11 @@ public class KeyMap {
     private final Button pickupExtend = LogitechF310.DPAD_RIGHT;
     private final Button pickupAutoRetract = LogitechF310.BACK;
     private final Button togglePickup = LogitechF310.A;
+    private final Button toggleSpeedControllers = LogitechF310.START;
 
     private final HID.ButtonState pickupButtonToggleState = HID.newButtonState();
     private final HID.ButtonState pickupButtonPressedState = HID.newButtonState();
+    private final HID.ButtonState controllersToggleState = HID.newButtonState();
 
     public KeyMap() {
     }
@@ -102,5 +104,9 @@ public class KeyMap {
 
     public boolean getPickupExtendButton() {
         return getHID(2).button(pickupExtend);
+    }
+
+    public boolean toggleSpeedControllers() {
+        return getHID(1).buttonPressed(toggleSpeedControllers, controllersToggleState);
     }
 }

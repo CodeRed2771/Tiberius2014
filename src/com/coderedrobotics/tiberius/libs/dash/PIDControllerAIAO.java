@@ -84,9 +84,7 @@ public class PIDControllerAIAO {
             throw new NullPointerException("Null PIDOutput was given");
         }
 
-
         m_controlLoop = new java.util.Timer();
-
 
         robotP = Kp;
         robotI = Ki;
@@ -182,37 +180,47 @@ public class PIDControllerAIAO {
                 pidOutput = m_pidOutput;
                 result = m_result;
 
-                dashBoard.streamPacket(m_result, "PIDO" + name);
-                dashBoard.streamPacket(m_error, "PIDE" + name);
+                if (dashBoard != null) {
+                    dashBoard.streamPacket(m_result, "PIDO" + name);
+                    dashBoard.streamPacket(m_error, "PIDE" + name);
+                }
             }
 
             pidOutput.pidWrite(result);
         }
-        
-        if (dashBoard.getRegister("PIDCP" + name) == 1) {
-            m_P = dashBoard.getRegister("PIDP" + name);
+
+        if (dashBoard != null) {
+            if (dashBoard.getRegister("PIDCP" + name) == 1) {
+                m_P = dashBoard.getRegister("PIDP" + name);
+            } else {
+                m_P = robotP;
+                dashBoard.setRegister("PIDP" + name, m_P);
+            }
+            if (dashBoard.getRegister("PIDCI" + name) == 1) {
+                m_I = dashBoard.getRegister("PIDI" + name);
+            } else {
+                m_I = robotI;
+                dashBoard.setRegister("PIDI" + name, m_I);
+            }
+            if (dashBoard.getRegister("PIDCD" + name) == 1) {
+                m_D = dashBoard.getRegister("PIDD" + name);
+            } else {
+                m_D = robotD;
+                dashBoard.setRegister("PIDD" + name, m_D);
+            }
+            if (dashBoard.getRegister("PIDCS" + name) == 1) {
+                m_setpoint = dashBoard.getRegister("PIDS" + name);
+            } else {
+                m_setpoint = robotS;
+                dashBoard.setRegister("PIDS" + name, m_setpoint);
+            }
         } else {
             m_P = robotP;
-            dashBoard.setRegister("PIDP" + name, m_P);
-        }
-        if (dashBoard.getRegister("PIDCI" + name) == 1) {
-            m_I = dashBoard.getRegister("PIDI" + name);
-        } else {
             m_I = robotI;
-            dashBoard.setRegister("PIDI" + name,m_I);
-        }
-        if (dashBoard.getRegister("PIDCD" + name) == 1) {
-            m_D = dashBoard.getRegister("PIDD" + name);
-        } else {
             m_D = robotD;
-            dashBoard.setRegister("PIDD" + name,m_D);
-        }
-        if (dashBoard.getRegister("PIDCS" + name) == 1) {
-            m_setpoint = dashBoard.getRegister("PIDS" + name);
-        } else {
             m_setpoint = robotS;
-            dashBoard.setRegister("PIDS" + name,m_setpoint);
         }
+
     }
 
     /**

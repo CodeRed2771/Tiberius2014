@@ -19,25 +19,54 @@ public class Drive {
     HallEncoder rightEncoder;
     PIDControllerAIAO leftController;
     PIDControllerAIAO rightController;
+    boolean speed = true;
 
     public Drive(DashBoard dashBoard) {
         left = new Talon(Wiring.leftDriveTalonPort);
-        right = new Talon(Wiring.rightDriveTalonPort);
         leftEncoder = new HallEncoder(5, 6, dashBoard, "left");
         leftController = new PIDControllerAIAO(
-                80, 0, 0, leftEncoder, left, dashBoard, "left");
+                50, 0, 0, leftEncoder, left, dashBoard, "left");
         leftController.enable();
+        right = new Talon(Wiring.rightDriveTalonPort);
         rightEncoder = new HallEncoder(3, 4, dashBoard, "right");
         rightController = new PIDControllerAIAO(
-                80, 0, 0, rightEncoder, right, dashBoard, "right");
+                50, 0, 0, rightEncoder, right, dashBoard, "right");
         rightController.enable();
     }
 
     public void move(double left, double right) {
-        //this.left.set(-MathUtils.pow(left, 3));
-        //this.right.set(MathUtils.pow(right, 3));
-        leftController.setSetpoint(-left*0.025);
-        rightController.setSetpoint(right*0.025);
-        //System.out.println(rightEncoder.getRaw());
+        if (speed) {
+            leftController.setSetpoint(-left * 0.025);
+            rightController.setSetpoint(right * 0.025);
+        } else {
+            this.left.set(-left);
+            this.right.set(right);
+        }
+    }
+
+    public void disableSpeedControllers() {
+        if (speed) {
+            rightController.disable();
+            leftController.disable();
+            speed = false;
+        }
+    }
+
+    public void enableSpeedControllers() {
+        if (!speed) {
+            speed = true;
+            rightController.reset();
+            leftController.reset();
+            rightController.enable();
+            leftController.enable();
+        }
+    }
+
+    public void toggleSpeedContrllers() {
+        if (speed) {
+            disableSpeedControllers();
+        } else {
+            enableSpeedControllers();
+        }
     }
 }
