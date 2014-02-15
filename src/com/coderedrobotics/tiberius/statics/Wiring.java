@@ -14,6 +14,7 @@ public class Wiring {
     public static final int chooChooMotorPort = 3;
     public static final int pickupArmMotorPort = 4;
     public static final int pickupWheelsMotorPort = 5;
+    public static final int petalsMotorPort = 6;
 
     /*
      * ----------- DIGITAL I/O PORTS -------------------------
