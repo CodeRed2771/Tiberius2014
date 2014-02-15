@@ -78,11 +78,13 @@ public class Pickup {
     }
 
     public boolean isRetracted() {
-        return (armPositionSensor.get() <= pickupArmSensorRetractedReading);
+        return false; //we don't have pot
+        //return (armPositionSensor.get() <= pickupArmSensorRetractedReading);
     }
 
     public boolean isExtended() {
-        return (armPositionSensor.get() >= pickupArmSensorExtendedReading);
+        return false; //we don't have pot
+        //return (armPositionSensor.get() >= pickupArmSensorExtendedReading);
     }
 
     public boolean isSafeForShooting() {

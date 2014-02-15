@@ -20,7 +20,7 @@ public class Tiberius extends IterativeRobot {
         Debug.println("[INFO] TIBERIUS CODE DOWNLOAD COMPLETE.", Debug.STANDARD);
         
         keyMap = new KeyMap();
-        keyMap.setSingleControllerMode(true); // For ease of testing
+        keyMap.setSingleControllerMode(false); // For ease of testing
         //dashBoard = new DashBoard();
         drive = new Drive(dashBoard);
         chooChoo = new ChooChoo();
