@@ -14,20 +14,12 @@ public class Pickup {
     Talon pickupArmMotor;
     Talon spinWheelsMotor;
     AnalogPotentiometer armPositionSensor;
-<<<<<<< HEAD
-    private static final double pickupArmSensorRetractedReading = .6;// (.17v per inch)
-    private static final double pickupArmSensorExtendedReading = 1.39;
-    private static final double pickupArmSensorShootPosition = .8;
-    public final double pickupWheelsForward = -0.75;
-    public final double pickupWheelsReverse = 0.75;
-=======
     private static final double pickupArmSensorRetractedReading = 1.07;// (.17v per inch)
     private static final double pickupArmSensorExtendedReading = 1.48;
     private static final double pickupArmSensorShootPosition = 1.36;
     
     public final double pickupWheelsForward = 0.75;
     public final double pickupWheelsReverse = -0.75;
->>>>>>> 28dbfa2615dd8843b71e8fc29f0bfcd4d6c49708
     public final double pickupArmExtend = -0.35;
     public final double pickupArmRetract = 0.35;
     public final double pickupArmStop = 0;

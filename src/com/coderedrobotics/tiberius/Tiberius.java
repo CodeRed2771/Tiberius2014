@@ -10,6 +10,7 @@ public class Tiberius extends IterativeRobot {
     KeyMap keyMap;
     ChooChoo chooChoo;
     Pickup pickup;
+    Petals petals;
     int testStage = 0;
     long testStartTime = 0;
 
@@ -20,6 +21,7 @@ public class Tiberius extends IterativeRobot {
         drive = new Drive();
         chooChoo = new ChooChoo();
         pickup = new Pickup();
+        petals = new Petals();
     }
 
     public void autonomousInit() {
@@ -35,6 +37,14 @@ public class Tiberius extends IterativeRobot {
     public void teleopPeriodic() {
         drive.move(keyMap.getLeftDriveAxis(), keyMap.getRightDriveAxis());
 
+        if (keyMap.getPetalExtendButton()) {
+            petals.extendPetals();
+        } else if (keyMap.getPetalRetractButton()) {
+            petals.retractPetals();
+        } else {
+            petals.stop();
+        }
+        
         if (keyMap.getFireBallButton()) {
             pickup.setShootingPosition();
             if (pickup.isSafeForShooting()) {
