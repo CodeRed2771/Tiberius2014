@@ -50,10 +50,10 @@ public class Tiberius extends IterativeRobot {
         }
         
         if (keyMap.getFireBallButton()) {
-            pickup.setShootingPosition();
-            if (pickup.isSafeForShooting()) {
+//            pickup.setShootingPosition();
+//            if (pickup.isSafeForShooting()) {
                 chooChoo.fire();
-            }
+//            }
         } 
         chooChoo.step();
         
