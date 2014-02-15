@@ -43,11 +43,17 @@ public class HallEncoder implements Runnable, PIDSource {
         restart(pollDelay);
     }
 
-    public HallEncoder(int a, int b, int pollDelay, DashBoard dashBoard, String name) {
-        this(new AnalogChannel(a), new AnalogChannel(b), pollDelay, dashBoard, name);
+    public HallEncoder(
+            int a, int b, int pollDelay,
+            DashBoard dashBoard, String name) {
+        this(
+                new AnalogChannel(a), new AnalogChannel(b),
+                pollDelay, dashBoard, name);
     }
 
-    public HallEncoder(AnalogChannel a, AnalogChannel b, DashBoard dashBoard, String name) {
+    public HallEncoder(
+            AnalogChannel a, AnalogChannel b,
+            DashBoard dashBoard, String name) {
         this(a, b, -1, dashBoard, name);
     }
 
@@ -154,7 +160,7 @@ public class HallEncoder implements Runnable, PIDSource {
             dif -= 1;
         }
         angle += dif;
-        dashBoard.streamPacket(angle%1, "HallRawOut" + name);
+        dashBoard.streamPacket(angle % 1, "HallRawOut" + name);
     }
 
     public void run() {
