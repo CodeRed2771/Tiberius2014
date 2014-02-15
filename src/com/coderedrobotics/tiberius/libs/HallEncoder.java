@@ -172,7 +172,6 @@ public class HallEncoder implements Runnable, PIDSource {
         if (angle == Double.NaN) {
             System.exit(35);
         }
-        //System.out.println("numbers: " + z + "\t" + angle);
         if (dashBoard != null) {
             dashBoard.streamPacket(((angle % 1) + 1) % 1, "HallRawOut" + name);
         }
@@ -201,18 +200,11 @@ public class HallEncoder implements Runnable, PIDSource {
                 } catch (InterruptedException ex) {
                 }
                 time = System.currentTimeMillis() - time;
-                if (time > 60) {
-                    //System.out.println(time);
-                }
             } else {
                 long time = System.currentTimeMillis();
                 try {
                     Thread.sleep(pollDelay);
                 } catch (InterruptedException ex) {
-                }
-                time = System.currentTimeMillis() - time;
-                if (time > 60) {
-                    //System.out.println(time);
                 }
             }
         }
