@@ -23,21 +23,23 @@ public class Drive {
 
     public Drive(DashBoard dashBoard) {
         left = new Talon(Wiring.leftDriveTalonPort);
-        leftEncoder = new HallEncoder(Wiring.leftDriveEncoderAPort, Wiring.leftDriveEncoderBPort, dashBoard, "left");
+        leftEncoder = new HallEncoder(Wiring.leftDriveEncoderAPort,
+                Wiring.leftDriveEncoderBPort, dashBoard, "left");
         leftController = new PIDControllerAIAO(
-                50, 0, 0, leftEncoder, left, dashBoard, "left");
+                30, 0, 0, leftEncoder, left, 0.01, dashBoard, "left");
         leftController.enable();
         right = new Talon(Wiring.rightDriveTalonPort);
-        rightEncoder = new HallEncoder(Wiring.rightDriveEncoderAPort, Wiring.rightDriveEncoderBPort, dashBoard, "right");
+        rightEncoder = new HallEncoder(Wiring.rightDriveEncoderAPort,
+                Wiring.rightDriveEncoderBPort, dashBoard, "right");
         rightController = new PIDControllerAIAO(
-                50, 0, 0, rightEncoder, right, dashBoard, "right");
+                30, 0, 0, rightEncoder, right, 0.01, dashBoard, "right");
         rightController.enable();
     }
 
     public void move(double left, double right) {
         if (speed) {
-            leftController.setSetpoint(-left * 0.025);
-            rightController.setSetpoint(right * 0.025);
+            leftController.setSetpoint(-left * 0.04);
+            rightController.setSetpoint(right * 0.04);
         } else {
             this.left.set(-left);
             this.right.set(right);

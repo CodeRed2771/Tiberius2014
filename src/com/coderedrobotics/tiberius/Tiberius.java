@@ -21,7 +21,7 @@ public class Tiberius extends IterativeRobot {
         
         keyMap = new KeyMap();
         keyMap.setSingleControllerMode(false); // For ease of testing
-        //dashBoard = new DashBoard();
+        dashBoard = new DashBoard();
         drive = new Drive(dashBoard);
         chooChoo = new ChooChoo();
         pickup = new Pickup();
@@ -76,7 +76,7 @@ public class Tiberius extends IterativeRobot {
         if (keyMap.getPickupToggleButton()) {
             pickup.togglePickup();
         }
-
+        
         if (keyMap.getSwitchControllerModeButtons()) {
             keyMap.toggleSingleControllerMode();
         }
