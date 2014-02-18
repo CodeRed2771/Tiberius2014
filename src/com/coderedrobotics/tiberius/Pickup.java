@@ -43,6 +43,8 @@ public class Pickup {
     }
 
     public void step() {
+        
+        System.out.println(armPositionSensor.get());
 
         // now check if any movement is called for
         if (isExtending) {
@@ -76,13 +78,13 @@ public class Pickup {
     }
 
     public boolean isRetracted() {
-        return false;
-//        return (armPositionSensor.get() <= pickupArmSensorRetractedReading);
+        return false; //we don't have pot
+        //return (armPositionSensor.get() <= pickupArmSensorRetractedReading);
     }
 
     public boolean isExtended() {
-        return false;
-//        return (armPositionSensor.get() >= pickupArmSensorExtendedReading);
+        return false; //we don't have pot
+        //return (armPositionSensor.get() >= pickupArmSensorExtendedReading);
     }
 
     public boolean isSafeForShooting() {

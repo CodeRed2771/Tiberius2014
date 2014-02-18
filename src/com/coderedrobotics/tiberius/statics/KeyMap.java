@@ -31,6 +31,7 @@ public class KeyMap {
 
     private final HID.ButtonState pickupButtonToggleState = HID.newButtonState();
     private final HID.ButtonState pickupButtonPressedState = HID.newButtonState();
+    private final HID.ButtonState controllersToggleState = HID.newButtonState();
 
     public KeyMap() {
     }
@@ -106,7 +107,7 @@ public class KeyMap {
     public boolean getPickupExtendButton() {
         return getHID(2).button(pickupExtend);
     }
-    
+
     public boolean getPetalExtendButton() {
         return getHID(2).button(petalExtend);
     }

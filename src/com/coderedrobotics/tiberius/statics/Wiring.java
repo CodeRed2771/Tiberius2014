@@ -24,7 +24,6 @@ public class Wiring {
     /*
      * ----------- RELAYS ---------------------------------
      */
-    
     /*
      * ----------- SOLENOID PORTS -------------------------
      */
@@ -33,5 +32,9 @@ public class Wiring {
      * -----------  ANALOG INPUTS -------------------------
      */
     public static final int armPositionSensorPort = 1;
-    public static final int chooChooPositionSensorPort = 2;
+    public static final int rightDriveEncoderAPort = 2;
+    public static final int rightDriveEncoderBPort = 3;
+    public static final int leftDriveEncoderAPort = 4;
+    public static final int leftDriveEncoderBPort = 5;
+    public static final int chooChooPositionSensorPort = 6;//not sure what this is
 }

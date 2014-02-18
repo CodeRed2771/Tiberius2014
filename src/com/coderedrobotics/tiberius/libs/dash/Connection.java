@@ -40,6 +40,7 @@ public class Connection implements SimpleSock {
                 try {
                     connection = (SocketConnection) Connector.open(
                             "socket://10.27.71.9:1180", Connector.READ_WRITE);
+
                     System.out.println("Connected");
                 } catch (IOException ex) {
                     connection = null;
@@ -56,7 +57,7 @@ public class Connection implements SimpleSock {
                         connection.openDataOutputStream());
                 dataInputStream = new InputStreamBuffer(
                         connection.openDataInputStream());
-                System.out.println("dataInputStream");
+                System.out.println("OpenedDataStreams");
             } catch (IOException ex) {
                 retry = true;
             }

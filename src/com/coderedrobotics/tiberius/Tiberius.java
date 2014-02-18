@@ -12,29 +12,27 @@ public class Tiberius extends IterativeRobot {
     KeyMap keyMap;
     ChooChoo chooChoo;
     Pickup pickup;
+    DashBoard dashBoard;
     Petals petals;
     int testStage = 0;
     long testStartTime = 0;
 
-    DashBoard dash;
-
     public void robotInit() {
         Debug.println("[INFO] TIBERIUS CODE DOWNLOAD COMPLETE.", Debug.STANDARD);
-
         keyMap = new KeyMap();
-        keyMap.setSingleControllerMode(true); // For ease of testing
-        drive = new Drive();
+        keyMap.setSingleControllerMode(false); // For ease of testing
+        dashBoard = new DashBoard();
+        drive = new Drive(dashBoard);
         chooChoo = new ChooChoo();
         pickup = new Pickup();
         petals = new Petals();
-
-        dash = new DashBoard();
     }
 
     public void autonomousInit() {
     }
 
     public void autonomousPeriodic() {
+        streamBattInfo();
     }
 
     public void teleopInit() {
@@ -42,14 +40,8 @@ public class Tiberius extends IterativeRobot {
     }
 
     public void teleopPeriodic() {
-        if (dash != null) {
-            System.out.println("streaming: "+DriverStation.getInstance().getBatteryVoltage());
-            dash.streamPacket(
-                    DriverStation.getInstance().getBatteryVoltage(),
-                    "batteryVoltage");
-            // TODO: Stream a calculated pickup angle
-        }
-
+        streamBattInfo();
+        
         drive.move(keyMap.getLeftDriveAxis(), keyMap.getRightDriveAxis());
 
         if (keyMap.getPetalExtendButton()) {
@@ -104,6 +96,7 @@ public class Tiberius extends IterativeRobot {
 
         if (elapsedTime > 3000) {
             testStage++;
+            testStartTime = System.currentTimeMillis();
         }
 
         switch (testStage) {
@@ -143,5 +136,14 @@ public class Tiberius extends IterativeRobot {
     }
 
     public void disabledPeriodic() {
+    }
+    
+    private void streamBattInfo(){
+        if (dashBoard != null) {
+            dashBoard.streamPacket(
+                    DriverStation.getInstance().getBatteryVoltage(),
+                    "batteryVoltage");
+            // TODO: Stream a calculated pickup angle
+        }
     }
 }
