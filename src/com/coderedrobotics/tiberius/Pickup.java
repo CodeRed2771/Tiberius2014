@@ -44,7 +44,7 @@ public class Pickup {
 
     public void step() {
         
-        System.out.println(armPositionSensor.get());
+        //System.out.println(armPositionSensor.get());
 
         // now check if any movement is called for
         if (isExtending) {

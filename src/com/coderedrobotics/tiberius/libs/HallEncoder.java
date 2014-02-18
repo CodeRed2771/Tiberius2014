@@ -125,14 +125,15 @@ public class HallEncoder implements Runnable, PIDSource {
         yScaler.checkCaps(y);
         x = xScaler.scale(x);
         y = yScaler.scale(y);
-        if (x == Double.NaN) {
+        if (Double.isNaN(x)) {
             x = 0;
         }
-        if (y == Double.NaN) {
+        if (Double.isNaN(y)) {
             y = 0;
         }
         if (dashBoard != null) {
-            /////////////////////////////////////////////////////////////////////////////////////
+            dashBoard.streamPacket(a, "HallRaw1a" + name);
+            dashBoard.streamPacket(b, "HallRaw2a" + name);
             dashBoard.streamPacket(x, "HallWave1a" + name);
             dashBoard.streamPacket(y, "HallWave2a" + name);
         }
@@ -141,24 +142,27 @@ public class HallEncoder implements Runnable, PIDSource {
 
         boolean signy = y > 0;
 
+        ///0.5-(arcsin cos x)/(2pi)
         y = MathUtils.asin(y);
         yPrecision = Math.cos(y);
         y = y / (2 * Math.PI);
-        y += 0.375d;
-        dashBoard.streamPacket(y, "HallRaw1a" + name);
         if (x > 0) {
-            y = 1.25d - y;
+            y = y + 0.25;
+        } else {
+            y = 0.75 - y;
         }
 
         x = MathUtils.asin(x);
         xPrecision = Math.cos(x);
         x = x / (2 * Math.PI);
-        x += 0.125d;
-        dashBoard.streamPacket(x, "HallRaw2a" + name);
         if (signy) {
-            x = 0.75d - x;
+            x = 0.5 - x;
+        } else {
+            x = x;
         }
-
+        if (x < 0d) {
+            x += 1d;
+        }
 
         if (Math.abs(x - y) > 0.5d) {
             if (x < 0.5d) {
@@ -170,27 +174,33 @@ public class HallEncoder implements Runnable, PIDSource {
 
         z = ((x * xPrecision) + (y * yPrecision)) / (xPrecision + yPrecision);
         z = z % 1d;
+            //dashBoard.streamPacket(z, "HallRawOut" + name);
 
         //System.out.println("Z: " + z);
-
-        if (z == Double.NaN) {
+        if (Double.isNaN(z)) {
             z = 0d;
         }
 
-        double old = ((angle % 1) + 1) % 1;
-        double dif = z - old;
-        dif = ((dif % 1) + 1) % 1;
-        if (dif > 0.5) {
-            dif -= 1;
+        double old = ((angle % 1d) + 1d) % 1d;
+        if (!(old > 0d && old < 1d)) {
+            old = 0;
         }
-        angle += dif;
+        //dashBoard.streamPacket(old, "HallRawOut" + name);
+        double dif = z - old;
 
-        if (angle == Double.NaN) {
-            System.err.println("Fatal Error: angle = NaN");
-            System.exit(35);
+        dif = ((dif % 1d) + 1d) % 1d;
+        if (dif > 0.5d) {
+            dif -= 1d;
+        }
+        //dashBoard.streamPacket(dif, "HallRawOut" + name);
+
+        
+        angle = angle + dif;
+        if (Double.isNaN(angle)) {
+            angle = 0;
         }
         if (dashBoard != null) {
-            dashBoard.streamPacket(((angle % 1) + 1) % 1, "HallRawOut" + name);
+            dashBoard.streamPacket(((angle % 1d) + 1d) % 1d, "HallRawOut" + name);
         }
     }
 
