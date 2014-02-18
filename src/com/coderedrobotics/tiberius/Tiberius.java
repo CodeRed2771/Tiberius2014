@@ -3,6 +3,7 @@ package com.coderedrobotics.tiberius;
 import com.coderedrobotics.tiberius.libs.Debug;
 import com.coderedrobotics.tiberius.libs.dash.DashBoard;
 import com.coderedrobotics.tiberius.statics.KeyMap;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 
 public class Tiberius extends IterativeRobot {
@@ -18,7 +19,6 @@ public class Tiberius extends IterativeRobot {
 
     public void robotInit() {
         Debug.println("[INFO] TIBERIUS CODE DOWNLOAD COMPLETE.", Debug.STANDARD);
-        
         keyMap = new KeyMap();
         keyMap.setSingleControllerMode(false); // For ease of testing
         dashBoard = new DashBoard();
@@ -32,6 +32,7 @@ public class Tiberius extends IterativeRobot {
     }
 
     public void autonomousPeriodic() {
+        streamBattInfo();
     }
 
     public void teleopInit() {
@@ -39,6 +40,8 @@ public class Tiberius extends IterativeRobot {
     }
 
     public void teleopPeriodic() {
+        streamBattInfo();
+
         drive.move(keyMap.getLeftDriveAxis(), keyMap.getRightDriveAxis());
 
         if (keyMap.getPetalExtendButton()) {
@@ -48,15 +51,15 @@ public class Tiberius extends IterativeRobot {
         } else {
             petals.stop();
         }
-        
+
         if (keyMap.getFireBallButton()) {
 //            pickup.setShootingPosition();
 //            if (pickup.isSafeForShooting()) {
-                chooChoo.fire();
+            chooChoo.fire();
 //            }
-        } 
+        }
         chooChoo.step();
-        
+
         if (keyMap.getSpinPickupWheelsButton()) {
             pickup.spinWheels(pickup.pickupWheelsForward);
         } else if (keyMap.getSpinPickupWheelsBackwardsButton()) {
@@ -76,7 +79,7 @@ public class Tiberius extends IterativeRobot {
         if (keyMap.getPickupToggleButton()) {
             pickup.togglePickup();
         }
-        
+
         if (keyMap.getSwitchControllerModeButtons()) {
             keyMap.toggleSingleControllerMode();
         }
@@ -133,5 +136,14 @@ public class Tiberius extends IterativeRobot {
     }
 
     public void disabledPeriodic() {
+    }
+
+    private void streamBattInfo() {
+        if (dashBoard != null) {
+            dashBoard.streamPacket(
+                    DriverStation.getInstance().getBatteryVoltage(),
+                    "batteryVoltage");
+            // TODO: Stream a calculated pickup angle
+        }
     }
 }

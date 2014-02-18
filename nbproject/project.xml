@@ -6,6 +6,9 @@
 
 <<<<<<< HEAD
  --><project xmlns="http://www.netbeans.org/ns/project/1">
+=======
+<<<<<<< HEAD
+ --><project xmlns="http://www.netbeans.org/ns/project/1">
     <type>org.netbeans.modules.ant.freeform</type>
     <configuration>
         <general-data xmlns="http://www.netbeans.org/ns/freeform-project/1">
@@ -94,6 +97,7 @@
 =======
  -->
 <project xmlns="http://www.netbeans.org/ns/project/1">
+>>>>>>> github/master
     <type>org.netbeans.modules.ant.freeform</type>
     <configuration>
         <general-data xmlns="http://www.netbeans.org/ns/freeform-project/1">
