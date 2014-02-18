@@ -1,7 +1,9 @@
 package com.coderedrobotics.tiberius;
 
 import com.coderedrobotics.tiberius.libs.Debug;
+import com.coderedrobotics.tiberius.libs.dash.DashBoard;
 import com.coderedrobotics.tiberius.statics.KeyMap;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 
 public class Tiberius extends IterativeRobot {
@@ -10,38 +12,54 @@ public class Tiberius extends IterativeRobot {
     KeyMap keyMap;
     ChooChoo chooChoo;
     Pickup pickup;
+    DashBoard dashBoard;
+    Petals petals;
     int testStage = 0;
     long testStartTime = 0;
 
     public void robotInit() {
         Debug.println("[INFO] TIBERIUS CODE DOWNLOAD COMPLETE.", Debug.STANDARD);
         keyMap = new KeyMap();
-        keyMap.setSingleControllerMode(true); // For ease of testing
-        drive = new Drive();
+        keyMap.setSingleControllerMode(false); // For ease of testing
+        dashBoard = new DashBoard();
+        drive = new Drive(dashBoard);
         chooChoo = new ChooChoo();
         pickup = new Pickup();
+        petals = new Petals();
     }
 
     public void autonomousInit() {
     }
 
     public void autonomousPeriodic() {
+        streamBattInfo();
     }
 
     public void teleopInit() {
+        chooChoo.cock();
     }
 
     public void teleopPeriodic() {
+        streamBattInfo();
+        
         drive.move(keyMap.getLeftDriveAxis(), keyMap.getRightDriveAxis());
 
+        if (keyMap.getPetalExtendButton()) {
+            petals.extendPetals();
+        } else if (keyMap.getPetalRetractButton()) {
+            petals.retractPetals();
+        } else {
+            petals.stop();
+        }
+
         if (keyMap.getFireBallButton()) {
-            pickup.setShootingPosition();
-            if (pickup.isSafeForShooting()) {
-                chooChoo.fire();
-            }
-        } 
+//            pickup.setShootingPosition();
+//            if (pickup.isSafeForShooting()) {
+            chooChoo.fire();
+//            }
+        }
         chooChoo.step();
-        
+
         if (keyMap.getSpinPickupWheelsButton()) {
             pickup.spinWheels(pickup.pickupWheelsForward);
         } else if (keyMap.getSpinPickupWheelsBackwardsButton()) {
@@ -78,6 +96,7 @@ public class Tiberius extends IterativeRobot {
 
         if (elapsedTime > 3000) {
             testStage++;
+            testStartTime = System.currentTimeMillis();
         }
 
         switch (testStage) {
@@ -117,5 +136,14 @@ public class Tiberius extends IterativeRobot {
     }
 
     public void disabledPeriodic() {
+    }
+    
+    private void streamBattInfo(){
+        if (dashBoard != null) {
+            dashBoard.streamPacket(
+                    DriverStation.getInstance().getBatteryVoltage(),
+                    "batteryVoltage");
+            // TODO: Stream a calculated pickup angle
+        }
     }
 }

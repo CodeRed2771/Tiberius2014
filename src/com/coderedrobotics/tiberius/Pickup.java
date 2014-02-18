@@ -14,13 +14,14 @@ public class Pickup {
     Talon pickupArmMotor;
     Talon spinWheelsMotor;
     AnalogPotentiometer armPositionSensor;
-    private static final double pickupArmSensorRetractedReading = .6;// (.17v per inch)
-    private static final double pickupArmSensorExtendedReading = .95;
-    private static final double pickupArmSensorShootPosition = .8;
-    public final double pickupWheelsForward = -0.75;
-    public final double pickupWheelsReverse = 0.75;
-    public final double pickupArmExtend = -0.35;
-    public final double pickupArmRetract = 0.35;
+    private static final double pickupArmSensorRetractedReading = 1.07;// (.17v per inch)
+    private static final double pickupArmSensorExtendedReading = 1.48;
+    private static final double pickupArmSensorShootPosition = 1.36;
+    
+    public final double pickupWheelsForward = 0.75;
+    public final double pickupWheelsReverse = -0.75;
+    public final double pickupArmExtend = -0.12;
+    public final double pickupArmRetract = 0.12;
     public final double pickupArmStop = 0;
     private boolean isExtending;
     private boolean isRetracting;
@@ -42,6 +43,8 @@ public class Pickup {
     }
 
     public void step() {
+        
+        System.out.println(armPositionSensor.get());
 
         // now check if any movement is called for
         if (isExtending) {
@@ -71,15 +74,17 @@ public class Pickup {
             }
         }
 
-        Debug.println("Pickup.Step armPos: " + armPositionSensor.get() + " isRetracted: " + isRetracted() + " isExtended: " + isExtended() + " isRetracting: " + isRetracting + " isExtending: " + isExtending, Debug.STANDARD);
+       // Debug.println("Pickup.Step armPos: " + armPositionSensor.get() + " isRetracted: " + isRetracted() + " isExtended: " + isExtended() + " isRetracting: " + isRetracting + " isExtending: " + isExtending, Debug.STANDARD);
     }
 
     public boolean isRetracted() {
-        return (armPositionSensor.get() <= pickupArmSensorRetractedReading);
+        return false; //we don't have pot
+        //return (armPositionSensor.get() <= pickupArmSensorRetractedReading);
     }
 
     public boolean isExtended() {
-        return (armPositionSensor.get() >= pickupArmSensorExtendedReading);
+        return false; //we don't have pot
+        //return (armPositionSensor.get() >= pickupArmSensorExtendedReading);
     }
 
     public boolean isSafeForShooting() {

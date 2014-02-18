@@ -14,6 +14,7 @@ public class Wiring {
     public static final int chooChooMotorPort = 3;
     public static final int pickupArmMotorPort = 4;
     public static final int pickupWheelsMotorPort = 5;
+    public static final int petalsMotorPort = 6;
 
     /*
      * ----------- DIGITAL I/O PORTS -------------------------
@@ -23,7 +24,6 @@ public class Wiring {
     /*
      * ----------- RELAYS ---------------------------------
      */
-    
     /*
      * ----------- SOLENOID PORTS -------------------------
      */
@@ -32,4 +32,9 @@ public class Wiring {
      * -----------  ANALOG INPUTS -------------------------
      */
     public static final int armPositionSensorPort = 1;
+    public static final int rightDriveEncoderAPort = 2;
+    public static final int rightDriveEncoderBPort = 3;
+    public static final int leftDriveEncoderAPort = 4;
+    public static final int leftDriveEncoderBPort = 5;
+    public static final int chooChooPositionSensorPort = 6;//not sure what this is
 }
