@@ -14,6 +14,8 @@ public class KeyMap {
     public static HID gamepad1 = new HID(1);
     public static HID gamepad2 = new HID(2);
 
+    private boolean reverseDrive = false;
+
     private boolean singleControllerMode;
 
     private final Axis leftDriveAxis = LogitechF310.STICK_LEFT_Y;
@@ -31,10 +33,13 @@ public class KeyMap {
     private final Button petalLeftRetract = LogitechF310.BACK;
     private final Button petalLeftExtend = LogitechF310.START;
     private final Button toggleHallEncoders = LogitechF310.BUMPER_LEFT;
+    private final Button reverseDriveButton = LogitechF310.TRIGGER_LEFT;
 
     private final HID.ButtonState pickupButtonToggleState = HID.newButtonState();
     private final HID.ButtonState pickupButtonPressedState = HID.newButtonState();
     private final HID.ButtonState controllersToggleState = HID.newButtonState();
+    private final HID.ButtonState reverseDriveButtonState = HID.newButtonState();
+    private final HID.ButtonState hallEncoderButtonState = HID.newButtonState();
 
     public KeyMap() {
     }
@@ -101,7 +106,6 @@ public class KeyMap {
    // public boolean getPickupRetractAutoButton() {
     //     return getHID(2).button(pickupAutoRetract);
     // }
-
     public boolean getPickupRetractButton() {
         return getHID(2).button(pickupRetract);
     }
@@ -125,8 +129,20 @@ public class KeyMap {
     public boolean getPetalLeftRetractButton() {
         return getHID(1).button(petalLeftRetract);
     }
-    
+
     public boolean getToggleHallEncodersButton() {
-        return getHID(2).button(toggleHallEncoders);
+        return getHID(2).buttonPressed(toggleHallEncoders, hallEncoderButtonState);
+    }
+    
+    public boolean getReverseDriveButton() {
+        return getHID(1).buttonPressed(reverseDriveButton, reverseDriveButtonState);
+    }
+    
+    public void toggleReverseDrive(){
+        reverseDrive = !reverseDrive;
+    }
+
+    public double getReverseDrive() {
+        return reverseDrive ? 1 : -1;
     }
 }

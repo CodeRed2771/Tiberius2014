@@ -14,20 +14,23 @@ public class Petals {
     Talon petalMotorRight;
     private final double petalsExtend = -0.5;
     private final double petalsRetract = 0.3;
-    private DigitalInput leftInput;
-    private DigitalInput rightInput;
+    private DigitalInput leftRetract;
+    private DigitalInput leftExtend;
+    private DigitalInput rightRetract;
+    private DigitalInput rightExtend;
 
     public Petals() {
         petalMotorLeft = new Talon(Wiring.petalsMotorLeftPort);
         petalMotorRight = new Talon(Wiring.petalsMotorRightPort);
-        leftInput = new DigitalInput(8);
-        rightInput = new DigitalInput(7);
+        leftExtend = new DigitalInput(8);
+        rightExtend = new DigitalInput(7);
     }
 
     public void extendLeftPetals() {
-        if (!leftInput.get()) {
+        if (!leftExtend.get()) {
             petalMotorLeft.set(petalsExtend);
         }
+        
     }
 
     public void retractLeftPetals() {
@@ -39,7 +42,7 @@ public class Petals {
     }
 
     public void extendRightPetals() {
-        if (!rightInput.get()) {
+        if (!rightExtend.get()) {
             petalMotorRight.set(petalsExtend);
         }
     }

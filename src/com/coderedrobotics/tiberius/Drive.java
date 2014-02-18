@@ -38,11 +38,11 @@ public class Drive {
 
     public void move(double left, double right) {
         if (speed) {
-            leftController.setSetpoint(-left * 0.07);
-            rightController.setSetpoint(right * 0.07);
+            leftController.setSetpoint((-left*Math.abs(left)) * 0.05);
+            rightController.setSetpoint((right*Math.abs(right)) * 0.05);
         } else {
-            this.left.set(-left);
-            this.right.set(right);
+            this.left.set(-left*Math.abs(left));
+            this.right.set(right*Math.abs(right));
         }
     }
 

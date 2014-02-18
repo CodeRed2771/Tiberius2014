@@ -31,7 +31,7 @@ public class ChooChoo {
     public void fire() {
         isFiring = true;
         fireTimeStamp = System.currentTimeMillis();
-        Debug.println("[INFO] Fire Button Pressed", Debug.STANDARD);
+//        Debug.println("[INFO] Fire Button Pressed", Debug.STANDARD);
     }
 
     public void stop() {
