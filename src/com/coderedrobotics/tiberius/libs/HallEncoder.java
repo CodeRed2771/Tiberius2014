@@ -33,7 +33,7 @@ public class HallEncoder implements Runnable, PIDSource {
         this.b = b;
         this.name = name;
         this.dashBoard = dashBoard;
-        calculator = new DerivativeCalculator(8);
+        calculator = new DerivativeCalculator(50);
         aScaler = new Scaler();
         bScaler = new Scaler();
         xScaler = new Scaler();

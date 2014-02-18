@@ -12,7 +12,7 @@ package com.coderedrobotics.tiberius.libs;
 public class DerivativeCalculator {
 
     long time = 0;
-    long minTime = 50;
+    long minTime = 1;
     double old = 0;
     double oldValue = 0;
 
@@ -28,7 +28,7 @@ public class DerivativeCalculator {
     }
 
     public DerivativeCalculator(long minTime) {
-        //this.minTime = minTime;
+        this.minTime = minTime;
     }
 
     public DerivativeCalculator() {
