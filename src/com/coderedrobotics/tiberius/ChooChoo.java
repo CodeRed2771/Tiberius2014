@@ -3,7 +3,6 @@ package com.coderedrobotics.tiberius;
 import com.coderedrobotics.tiberius.libs.Debug;
 import com.coderedrobotics.tiberius.statics.Wiring;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.Talon;
 
 /**
@@ -14,7 +13,6 @@ public class ChooChoo {
 
     DigitalInput sensor;
     Talon chooChooMotor;
-    AnalogChannel positionSensor;
     public final double motorSpinSpeed = .7;
     public final int shooterRetractedValue = 465;
     private boolean isFiring = false;
@@ -24,7 +22,6 @@ public class ChooChoo {
     public ChooChoo() {
         sensor = new DigitalInput(Wiring.chooChooArmedSensor);
         chooChooMotor = new Talon(Wiring.chooChooMotorPort);
-        positionSensor = new AnalogChannel(Wiring.chooChooPositionSensorPort);
     }
 
     public void fire() {

@@ -14,7 +14,8 @@ public class Wiring {
     public static final int chooChooMotorPort = 3;
     public static final int pickupArmMotorPort = 4;
     public static final int pickupWheelsMotorPort = 5;
-    public static final int petalsMotorPort = 6;
+    public static final int petalsMotorLeftPort = 6;
+    public static final int petalsMotorRightPort = 7;
 
     /*
      * ----------- DIGITAL I/O PORTS -------------------------
@@ -36,5 +37,4 @@ public class Wiring {
     public static final int rightDriveEncoderBPort = 4;
     public static final int leftDriveEncoderAPort = 3;
     public static final int leftDriveEncoderBPort = 2;
-    public static final int chooChooPositionSensorPort = 6;//not sure what this is
 }

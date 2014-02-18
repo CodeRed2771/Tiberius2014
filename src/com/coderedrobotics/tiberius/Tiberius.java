@@ -44,12 +44,20 @@ public class Tiberius extends IterativeRobot {
 
         drive.move(keyMap.getLeftDriveAxis(), keyMap.getRightDriveAxis());
 
-        if (keyMap.getPetalExtendButton()) {
-            petals.extendPetals();
-        } else if (keyMap.getPetalRetractButton()) {
-            petals.retractPetals();
+        if (keyMap.getPetalLeftExtendButton()) {
+            petals.extendLeftPetals();
+        } else if (keyMap.getPetalLeftRetractButton()) {
+            petals.retractLeftPetals();
         } else {
-            petals.stop();
+            petals.stopLeftPetals();
+        }
+        
+        if (keyMap.getPetalLeftExtendButton()) {
+            petals.extendRightPetals();
+        } else if (keyMap.getPetalLeftRetractButton()) {
+            petals.retractRightPetals();
+        } else {
+            petals.stopRightPetals();
         }
 
         if (keyMap.getFireBallButton()) {
@@ -76,9 +84,9 @@ public class Tiberius extends IterativeRobot {
             pickup.movePickup(pickup.pickupArmStop);
         }
 
-        if (keyMap.getPickupToggleButton()) {
-            pickup.togglePickup();
-        }
+//        if (keyMap.getPickupToggleButton()) {
+//            pickup.togglePickup();
+//        }
 
         if (keyMap.getSwitchControllerModeButtons()) {
             keyMap.toggleSingleControllerMode();

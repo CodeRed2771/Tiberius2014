@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.coderedrobotics.tiberius;
 
 import com.coderedrobotics.tiberius.statics.Wiring;
@@ -13,23 +9,37 @@ import edu.wpi.first.wpilibj.Talon;
  */
 public class Petals {
 
-    Talon petalMotor;
-    private final double petalsExtend = 0.6;
-    private final double petalsRetract = -0.6;
+    Talon petalMotorLeft;
+    Talon petalMotorRight;
+    private final double petalsExtend = 0.4;
+    private final double petalsRetract = -0.4;
 
     public Petals() {
-        petalMotor = new Talon(Wiring.petalsMotorPort);
+        petalMotorLeft = new Talon(Wiring.petalsMotorLeftPort);
+        petalMotorRight = new Talon(Wiring.petalsMotorRightPort);
     }
 
-    public void extendPetals() {
-        petalMotor.set(petalsExtend);
+    public void extendLeftPetals() {
+        petalMotorLeft.set(petalsExtend);
     }
     
-    public void retractPetals() {
-       petalMotor.set(petalsRetract);
+    public void retractLeftPetals() {
+       petalMotorLeft.set(petalsRetract);
     }
     
-    public void stop() {
-        petalMotor.set(0);
+    public void stopLeftPetals() {
+        petalMotorLeft.set(0);
+    }
+    
+    public void extendRightPetals() {
+        petalMotorRight.set(petalsExtend);
+    }
+    
+    public void retractRightPetals() {
+       petalMotorRight.set(petalsRetract);
+    }
+    
+    public void stopRightPetals() {
+        petalMotorRight.set(0);
     }
 }

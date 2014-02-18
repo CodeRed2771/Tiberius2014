@@ -20,8 +20,8 @@ public class Pickup {
     
     public final double pickupWheelsForward = 0.75;
     public final double pickupWheelsReverse = -0.75;
-    public final double pickupArmExtend = -0.12;
-    public final double pickupArmRetract = 0.12;
+    public final double pickupArmExtend = -0.3;
+    public final double pickupArmRetract = 0.3;
     public final double pickupArmStop = 0;
     private boolean isExtending;
     private boolean isRetracting;
