@@ -39,7 +39,7 @@ public class Connection implements SimpleSock {
                 System.out.println("Connecting");
                 try {
                     connection = (SocketConnection) Connector.open(
-                            "socket://10.27.71.5:1180", Connector.READ_WRITE);
+                            "socket://10.27.71.9:1180", Connector.READ_WRITE);
                     System.out.println("Connected");
                 } catch (IOException ex) {
                     connection = null;

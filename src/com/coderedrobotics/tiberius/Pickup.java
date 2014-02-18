@@ -20,8 +20,8 @@ public class Pickup {
     
     public final double pickupWheelsForward = 0.75;
     public final double pickupWheelsReverse = -0.75;
-    public final double pickupArmExtend = -0.35;
-    public final double pickupArmRetract = 0.35;
+    public final double pickupArmExtend = -0.12;
+    public final double pickupArmRetract = 0.12;
     public final double pickupArmStop = 0;
     private boolean isExtending;
     private boolean isRetracting;
@@ -76,11 +76,13 @@ public class Pickup {
     }
 
     public boolean isRetracted() {
-        return (armPositionSensor.get() <= pickupArmSensorRetractedReading);
+        return false;
+//        return (armPositionSensor.get() <= pickupArmSensorRetractedReading);
     }
 
     public boolean isExtended() {
-        return (armPositionSensor.get() >= pickupArmSensorExtendedReading);
+        return false;
+//        return (armPositionSensor.get() >= pickupArmSensorExtendedReading);
     }
 
     public boolean isSafeForShooting() {
