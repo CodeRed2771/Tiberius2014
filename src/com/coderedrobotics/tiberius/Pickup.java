@@ -15,9 +15,11 @@ public class Pickup {
     Talon pickupArmMotor;
     Talon spinWheelsMotor;
     AnalogPotentiometer armPositionSensor;
-    private static final double pickupArmSensorRetractedReading = 1.07;// (.17v per inch)
-    private static final double pickupArmSensorExtendedReading = 1.48;
-    private static final double pickupArmSensorShootPosition = 1.36;
+    private static final double pickupArmSensorRetractedReading = 0.19;
+    private static final double pickupArmSensorExtendedReading = 1.19;
+    
+    private static final double pickupArmSensorShootPosition = 0.57;
+    private static final double pickupArmPetalRetractPosition = 0.61;
     
     public final double pickupWheelsForward = 0.75;
     public final double pickupWheelsReverse = -0.75;
@@ -48,8 +50,8 @@ public class Pickup {
     }
 
     public void step() {
-        
-        //System.out.println(armPositionSensor.get());
+//        
+//        System.out.println(armPositionSensor.get());
 
         // now check if any movement is called for
         if (isExtending) {
@@ -83,7 +85,7 @@ public class Pickup {
             DashboardDriverPlugin.updatePickupReadyStatus(isSafeForShooting() ? 1 : 0);
         }
         
-       // Debug.println("Pickup.Step armPos: " + armPositionSensor.get() + " isRetracted: " + isRetracted() + " isExtended: " + isExtended() + " isRetracting: " + isRetracting + " isExtending: " + isExtending, Debug.STANDARD);
+        Debug.println("Pickup.Step armPos: " + armPositionSensor.get() + " isRetracted: " + isRetracted() + " isExtended: " + isExtended() + " isRetracting: " + isRetracting + " isExtending: " + isExtending, Debug.STANDARD);
     }
 
     public boolean isRetracted() {
