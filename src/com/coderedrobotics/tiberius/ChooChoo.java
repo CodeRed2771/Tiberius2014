@@ -1,6 +1,7 @@
 package com.coderedrobotics.tiberius;
 
 import com.coderedrobotics.tiberius.libs.Debug;
+import com.coderedrobotics.tiberius.statics.DashboardDriverPlugin;
 import com.coderedrobotics.tiberius.statics.Wiring;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Talon;
@@ -18,6 +19,9 @@ public class ChooChoo {
     private boolean isFiring = false;
     private boolean isCocking = false;
     private long fireTimeStamp = 0;
+
+    private boolean lastSentIsCocked;
+    private boolean lastSentIsCocking;
 
     public ChooChoo() {
         sensor = new DigitalInput(Wiring.chooChooArmedSensor);
@@ -57,13 +61,19 @@ public class ChooChoo {
             isFiring = false;
             cock();
         }
-        
+
         if (isCocking && isCocked()) {
             isCocking = false;
         }
 
+        if (lastSentIsCocked != isCocked()) {
+            DashboardDriverPlugin.updateCockingStatus(isCocking ? 1 : 0);
+        }
+        if (lastSentIsCocking != isCocking) {
+            DashboardDriverPlugin.updateCockedStatus(isCocked() ? 1 : 0);
+        }
     }
-    
+
     private boolean isCocked() {
         return sensor.get();
     }
