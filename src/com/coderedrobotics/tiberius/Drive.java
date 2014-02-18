@@ -3,6 +3,7 @@ package com.coderedrobotics.tiberius;
 import com.coderedrobotics.tiberius.libs.HallEncoder;
 import com.coderedrobotics.tiberius.libs.dash.DashBoard;
 import com.coderedrobotics.tiberius.libs.dash.PIDControllerAIAO;
+import com.coderedrobotics.tiberius.statics.DashboardDriverPlugin;
 import com.coderedrobotics.tiberius.statics.Wiring;
 import edu.wpi.first.wpilibj.Talon;
 
@@ -37,8 +38,8 @@ public class Drive {
 
     public void move(double left, double right) {
         if (speed) {
-            leftController.setSetpoint(-left * 0.04);
-            rightController.setSetpoint(right * 0.04);
+            leftController.setSetpoint(-left * 0.07);
+            rightController.setSetpoint(right * 0.07);
         } else {
             this.left.set(-left);
             this.right.set(right);
@@ -51,6 +52,7 @@ public class Drive {
             leftController.disable();
             speed = false;
         }
+        DashboardDriverPlugin.updateHallEncodersStatus(0);
     }
 
     public void enableSpeedControllers() {
@@ -61,6 +63,7 @@ public class Drive {
             rightController.enable();
             leftController.enable();
         }
+        DashboardDriverPlugin.updateHallEncodersStatus(1);
     }
 
     public void toggleSpeedContrllers() {

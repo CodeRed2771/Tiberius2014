@@ -2,6 +2,7 @@ package com.coderedrobotics.tiberius;
 
 import com.coderedrobotics.tiberius.libs.Debug;
 import com.coderedrobotics.tiberius.libs.dash.DashBoard;
+import com.coderedrobotics.tiberius.statics.DashboardDriverPlugin;
 import com.coderedrobotics.tiberius.statics.KeyMap;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -12,16 +13,18 @@ public class Tiberius extends IterativeRobot {
     KeyMap keyMap;
     ChooChoo chooChoo;
     Pickup pickup;
-    DashBoard dashBoard;
     Petals petals;
     int testStage = 0;
     long testStartTime = 0;
+    
+    DashBoard dashBoard;
 
     public void robotInit() {
         Debug.println("[INFO] TIBERIUS CODE DOWNLOAD COMPLETE.", Debug.STANDARD);
         keyMap = new KeyMap();
         keyMap.setSingleControllerMode(false); // For ease of testing
         dashBoard = new DashBoard();
+        DashboardDriverPlugin.init(dashBoard);
         drive = new Drive(dashBoard);
         chooChoo = new ChooChoo();
         pickup = new Pickup();
@@ -32,7 +35,7 @@ public class Tiberius extends IterativeRobot {
     }
 
     public void autonomousPeriodic() {
-        streamBattInfo();
+        DashboardDriverPlugin.updateBatteryVoltage(DriverStation.getInstance().getBatteryVoltage());
     }
 
     public void teleopInit() {
@@ -40,7 +43,7 @@ public class Tiberius extends IterativeRobot {
     }
 
     public void teleopPeriodic() {
-        streamBattInfo();
+        DashboardDriverPlugin.updateBatteryVoltage(DriverStation.getInstance().getBatteryVoltage());
 
         drive.move(keyMap.getLeftDriveAxis(), keyMap.getRightDriveAxis());
 
@@ -52,9 +55,9 @@ public class Tiberius extends IterativeRobot {
             petals.stopLeftPetals();
         }
         
-        if (keyMap.getPetalLeftExtendButton()) {
+        if (keyMap.getPetalRightExtendButton()) {
             petals.extendRightPetals();
-        } else if (keyMap.getPetalLeftRetractButton()) {
+        } else if (keyMap.getPetalRightRetractButton()) {
             petals.retractRightPetals();
         } else {
             petals.stopRightPetals();
@@ -90,6 +93,11 @@ public class Tiberius extends IterativeRobot {
 
         if (keyMap.getSwitchControllerModeButtons()) {
             keyMap.toggleSingleControllerMode();
+            DashboardDriverPlugin.updateSingleControllerModeStatus(keyMap.getSingleControllerMode() ? 1 : 0);
+        }
+        
+        if (keyMap.getToggleHallEncodersButton()) {
+            drive.toggleSpeedContrllers();
         }
 
         pickup.step();
@@ -144,14 +152,5 @@ public class Tiberius extends IterativeRobot {
     }
 
     public void disabledPeriodic() {
-    }
-
-    private void streamBattInfo() {
-        if (dashBoard != null) {
-            dashBoard.streamPacket(
-                    DriverStation.getInstance().getBatteryVoltage(),
-                    "batteryVoltage");
-            // TODO: Stream a calculated pickup angle
-        }
     }
 }

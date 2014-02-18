@@ -1,6 +1,7 @@
 package com.coderedrobotics.tiberius;
 
 import com.coderedrobotics.tiberius.libs.Debug;
+import com.coderedrobotics.tiberius.statics.DashboardDriverPlugin;
 import com.coderedrobotics.tiberius.statics.Wiring;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
@@ -20,12 +21,16 @@ public class Pickup {
     
     public final double pickupWheelsForward = 0.75;
     public final double pickupWheelsReverse = -0.75;
-    public final double pickupArmExtend = -0.3;
-    public final double pickupArmRetract = 0.3;
+    public final double pickupArmExtend = -0.6;
+    public final double pickupArmRetract = 0.6;
     public final double pickupArmStop = 0;
     private boolean isExtending;
     private boolean isRetracting;
     private boolean isMovingToShootPosition;
+    
+    private double lastSentWheels;
+    private double lastSentMoving;
+    private boolean lastSentIsReady;
 
     /**
      * The Pickup object controls the robot's Pickup arm and all of its
@@ -73,7 +78,11 @@ public class Pickup {
                 pickupArmMotor.set(pickupArmExtend);
             }
         }
-
+        
+        if (lastSentIsReady != isSafeForShooting()){
+            DashboardDriverPlugin.updatePickupReadyStatus(isSafeForShooting() ? 1 : 0);
+        }
+        
        // Debug.println("Pickup.Step armPos: " + armPositionSensor.get() + " isRetracted: " + isRetracted() + " isExtended: " + isExtended() + " isRetracting: " + isRetracting + " isExtending: " + isExtending, Debug.STANDARD);
     }
 
@@ -146,6 +155,7 @@ public class Pickup {
 
     public void spinWheels(double direction) {
         spinWheelsMotor.set(direction);
+        DashboardDriverPlugin.updatePickupWheelsStatus(direction);
     }
 
     public void stopWheels() {
@@ -154,5 +164,7 @@ public class Pickup {
         isRetracting = false;    // for safety sake, we'll stop the arm too
         isExtending = false;     // for safety sake, we'll stop the arm too
         pickupArmMotor.set(0);   // for safety sake, we'll stop the arm too
+        
+        DashboardDriverPlugin.updatePickupWheelsStatus(0);
     }
 }

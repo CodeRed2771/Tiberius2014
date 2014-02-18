@@ -30,6 +30,7 @@ public class KeyMap {
     private final Button petalRightExtend = LogitechF310.START;
     private final Button petalLeftRetract = LogitechF310.BACK;
     private final Button petalLeftExtend = LogitechF310.START;
+    private final Button toggleHallEncoders = LogitechF310.BUMPER_LEFT;
 
     private final HID.ButtonState pickupButtonToggleState = HID.newButtonState();
     private final HID.ButtonState pickupButtonPressedState = HID.newButtonState();
@@ -66,8 +67,7 @@ public class KeyMap {
     }
 
     public boolean getSwitchControllerModeButtons() {
-        return (false);
-        // return (getHID(1).button(LogitechF310.BACK) && getHID(2).button(LogitechF310.BACK));
+        return getHID(2).button(LogitechF310.STICK_LEFT) && getHID(2).button(LogitechF310.STICK_RIGHT);
     }
 
     public double getLeftDriveAxis() {
@@ -124,5 +124,9 @@ public class KeyMap {
 
     public boolean getPetalLeftRetractButton() {
         return getHID(1).button(petalLeftRetract);
+    }
+    
+    public boolean getToggleHallEncodersButton() {
+        return getHID(2).button(toggleHallEncoders);
     }
 }
