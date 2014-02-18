@@ -52,9 +52,9 @@ public class Tiberius extends IterativeRobot {
             petals.stopLeftPetals();
         }
         
-        if (keyMap.getPetalLeftExtendButton()) {
+        if (keyMap.getPetalRightExtendButton()) {
             petals.extendRightPetals();
-        } else if (keyMap.getPetalLeftRetractButton()) {
+        } else if (keyMap.getPetalRightRetractButton()) {
             petals.retractRightPetals();
         } else {
             petals.stopRightPetals();
