@@ -45,7 +45,7 @@ public class Tiberius extends IterativeRobot {
     public void teleopPeriodic() {
         DashboardDriverPlugin.updateBatteryVoltage(DriverStation.getInstance().getBatteryVoltage());
 
-        drive.move(keyMap.getReverseDrive() * keyMap.getLeftDriveAxis(), keyMap.getReverseDrive() * keyMap.getRightDriveAxis());
+        drive.move(keyMap.getLeftDriveAxis(), keyMap.getRightDriveAxis());
 
         if (keyMap.getReverseDriveButton()){
             keyMap.toggleReverseDrive();
@@ -94,15 +94,6 @@ public class Tiberius extends IterativeRobot {
 //        if (keyMap.getPickupToggleButton()) {
 //            pickup.togglePickup();
 //        }
-
-        if (keyMap.getSwitchControllerModeButtons()) {
-            keyMap.toggleSingleControllerMode();
-            DashboardDriverPlugin.updateSingleControllerModeStatus(keyMap.getSingleControllerMode() ? 1 : 0);
-        }
-        
-        if (keyMap.getToggleHallEncodersButton()) {
-            drive.toggleSpeedContrllers();
-        }
 
         pickup.step();
     }
