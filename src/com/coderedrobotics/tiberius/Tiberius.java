@@ -27,14 +27,34 @@ public class Tiberius extends IterativeRobot {
         DashboardDriverPlugin.init(dashBoard);
         drive = new Drive(dashBoard);
         chooChoo = new ChooChoo();
-        pickup = new Pickup();
+        pickup = new Pickup(dashBoard);
         petals = new Petals();
     }
 
     public void autonomousInit() {
+        drive.calibrate();
     }
 
     public void autonomousPeriodic() {
+//         if (drive.isCalibrated()){
+//             if(driveStartingPosition == 0){
+//                 Debug.println("Calibration complete, starting movement");
+//                 driveStartingPosition = drive.getDistanceTraveledInches();
+//             }
+//             if(drive.getDistanceTraveledInches() - driveStartingPosition < 36) {
+//                 drive.move(.8, .8);
+//             } else {
+//                 drive.move(0, 0);
+//                 inAutonomousShootPosition = true;
+//             }
+//         }
+//         
+//         if (inAutonomousShootPosition){
+//             // extend petals
+//             // extend arm
+//             // shoot
+//             Debug.println("AUTONOMOUS SHOT FIRED");
+//         }
         DashboardDriverPlugin.updateBatteryVoltage(DriverStation.getInstance().getBatteryVoltage());
     }
 
@@ -51,40 +71,67 @@ public class Tiberius extends IterativeRobot {
         }
 
         // PETALS OBJECT
+        petals.setEnabledState(pickup.isClear());
+
         if (keyMap.getManualPetalsExtendButton()) {
-            petals.manualExtendPetals();
+            petals.manualOpen();
         } else if (keyMap.getManualPetalsRetractButton()) {
-            petals.manualRetractPetals();
+            petals.manualClose();
         } else {
-            petals.stopManualControl();
+            petals.stop();
         }
 
         if (keyMap.getPetalsBoostAndExtendButton()) {
-            petals.extendPetals();
-            petals.boostPetalsOutwards();
+            petals.open();
+            petals.setBoost(true);
         } else {
-            petals.unboostPetalsOutwards();
+            petals.setBoost(false);
         }
-        
+
         if (keyMap.getPetalsToGrabPostion()) {
-            petals.pulsePetalsInwards();
+            petals.close();
         }
 
         // CHOO CHOO OBJECT
-//        if (keyMap.getFireButton()) {
-//            pickup.setShootingPosition();
-//            if (pickup.isSafeForShooting()) {
-//            chooChoo.fire();
-//            }
-//        }
-        // TODO: WRITE CODE WITH DEPENDECIEs
+        if (keyMap.getFireButton()) {
+            if (pickup.isClear()) {
+                chooChoo.fire();
+            } else {
+                pickup.pickupIn();
+            }
+        }
+
         // PICKUP OBJECT
-        // TODO: WRITE NEW PICKUP CODE WHEN AUSTIN IS DONE
-        // TODO: WRITE WHEEL MOVING CODE
+        if (keyMap.getWheelsMovingInButton()){
+            pickup.wheelsIn();
+        } else if (keyMap.getWheelsMovingOutButton()){
+            pickup.wheelsOut();
+        } else {
+            pickup.setWheels(0);
+        }
+        
+        if (keyMap.getManualPickupExtendButton()){
+            pickup.movePickup(-0.5);
+        } else if (keyMap.getManualPickupRetractButton()){
+            pickup.movePickup(0.5);
+        } else {
+            pickup.movePickup(0);
+        }
+        
+        if (keyMap.getPickupToPostionTwoButton()){
+            pickup.pickupIn();
+        }
+        
+        if (keyMap.getPickupModeButton()){
+            pickup.pickupOut();
+            pickup.wheelsIn();
+            petals.open();
+        }
+        
         // STEP OBJECTS
         chooChoo.step();
-        pickup.step();
         petals.step();
+        
         // DASHBOARD STUFFS
         DashboardDriverPlugin.updateBatteryVoltage(DriverStation.getInstance().getBatteryVoltage());
     }
@@ -94,44 +141,44 @@ public class Tiberius extends IterativeRobot {
     }
 
     public void testPeriodic() {
-        long elapsedTime = System.currentTimeMillis() - testStartTime;
-
-        if (elapsedTime > 3000) {
-            testStage++;
-            testStartTime = System.currentTimeMillis();
-        }
-
-        switch (testStage) {
-            case 0:
-                drive.move(0.5, 0);
-                break;
-            case 1:
-                drive.move(0, 0.5);
-                break;
-            case 2:
-                drive.move(0, 0);
-                chooChoo.fire();
-                break;
-            case 3:
-                pickup.spinWheels(pickup.pickupWheelsForward);
-                break;
-            case 4:
-                pickup.spinWheels(pickup.pickupWheelsReverse);
-                break;
-            case 5:
-                pickup.stopWheels();
-                pickup.movePickup(pickup.pickupArmExtend);
-                break;
-            case 6:
-                pickup.movePickup(pickup.pickupArmRetract);
-                break;
-            default:
-                pickup.stopWheels();
-                pickup.movePickup(pickup.pickupArmStop);
-                chooChoo.stop();
-                drive.move(0, 0);
-                break;
-        }
+//        long elapsedTime = System.currentTimeMillis() - testStartTime;
+//
+//        if (elapsedTime > 3000) {
+//            testStage++;
+//            testStartTime = System.currentTimeMillis();
+//        }
+//
+//        switch (testStage) {
+//            case 0:
+//                drive.move(0.5, 0);
+//                break;
+//            case 1:
+//                drive.move(0, 0.5);
+//                break;
+//            case 2:
+//                drive.move(0, 0);
+//                chooChoo.fire();
+//                break;
+//            case 3:
+//                pickup.spinWheels(pickup.pickupWheelsForward);
+//                break;
+//            case 4:
+//                pickup.spinWheels(pickup.pickupWheelsReverse);
+//                break;
+//            case 5:
+//                pickup.stopWheels();
+//                pickup.movePickup(pickup.pickupArmExtend);
+//                break;
+//            case 6:
+//                pickup.movePickup(pickup.pickupArmRetract);
+//                break;
+//            default:
+//                pickup.stopWheels();
+//                pickup.movePickup(pickup.pickupArmStop);
+//                chooChoo.stop();
+//                drive.move(0, 0);
+//                break;
+//        }
     }
 
     public void disabledInit() {

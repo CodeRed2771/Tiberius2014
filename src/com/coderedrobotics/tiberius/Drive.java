@@ -20,6 +20,10 @@ public class Drive {
     PIDControllerAIAO leftController;
     PIDControllerAIAO rightController;
     boolean speed = true;
+    
+    double calibrateStartTime;
+    boolean calibrating;
+    private final double encoderRevolutionsPerInch = 3;
 
     public Drive(DashBoard dashBoard) {
         left = new Talon(Wiring.leftDriveTalonPort);
@@ -44,6 +48,26 @@ public class Drive {
             this.left.set(-left*Math.abs(left));
             this.right.set(right*Math.abs(right));
         }
+    }
+    
+    public void calibrate() {
+        if (!calibrating) {
+            calibrating = true;
+            calibrateStartTime = System.currentTimeMillis();
+        }
+        
+        if(!isCalibrated()){
+            move(.5,.5);
+        }
+    }
+    
+    public boolean isCalibrated() {
+        // calibration is complete (hopefully) after 400ms
+        return System.currentTimeMillis() - calibrateStartTime > 400;
+    }
+    
+    public double getDistanceTraveledInches() {
+        return leftEncoder.getRaw() / encoderRevolutionsPerInch;
     }
 
     public void disableSpeedControllers() {

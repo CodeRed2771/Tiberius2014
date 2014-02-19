@@ -16,7 +16,6 @@ public class Pickup implements PIDOutput {
     private final Talon armMotor, wheelsMotor;
     private final AnalogPotentiometer positionSensor;
     private final PIDControllerAIAO controller;
-    private final DashBoard dashBoard;
     private int mode;
 
     private static final int OUT = 3;
@@ -34,11 +33,10 @@ public class Pickup implements PIDOutput {
     public final double WheelsOutSpeed = 0.8;
 
     public Pickup(DashBoard dashBoard) {
-        this.dashBoard = dashBoard;
         armMotor = new Talon(Wiring.pickupArmMotorPort);
         wheelsMotor = new Talon(Wiring.pickupWheelsMotorPort);
         positionSensor = new AnalogPotentiometer(Wiring.armPositionSensorPort);
-        controller = new PIDControllerAIAO(0.12, 0, 0, positionSensor, this, dashBoard, "pickup");
+        controller = new PIDControllerAIAO(-0.12, 0, 0, positionSensor, this, dashBoard, "pickup");
         controller.enable();
         mode = MANUAL;
     }

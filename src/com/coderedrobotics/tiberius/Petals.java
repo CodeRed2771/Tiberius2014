@@ -27,9 +27,9 @@ public class Petals {
 
     // OBJECT VARIABLES
     private int mode;
-    private final int MANUAL = 0;
-    private final int OPEN = 1;
-    private final int CLOSE = 2;
+    private static final int MANUAL = 0;
+    private static final int OPEN = 1;
+    private static final int CLOSE = 2;
     private boolean boost = false;
     private long closeEndTime;
     private boolean enabled;
@@ -59,34 +59,34 @@ public class Petals {
         }
     }
 
-    private void close() {
+    public void close() {
         closeEndTime = System.currentTimeMillis() + closeTime;
         mode = CLOSE;
     }
 
-    private void open() {
+    public void open() {
         mode = OPEN;
         set(openSpeed);
     }
 
-    private void manualOpen() {
+    public void manualOpen() {
         mode = MANUAL;
         set(openSpeed);
     }
 
-    private void manualClose() {
+    public void manualClose() {
         mode = MANUAL;
         set(manualCloseSpeed);
     }
 
-    private void setEnabledState(boolean enabled) {
+    public void setEnabledState(boolean enabled) {
         this.enabled = enabled;
         if (!enabled) {
             set(0);
         }
     }
 
-    private void setBoost(boolean boost) {
+    public void setBoost(boolean boost) {
         this.boost = boost;
     }
 
@@ -106,5 +106,9 @@ public class Petals {
             petalMotorLeft.set(0);
             petalMotorRight.set(0);
         }
+    }
+
+    public void stop() {
+        set(0);
     }
 }
