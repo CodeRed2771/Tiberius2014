@@ -43,38 +43,25 @@ public class Tiberius extends IterativeRobot {
     }
 
     public void teleopPeriodic() {
-        DashboardDriverPlugin.updateBatteryVoltage(DriverStation.getInstance().getBatteryVoltage());
-
+        // DRIVE OBJECT
         drive.move(keyMap.getLeftDriveAxis(), keyMap.getRightDriveAxis());
 
         if (keyMap.getReverseDriveButton()){
             keyMap.toggleReverseDrive();
         }
         
-        if (keyMap.getPetalLeftExtendButton()) {
-            petals.extendLeftPetals();
-        } else if (keyMap.getPetalLeftRetractButton()) {
-            petals.retractLeftPetals();
-        } else {
-            petals.stopLeftPetals();
-        }
+        // PETALS OBJECT
         
-        if (keyMap.getPetalRightExtendButton()) {
-            petals.extendRightPetals();
-        } else if (keyMap.getPetalRightRetractButton()) {
-            petals.retractRightPetals();
-        } else {
-            petals.stopRightPetals();
-        }
 
+        // CHOO CHOO OBJECT
         if (keyMap.getFireBallButton()) {
 //            pickup.setShootingPosition();
 //            if (pickup.isSafeForShooting()) {
             chooChoo.fire();
 //            }
         }
-        chooChoo.step();
 
+        // PICKUP OBJECT
         if (keyMap.getSpinPickupWheelsButton()) {
             pickup.spinWheels(pickup.pickupWheelsForward);
         } else if (keyMap.getSpinPickupWheelsBackwardsButton()) {
@@ -95,7 +82,12 @@ public class Tiberius extends IterativeRobot {
 //            pickup.togglePickup();
 //        }
 
+        // STEP OBJECTS
+        chooChoo.step();
         pickup.step();
+        
+        // DASHBOARD STUFFS
+        DashboardDriverPlugin.updateBatteryVoltage(DriverStation.getInstance().getBatteryVoltage());
     }
 
     public void testInit() {

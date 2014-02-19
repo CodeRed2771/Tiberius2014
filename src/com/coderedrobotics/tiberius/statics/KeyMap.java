@@ -11,35 +11,37 @@ import com.coderedrobotics.tiberius.libs.HID.LogitechF310;
  */
 public class KeyMap {
 
+    // HIDS
     public static HID gamepad1 = new HID(1);
     public static HID gamepad2 = new HID(2);
 
+    // MANAGEMENT BOOLEANS
     private boolean reverseDrive = false;
+    private boolean singleControllerMode = false;
 
-    private boolean singleControllerMode;
-
+    // CONTROLLER 1
     private final Axis leftDriveAxis = LogitechF310.STICK_LEFT_Y;
     private final Axis rightDriveAxis = LogitechF310.STICK_RIGHT_Y;
-    private final Button fireBallButton = LogitechF310.TRIGGER_RIGHT;
-    private final Button spinPickupWheelsButton = LogitechF310.Y;
-    private final Button spinPickupWheelsStopButton = LogitechF310.X;
-    private final Button spinPickupWheelsBackwardsButton = LogitechF310.B;
-    private final Button pickupRetract = LogitechF310.DPAD_LEFT;
-    private final Button pickupExtend = LogitechF310.DPAD_RIGHT;
-    //private final Button pickupAutoRetract = LogitechF310.BACK;
-    private final Button togglePickup = LogitechF310.A;
-    private final Button petalRightRetract = LogitechF310.BACK;
-    private final Button petalRightExtend = LogitechF310.START;
-    private final Button petalLeftRetract = LogitechF310.BACK;
-    private final Button petalLeftExtend = LogitechF310.START;
-    private final Button toggleHallEncoders = LogitechF310.BUMPER_LEFT;
     private final Button reverseDriveButton = LogitechF310.TRIGGER_LEFT;
 
-    private final HID.ButtonState pickupButtonToggleState = HID.newButtonState();
-    private final HID.ButtonState pickupButtonPressedState = HID.newButtonState();
-    private final HID.ButtonState controllersToggleState = HID.newButtonState();
+    // CONTROLLER 2
+    private final Button manualPickupExtend = LogitechF310.DPAD_RIGHT;
+    private final Button manualPickupRetract = LogitechF310.DPAD_LEFT;
+    private final Button manualPetalExtend = LogitechF310.STICK_LEFT_RIGHT;
+    private final Button manualPetalRetract = LogitechF310.STICK_LEFT_RIGHT;
+    private final Button pickupToPositionTwo = LogitechF310.TRIGGER_LEFT;
+    private final Button petalsToGrabPosition = LogitechF310.BACK;
+    private final Button petalsBoostAndExtend = LogitechF310.START;
+    private final Button wheelsMovingOut = LogitechF310.Y;
+    private final Button wheelsMovingIn = LogitechF310.B;
+    private final Button wheelsStop = LogitechF310.X;
+    private final Button pickupMode = LogitechF310.A;
+
+    // CONTROLLERS SHARED
+    private final Button fire = LogitechF310.TRIGGER_RIGHT;
+
+    // BUTTON STATES
     private final HID.ButtonState reverseDriveButtonState = HID.newButtonState();
-    private final HID.ButtonState hallEncoderButtonState = HID.newButtonState();
 
     public KeyMap() {
     }
@@ -59,6 +61,30 @@ public class KeyMap {
         }
     }
 
+    public double getLeftDriveAxis() {
+        if (reverseDrive) {
+            return -getHID(1).axis(rightDriveAxis);
+        } else {
+            return getHID(1).axis(leftDriveAxis);
+        }
+    }
+
+    public double getRightDriveAxis() {
+        if (reverseDrive) {
+            return -getHID(1).axis(leftDriveAxis);
+        } else {
+            return getHID(1).axis(rightDriveAxis);
+        }
+    }
+
+    public boolean getReverseDriveButton() {
+        return getHID(1).buttonPressed(reverseDriveButton, reverseDriveButtonState);
+    }
+
+    public void toggleReverseDrive() {
+        reverseDrive = !reverseDrive;
+    }
+    
     public void setSingleControllerMode(boolean state) {
         singleControllerMode = state;
     }
@@ -70,79 +96,52 @@ public class KeyMap {
     public void toggleSingleControllerMode() {
         singleControllerMode = !singleControllerMode;
     }
-
-    public boolean getSwitchControllerModeButtons() {
-        return getHID(2).button(LogitechF310.STICK_LEFT) && getHID(2).button(LogitechF310.STICK_RIGHT);
-    }
-
-    public double getLeftDriveAxis() {
-        return getHID(1).axis(leftDriveAxis);
-    }
-
-    public double getRightDriveAxis() {
-        return getHID(1).axis(rightDriveAxis);
-    }
-
-    public boolean getFireBallButton() {
-        return getHID(2).button(fireBallButton);
-    }
-
-    public boolean getSpinPickupWheelsButton() {
-        return getHID(2).button(spinPickupWheelsButton);
-    }
-
-    public boolean getSpinPickupWheelsStopButton() {
-        return getHID(2).button(spinPickupWheelsStopButton);
-    }
-
-    public boolean getSpinPickupWheelsBackwardsButton() {
-        return getHID(2).button(spinPickupWheelsBackwardsButton);
-    }
-
-    public boolean getPickupToggleButton() {
-        return (getHID(2).buttonPressed(togglePickup, pickupButtonPressedState));
-    }
-
-   // public boolean getPickupRetractAutoButton() {
-    //     return getHID(2).button(pickupAutoRetract);
-    // }
-    public boolean getPickupRetractButton() {
-        return getHID(2).button(pickupRetract);
-    }
-
-    public boolean getPickupExtendButton() {
-        return getHID(2).button(pickupExtend);
-    }
-
-    public boolean getPetalRightExtendButton() {
-        return getHID(2).button(petalRightExtend);
-    }
-
-    public boolean getPetalRightRetractButton() {
-        return getHID(2).button(petalRightRetract);
-    }
-
-    public boolean getPetalLeftExtendButton() {
-        return getHID(1).button(petalLeftExtend);
-    }
-
-    public boolean getPetalLeftRetractButton() {
-        return getHID(1).button(petalLeftRetract);
-    }
-
-    public boolean getToggleHallEncodersButton() {
-        return getHID(2).buttonPressed(toggleHallEncoders, hallEncoderButtonState);
+    
+    public boolean getManualPickupExtendButton() {
+        return getHID(2).button(manualPickupExtend);
     }
     
-    public boolean getReverseDriveButton() {
-        return getHID(1).buttonPressed(reverseDriveButton, reverseDriveButtonState);
+    public boolean getManualPickupRetractButton() {
+        return getHID(2).button(manualPickupRetract);
     }
     
-    public void toggleReverseDrive(){
-        reverseDrive = !reverseDrive;
+    public boolean getManualPetalsExtendButton() {
+        return getHID(2).button(manualPetalExtend);
     }
-
-    public double getReverseDrive() {
-        return reverseDrive ? 1 : -1;
+    
+    public boolean getManualPetalsRetractButton() {
+        return getHID(2).button(manualPetalRetract);
+    }
+    
+    public boolean getPickupToPostionTwoButton() {
+        return getHID(2).button(pickupToPositionTwo);
+    }
+    
+    public boolean getPetalsToGrabPostion(){
+        return getHID(2).button(petalsToGrabPosition);
+    }
+    
+    public boolean getPetalsBoostAndExtendButton() {
+        return getHID(2).button(petalsBoostAndExtend);
+    }
+    
+    public boolean getWheelsMovingOutButton(){ 
+        return getHID(2).button(wheelsMovingOut);
+    }
+    
+    public boolean getWheelsMovingInButton() {
+        return getHID(2).button(wheelsMovingIn);
+    }
+    
+    public boolean getWheelsStopButton() {
+        return getHID(2).button(wheelsStop);
+    }
+    
+    public boolean getPickupModeButton() {
+        return getHID(2).button(pickupMode);
+    }
+    
+    public boolean getFireButton(){
+        return (getHID(1).button(fire) || getHID(2).button(fire));
     }
 }
