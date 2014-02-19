@@ -21,6 +21,8 @@ public class Wiring {
      * ----------- DIGITAL I/O PORTS -------------------------
      */
     public static final int chooChooArmedSensor = 5;
+    public static final int leftPetalsExtendSensor = 7;
+    public static final int rightPetalsExtendSensor = 8;
 
     /*
      * ----------- RELAYS ---------------------------------

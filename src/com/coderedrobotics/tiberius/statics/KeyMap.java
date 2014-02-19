@@ -61,7 +61,7 @@ public class KeyMap {
         }
     }
 
-    public double getLeftDriveAxis() {
+    public double getLeftDriveAxis() { // CHECK
         if (reverseDrive) {
             return -getHID(1).axis(rightDriveAxis);
         } else {
@@ -69,7 +69,7 @@ public class KeyMap {
         }
     }
 
-    public double getRightDriveAxis() {
+    public double getRightDriveAxis() { // CHECK
         if (reverseDrive) {
             return -getHID(1).axis(leftDriveAxis);
         } else {
@@ -77,71 +77,71 @@ public class KeyMap {
         }
     }
 
-    public boolean getReverseDriveButton() {
+    public boolean getReverseDriveButton() { // CHECK
         return getHID(1).buttonPressed(reverseDriveButton, reverseDriveButtonState);
     }
 
-    public void toggleReverseDrive() {
+    public void toggleReverseDrive() { // CHECK
         reverseDrive = !reverseDrive;
     }
-    
-    public void setSingleControllerMode(boolean state) {
+
+    public void setSingleControllerMode(boolean state) { // DONE
         singleControllerMode = state;
     }
 
-    public boolean getSingleControllerMode() {
+    public boolean getSingleControllerMode() { // DONE
         return singleControllerMode;
     }
 
-    public void toggleSingleControllerMode() {
+    public void toggleSingleControllerMode() { // DONE
         singleControllerMode = !singleControllerMode;
     }
-    
-    public boolean getManualPickupExtendButton() {
+
+    public boolean getManualPickupExtendButton() { // DONT TOUCH
         return getHID(2).button(manualPickupExtend);
     }
-    
-    public boolean getManualPickupRetractButton() {
+
+    public boolean getManualPickupRetractButton() { // DONT TOUCH
         return getHID(2).button(manualPickupRetract);
     }
-    
-    public boolean getManualPetalsExtendButton() {
+
+    public boolean getManualPetalsExtendButton() { // CHECK
         return getHID(2).button(manualPetalExtend);
     }
-    
-    public boolean getManualPetalsRetractButton() {
+
+    public boolean getManualPetalsRetractButton() { // CHECK
         return getHID(2).button(manualPetalRetract);
     }
-    
-    public boolean getPickupToPostionTwoButton() {
+
+    public boolean getPickupToPostionTwoButton() { // DONT TOUCH
         return getHID(2).button(pickupToPositionTwo);
     }
-    
-    public boolean getPetalsToGrabPostion(){
+
+    public boolean getPetalsToGrabPostion() { // CHECK
         return getHID(2).button(petalsToGrabPosition);
     }
-    
-    public boolean getPetalsBoostAndExtendButton() {
+
+    public boolean getPetalsBoostAndExtendButton() { // CHECK
         return getHID(2).button(petalsBoostAndExtend);
     }
-    
-    public boolean getWheelsMovingOutButton(){ 
+
+    public boolean getWheelsMovingOutButton() {
         return getHID(2).button(wheelsMovingOut);
     }
-    
+
     public boolean getWheelsMovingInButton() {
         return getHID(2).button(wheelsMovingIn);
     }
-    
+
     public boolean getWheelsStopButton() {
         return getHID(2).button(wheelsStop);
     }
-    
+
     public boolean getPickupModeButton() {
         return getHID(2).button(pickupMode);
     }
-    
-    public boolean getFireButton(){
+
+    public boolean getFireButton() {
         return (getHID(1).button(fire) || getHID(2).button(fire));
     }
 }

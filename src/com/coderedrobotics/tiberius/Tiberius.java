@@ -16,7 +16,7 @@ public class Tiberius extends IterativeRobot {
     Petals petals;
     int testStage = 0;
     long testStartTime = 0;
-    
+
     DashBoard dashBoard;
 
     public void robotInit() {
@@ -46,46 +46,45 @@ public class Tiberius extends IterativeRobot {
         // DRIVE OBJECT
         drive.move(keyMap.getLeftDriveAxis(), keyMap.getRightDriveAxis());
 
-        if (keyMap.getReverseDriveButton()){
+        if (keyMap.getReverseDriveButton()) {
             keyMap.toggleReverseDrive();
         }
-        
+
         // PETALS OBJECT
+        if (keyMap.getManualPetalsExtendButton()) {
+            petals.manualExtendPetals();
+        } else if (keyMap.getManualPetalsRetractButton()) {
+            petals.manualRetractPetals();
+        } else {
+            petals.stopManualControl();
+        }
+
+        if (keyMap.getPetalsBoostAndExtendButton()) {
+            petals.extendPetals();
+            petals.boostPetalsOutwards();
+        } else {
+            petals.unboostPetalsOutwards();
+        }
         
+        if (keyMap.getPetalsToGrabPostion()) {
+            petals.pulsePetalsInwards();
+        }
 
         // CHOO CHOO OBJECT
-        if (keyMap.getFireBallButton()) {
+//        if (keyMap.getFireButton()) {
 //            pickup.setShootingPosition();
 //            if (pickup.isSafeForShooting()) {
-            chooChoo.fire();
+//            chooChoo.fire();
 //            }
-        }
-
-        // PICKUP OBJECT
-        if (keyMap.getSpinPickupWheelsButton()) {
-            pickup.spinWheels(pickup.pickupWheelsForward);
-        } else if (keyMap.getSpinPickupWheelsBackwardsButton()) {
-            pickup.spinWheels(pickup.pickupWheelsReverse);
-        } else if (keyMap.getSpinPickupWheelsStopButton()) {
-            pickup.stopWheels();
-        }
-
-        if (keyMap.getPickupRetractButton()) {
-            pickup.movePickup(pickup.pickupArmRetract);
-        } else if (keyMap.getPickupExtendButton()) {
-            pickup.movePickup(pickup.pickupArmExtend);
-        } else {
-            pickup.movePickup(pickup.pickupArmStop);
-        }
-
-//        if (keyMap.getPickupToggleButton()) {
-//            pickup.togglePickup();
 //        }
-
+        // TODO: WRITE CODE WITH DEPENDECIEs
+        // PICKUP OBJECT
+        // TODO: WRITE NEW PICKUP CODE WHEN AUSTIN IS DONE
+        // TODO: WRITE WHEEL MOVING CODE
         // STEP OBJECTS
         chooChoo.step();
         pickup.step();
-        
+        petals.step();
         // DASHBOARD STUFFS
         DashboardDriverPlugin.updateBatteryVoltage(DriverStation.getInstance().getBatteryVoltage());
     }
