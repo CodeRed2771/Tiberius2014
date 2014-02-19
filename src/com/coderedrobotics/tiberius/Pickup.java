@@ -1,9 +1,7 @@
 package com.coderedrobotics.tiberius;
 
-import com.coderedrobotics.tiberius.libs.Debug;
 import com.coderedrobotics.tiberius.libs.dash.DashBoard;
 import com.coderedrobotics.tiberius.libs.dash.PIDControllerAIAO;
-import com.coderedrobotics.tiberius.statics.DashboardDriverPlugin;
 import com.coderedrobotics.tiberius.statics.Wiring;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
@@ -15,15 +13,15 @@ import edu.wpi.first.wpilibj.PIDOutput;
  */
 public class Pickup implements PIDOutput {
 
-    private Talon armMotor, wheelsMotor;
-    private AnalogPotentiometer positionSensor;
-    private PIDControllerAIAO controller;
-    private DashBoard dashBoard;
+    private final Talon armMotor, wheelsMotor;
+    private final AnalogPotentiometer positionSensor;
+    private final PIDControllerAIAO controller;
+    private final DashBoard dashBoard;
     private int mode;
 
-    private final int OUT = 3;
-    private final int IN = 1;
-    private final int MANUAL = 0;
+    private static final int OUT = 3;
+    private static final int IN = 1;
+    private static final int MANUAL = 0;
 
     private final double retractedPosition = 0.19;
     private final double petalsClearPosition = 0.61;
