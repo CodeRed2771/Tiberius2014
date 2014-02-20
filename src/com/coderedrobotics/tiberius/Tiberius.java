@@ -16,7 +16,8 @@ public class Tiberius extends IterativeRobot {
     Petals petals;
     int testStage = 0;
     long testStartTime = 0;
-
+    double driveStartingPosition = 0;
+    boolean inAutonomousShootPosition = false;
     DashBoard dashBoard;
 
     public void robotInit() {
@@ -36,25 +37,25 @@ public class Tiberius extends IterativeRobot {
     }
 
     public void autonomousPeriodic() {
-//         if (drive.isCalibrated()){
-//             if(driveStartingPosition == 0){
-//                 Debug.println("Calibration complete, starting movement");
-//                 driveStartingPosition = drive.getDistanceTraveledInches();
-//             }
-//             if(drive.getDistanceTraveledInches() - driveStartingPosition < 36) {
-//                 drive.move(.8, .8);
-//             } else {
-//                 drive.move(0, 0);
-//                 inAutonomousShootPosition = true;
-//             }
-//         }
-//         
-//         if (inAutonomousShootPosition){
-//             // extend petals
-//             // extend arm
-//             // shoot
-//             Debug.println("AUTONOMOUS SHOT FIRED");
-//         }
+         if (drive.isCalibrated()){
+             if(driveStartingPosition == 0){
+                 Debug.println("Calibration complete, starting movement");
+                 driveStartingPosition = drive.getDistanceTraveledInches();
+             }
+             if(drive.getDistanceTraveledInches() - driveStartingPosition < 36) {
+                 drive.move(.8, .8);
+             } else {
+                 drive.move(0, 0);
+                 inAutonomousShootPosition = true;
+             }
+         }
+         
+         if (inAutonomousShootPosition){
+             // extend petals
+             // extend arm
+             // shoot
+             Debug.println("AUTONOMOUS SHOT FIRED");
+         }
         DashboardDriverPlugin.updateBatteryVoltage(DriverStation.getInstance().getBatteryVoltage());
     }
 
