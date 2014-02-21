@@ -13,23 +13,20 @@ public class Petals {
     // CONTROLLERS
     Talon petalMotorLeft;
     Talon petalMotorRight;
-
     // MOVEMENT SPEEDS
     private final double openSpeed = -0.5;
     private final double boostSpeed = -1;
     private final double manualCloseSpeed = 0.3;
     private final double closeSpeed = 0.7;
     private final int closeTime = 250;
-
     // LIMIT SWITCHES
-    private final DigitalInput leftRetract;
-    private final DigitalInput rightRetract;
-
+    private final DigitalInput leftExtend;
+    private final DigitalInput rightExtend;
     // OBJECT VARIABLES
     private int mode;
     private static final int MANUAL = 0;
     private static final int OPEN = 1;
-    private static final int CLOSE = 2;
+    private static final int CLOSE_ONTO_BALL = 2;
     private boolean boost = false;
     private long closeEndTime;
     private boolean enabled;
@@ -37,8 +34,8 @@ public class Petals {
     public Petals() {
         petalMotorLeft = new Talon(Wiring.petalsMotorLeftPort);
         petalMotorRight = new Talon(Wiring.petalsMotorRightPort);
-        leftRetract = new DigitalInput(Wiring.leftPetalsExtendSensor);
-        rightRetract = new DigitalInput(Wiring.rightPetalsExtendSensor);
+        leftExtend = new DigitalInput(Wiring.leftPetalsExtendSensor);
+        rightExtend = new DigitalInput(Wiring.rightPetalsExtendSensor);
     }
 
     public void step() {
@@ -50,7 +47,7 @@ public class Petals {
                     set(openSpeed);
                 }
                 break;
-            case CLOSE:
+            case CLOSE_ONTO_BALL:
                 set(closeSpeed);
                 if (System.currentTimeMillis() >= closeEndTime) {
                     mode = MANUAL;
@@ -59,9 +56,9 @@ public class Petals {
         }
     }
 
-    public void close() {
+    public void closeOntoBall() {
         closeEndTime = System.currentTimeMillis() + closeTime;
-        mode = CLOSE;
+        mode = CLOSE_ONTO_BALL;
     }
 
     public void open() {
@@ -92,12 +89,12 @@ public class Petals {
 
     private void set(double speed) {
         if (enabled) {
-            if (speed < 0 && leftRetract.get()) {
+            if (speed < 0 && leftExtend.get()) {
                 petalMotorLeft.set(0);
             } else {
                 petalMotorLeft.set(speed);
             }
-            if (speed < 0 && rightRetract.get()) {
+            if (speed < 0 && rightExtend.get()) {
                 petalMotorRight.set(0);
             } else {
                 petalMotorRight.set(speed);
@@ -110,5 +107,17 @@ public class Petals {
 
     public void stop() {
         set(0);
+    }
+
+    public boolean leftIsOpen() {
+        return leftExtend.get();
+    }
+
+    public boolean rightIsOpen() {
+        return rightExtend.get();
+    }
+
+    public boolean bothAreOpen() {
+        return rightExtend.get() && leftExtend.get();
     }
 }

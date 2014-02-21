@@ -95,6 +95,10 @@ public class Pickup implements PIDOutput {
     public void wheelsOut() {
         setWheels(WheelsOutSpeed);
     }
+    
+    public void stopWheels() {
+        setWheels(0);
+    }
 
     public void setWheels(double speed) {
         wheelsMotor.set(speed);
