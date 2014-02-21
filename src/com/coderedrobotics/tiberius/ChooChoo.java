@@ -1,6 +1,5 @@
 package com.coderedrobotics.tiberius;
 
-import com.coderedrobotics.tiberius.libs.Debug;
 import com.coderedrobotics.tiberius.statics.DashboardDriverPlugin;
 import com.coderedrobotics.tiberius.statics.Wiring;
 import edu.wpi.first.wpilibj.DigitalInput;

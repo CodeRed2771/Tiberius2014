@@ -14,10 +14,12 @@ public class Tiberius extends IterativeRobot {
     ChooChoo chooChoo;
     Pickup pickup;
     Petals petals;
+    
     int testStage = 0;
     long testStartTime = 0;
     double driveStartingPosition = 0;
     boolean inAutonomousShootPosition = false;
+    
     DashBoard dashBoard;
 
     public void robotInit() {
@@ -117,7 +119,7 @@ public class Tiberius extends IterativeRobot {
             pickup.wheelsIn();
         } else if (keyMap.getWheelsMovingOutButton()) {
             pickup.wheelsOut();
-        } else {
+        } else if (keyMap.getWheelsStopButton()) {
             pickup.stopWheels();
         }
 

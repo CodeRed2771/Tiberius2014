@@ -54,11 +54,11 @@ public class Pickup implements PIDOutput {
     }
 
     private void setPickup(double value) {
-        if (positionSensor.get() > extendedPosition && value < 0) {
+        if (positionSensor.get() > extendedPosition && value > 0) {
             armMotor.set(0);
             return;
         }
-        if (positionSensor.get() < retractedPosition && value > 0) {
+        if (positionSensor.get() < retractedPosition && value < 0) {
             armMotor.set(0);
             return;
         }
