@@ -14,13 +14,17 @@ public class Tiberius extends IterativeRobot {
     ChooChoo chooChoo;
     Pickup pickup;
     Petals petals;
-    
+
     int testStage = 0;
     long testStartTime = 0;
     double driveStartingPosition = 0;
     boolean inAutonomousShootPosition = false;
-    
+
     DashBoard dashBoard;
+
+    // DISABLE THIS IN REAL MATCHES!!!!!!!!!!!!!!!!!!!!!!!!
+    public static final boolean enableVirtualInputs = true;
+    // NO REALLY.... please disable in real matches..... or else.
 
     public void robotInit() {
         Debug.println("[INFO] TIBERIUS CODE DOWNLOAD COMPLETE.", Debug.STANDARD);

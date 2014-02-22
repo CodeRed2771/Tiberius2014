@@ -1,10 +1,10 @@
 package com.coderedrobotics.tiberius;
 
+import com.coderedrobotics.tiberius.libs.SmartAnalogPotentiometer;
 import com.coderedrobotics.tiberius.libs.dash.DashBoard;
 import com.coderedrobotics.tiberius.libs.dash.PIDControllerAIAO;
 import com.coderedrobotics.tiberius.statics.Wiring;
 import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.PIDOutput;
 
 /**
@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.PIDOutput;
 public class Pickup implements PIDOutput {
 
     private final Talon armMotor, wheelsMotor;
-    private final AnalogPotentiometer positionSensor;
+    private final SmartAnalogPotentiometer positionSensor;
     private final PIDControllerAIAO controller;
     private int mode;
 
@@ -35,7 +35,7 @@ public class Pickup implements PIDOutput {
     public Pickup(DashBoard dashBoard) {
         armMotor = new Talon(Wiring.pickupArmMotorPort);
         wheelsMotor = new Talon(Wiring.pickupWheelsMotorPort);
-        positionSensor = new AnalogPotentiometer(Wiring.armPositionSensorPort);
+        positionSensor = new SmartAnalogPotentiometer(Wiring.armPositionSensorPort, Tiberius.enableVirtualInputs);
         controller = new PIDControllerAIAO(-0.12, 0, 0, positionSensor, this, dashBoard, "pickup");
         controller.enable();
         mode = MANUAL;
@@ -95,7 +95,7 @@ public class Pickup implements PIDOutput {
     public void wheelsOut() {
         setWheels(WheelsOutSpeed);
     }
-    
+
     public void stopWheels() {
         setWheels(0);
     }

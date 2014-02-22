@@ -1,7 +1,7 @@
 package com.coderedrobotics.tiberius;
 
+import com.coderedrobotics.tiberius.libs.SmartDigitalInput;
 import com.coderedrobotics.tiberius.statics.Wiring;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Talon;
 
 /**
@@ -20,8 +20,8 @@ public class Petals {
     private final double closeSpeed = 0.7;
     private final int closeTime = 250;
     // LIMIT SWITCHES
-    private final DigitalInput leftExtend;
-    private final DigitalInput rightExtend;
+    private final SmartDigitalInput leftExtend;
+    private final SmartDigitalInput rightExtend;
     // OBJECT VARIABLES
     private int mode;
     private static final int MANUAL = 0;
@@ -34,8 +34,8 @@ public class Petals {
     public Petals() {
         petalMotorLeft = new Talon(Wiring.petalsMotorLeftPort);
         petalMotorRight = new Talon(Wiring.petalsMotorRightPort);
-        leftExtend = new DigitalInput(Wiring.leftPetalsExtendSensor);
-        rightExtend = new DigitalInput(Wiring.rightPetalsExtendSensor);
+        leftExtend = new SmartDigitalInput(Wiring.leftPetalsExtendSensor, Tiberius.enableVirtualInputs);
+        rightExtend = new SmartDigitalInput(Wiring.rightPetalsExtendSensor, Tiberius.enableVirtualInputs);
     }
 
     public void step() {

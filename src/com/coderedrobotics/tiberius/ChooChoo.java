@@ -1,5 +1,6 @@
 package com.coderedrobotics.tiberius;
 
+import com.coderedrobotics.tiberius.libs.SmartDigitalInput;
 import com.coderedrobotics.tiberius.statics.DashboardDriverPlugin;
 import com.coderedrobotics.tiberius.statics.Wiring;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -11,7 +12,7 @@ import edu.wpi.first.wpilibj.Talon;
  */
 public class ChooChoo {
 
-    DigitalInput sensor;
+    SmartDigitalInput sensor;
     Talon chooChooMotor;
     public final double motorSpinSpeed = .7;
     public final int shooterRetractedValue = 465;
@@ -23,14 +24,13 @@ public class ChooChoo {
     private boolean lastSentIsCocking;
 
     public ChooChoo() {
-        sensor = new DigitalInput(Wiring.chooChooArmedSensor);
+        sensor = new SmartDigitalInput(Wiring.chooChooArmedSensor, Tiberius.enableVirtualInputs);
         chooChooMotor = new Talon(Wiring.chooChooMotorPort);
     }
 
     public void fire() {
         isFiring = true;
         fireTimeStamp = System.currentTimeMillis();
-//        Debug.println("[INFO] Fire Button Pressed", Debug.STANDARD);
     }
 
     public void stop() {
