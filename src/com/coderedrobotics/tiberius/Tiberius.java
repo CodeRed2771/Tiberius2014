@@ -23,13 +23,13 @@ public class Tiberius extends IterativeRobot {
     DashBoard dashBoard;
 
     // DISABLE THIS IN REAL MATCHES!!!!!!!!!!!!!!!!!!!!!!!!
-    public static final boolean enableVirtualInputs = true;
+    public static final boolean enableVirtualInputs = false;
     // NO REALLY.... please disable in real matches..... or else.
 
     public void robotInit() {
         Debug.println("[INFO] TIBERIUS CODE DOWNLOAD COMPLETE.", Debug.STANDARD);
 
-        // Comment out the line 30 to deactivate the dashboard.  There is no need
+        // Comment out the line 34 to deactivate the dashboard.  There is no need
         // to comment out anything else, because the rest of the code uses null checks.
         dashBoard = new DashBoard();
         DashboardDriverPlugin.init(dashBoard);
