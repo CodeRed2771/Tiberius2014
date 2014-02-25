@@ -1,8 +1,8 @@
 package com.coderedrobotics.tiberius;
 
-import com.coderedrobotics.tiberius.libs.HallEncoder;
-import com.coderedrobotics.tiberius.libs.dash.DashBoard;
-import com.coderedrobotics.tiberius.libs.dash.PIDControllerAIAO;
+import com.coderedrobotics.lib.HallEncoder;
+import com.coderedrobotics.lib.dash.DashBoard;
+import com.coderedrobotics.lib.dash.PIDControllerAIAO;
 import com.coderedrobotics.tiberius.statics.DashboardDriverPlugin;
 import com.coderedrobotics.tiberius.statics.Wiring;
 import edu.wpi.first.wpilibj.Talon;

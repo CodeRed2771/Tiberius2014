@@ -34,7 +34,7 @@ public class Wiring {
     /*
      * -----------  ANALOG INPUTS -------------------------
      */
-    public static final int armPositionSensorPort = 1;
+    public static final int armPositionSensorPort = 1; // string pot
     public static final int rightDriveEncoderAPort = 4;
     public static final int rightDriveEncoderBPort = 5;
     public static final int leftDriveEncoderAPort = 2;

@@ -1,6 +1,6 @@
 package com.coderedrobotics.tiberius.statics;
 
-import com.coderedrobotics.tiberius.libs.dash.DashBoard;
+import com.coderedrobotics.lib.dash.DashBoard;
 
 /**
  *

@@ -1,7 +1,7 @@
 package com.coderedrobotics.tiberius;
 
-import com.coderedrobotics.tiberius.libs.Debug;
-import com.coderedrobotics.tiberius.libs.dash.DashBoard;
+import com.coderedrobotics.lib.Debug;
+import com.coderedrobotics.lib.dash.DashBoard;
 import com.coderedrobotics.tiberius.statics.DashboardDriverPlugin;
 import com.coderedrobotics.tiberius.statics.KeyMap;
 import edu.wpi.first.wpilibj.DriverStation;

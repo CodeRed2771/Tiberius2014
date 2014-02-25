@@ -1,9 +1,9 @@
 package com.coderedrobotics.tiberius.statics;
 
-import com.coderedrobotics.tiberius.libs.HID.HID;
-import com.coderedrobotics.tiberius.libs.HID.HID.Axis;
-import com.coderedrobotics.tiberius.libs.HID.HID.Button;
-import com.coderedrobotics.tiberius.libs.HID.LogitechF310;
+import com.coderedrobotics.lib.HID.HID;
+import com.coderedrobotics.lib.HID.HID.Axis;
+import com.coderedrobotics.lib.HID.HID.Button;
+import com.coderedrobotics.lib.HID.LogitechF310;
 
 /**
  *
