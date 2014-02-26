@@ -57,8 +57,10 @@ public class Petals {
     }
 
     public void closeOntoBall() {
-        closeEndTime = System.currentTimeMillis() + closeTime;
-        mode = CLOSE_ONTO_BALL;
+        if (bothAreOpen()) {
+            closeEndTime = System.currentTimeMillis() + closeTime;
+            mode = CLOSE_ONTO_BALL;
+        }
     }
 
     public void open() {
@@ -74,6 +76,7 @@ public class Petals {
     public void manualClose() {
         mode = MANUAL;
         set(manualCloseSpeed);
+        System.out.println("enabled: " + enabled);
     }
 
     public void setEnabledState(boolean enabled) {
