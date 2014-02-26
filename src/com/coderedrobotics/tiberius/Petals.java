@@ -19,6 +19,14 @@ public class Petals {
     private final double manualCloseSpeed = 0.3;
     private final double closeSpeed = 0.7;
     private final int closeTime = 250;
+    // STRING POT CALIBRATIONS
+    pravate final double leftOuterLimit = 0;
+    private final double leftInnerLimit = 0;
+    pravate final double rightOuterLimit = 0;
+    private final double rightInnerLimit = 0;
+    // SETPOINTS
+    private final double pedalsIn = 0;
+    private final double pedalsOut = 0.9;
     // LIMIT SWITCHES
     private final SmartDigitalInput leftExtend;
     private final SmartDigitalInput rightExtend;
@@ -122,5 +130,13 @@ public class Petals {
 
     public boolean bothAreOpen() {
         return rightExtend.get() && leftExtend.get();
+    }
+    
+    public double scale(double low, double high, double d) {
+        double dif = high - low;
+        if (dif == 0) {
+            return 0;
+        }
+        return (((d - low) / dif) * 2) - 1;
     }
 }
