@@ -30,13 +30,13 @@ public class Drive {
         leftEncoder = new HallEncoder(Wiring.leftDriveEncoderAPort,
                 Wiring.leftDriveEncoderBPort, dashBoard, "left");
         leftController = new PIDControllerAIAO(
-                30, 0, 0, leftEncoder, left, 0.01, dashBoard, "left");
+                30, 0, 0, leftEncoder, left, 0.005, dashBoard, "left");
         leftController.enable();
         right = new Talon(Wiring.rightDriveTalonPort);
         rightEncoder = new HallEncoder(Wiring.rightDriveEncoderAPort,
                 Wiring.rightDriveEncoderBPort, dashBoard, "right");
         rightController = new PIDControllerAIAO(
-                30, 0, 0, rightEncoder, right, 0.01, dashBoard, "right");
+                30, 0, 0, rightEncoder, right, 0.005, dashBoard, "right");
         rightController.enable();
     }
 

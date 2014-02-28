@@ -39,7 +39,7 @@ public class Tiberius extends IterativeRobot {
         drive = new Drive(dashBoard);
         chooChoo = new ChooChoo();
         pickup = new Pickup(dashBoard);
-        petals = new Petals();
+        petals = new Petals(dashBoard);
     }
 
     public void autonomousInit() {
@@ -95,14 +95,15 @@ public class Tiberius extends IterativeRobot {
         } else if (keyMap.getManualPetalsRetractButton()) {
             petals.manualClose();
         } else {
-            petals.stop();
+            petals.manualStop();
         }
 
         if (keyMap.getPetalsBoostAndExtendButton()) {
-            petals.open();
-            petals.setBoost(true);
+            petals.closeOntoBall();
+            pickup.pickupIn();
+            //petals.setBoost(true);
         } else {
-            petals.setBoost(false);
+            //petals.setBoost(false);
         }
 
         if (keyMap.getPetalsToGrabPostion()) {
@@ -128,15 +129,17 @@ public class Tiberius extends IterativeRobot {
         }
 
         if (keyMap.getManualPickupExtendButton()) {
-            pickup.movePickup(-0.5);
+            pickup.movePickup(-1);
         } else if (keyMap.getManualPickupRetractButton()) {
-            pickup.movePickup(0.5);
+            pickup.movePickup(1);
         } else {
             pickup.movePickup(0);
         }
 
         if (keyMap.getPickupToPostionTwoButton()) {
             pickup.pickupIn();
+            petals.open();
+            pickup.stopWheels();
         }
 
         if (keyMap.getPickupModeButton()) {

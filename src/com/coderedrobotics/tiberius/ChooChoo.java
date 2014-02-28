@@ -14,7 +14,7 @@ public class ChooChoo {
 
     SmartDigitalInput sensor;
     Talon chooChooMotor;
-    public final double motorSpinSpeed = .7;
+    public final double motorSpinSpeed = 1;
     public final int shooterRetractedValue = 465;
     private boolean isFiring = false;
     private boolean isCocking = false;
@@ -56,7 +56,7 @@ public class ChooChoo {
             chooChooMotor.set(0);
         }
 
-        if (isFiring && System.currentTimeMillis() - fireTimeStamp > 300) {
+        if (isFiring && System.currentTimeMillis() - fireTimeStamp > 400) {
             isFiring = false;
             cock();
         }
