@@ -17,6 +17,8 @@ public class Tiberius extends IterativeRobot {
 
     int testStage = 0;
     long testStartTime = 0;
+    int autoStage = 0;
+    long autoStartTime = 0;
     double driveStartingPosition = 0;
     boolean inAutonomousShootPosition = false;
 
@@ -43,34 +45,35 @@ public class Tiberius extends IterativeRobot {
     }
 
     public void autonomousInit() {
-        drive.calibrate();
+        autoStartTime = System.currentTimeMillis() + 1800;
+        drive.disableSpeedControllers();
+        pickup.pickupIn();
+        petals.open();
+        pickup.wheelsIn();
     }
 
     public void autonomousPeriodic() {
-        if (drive.isCalibrated()) {
-            if (driveStartingPosition == 0) {
-                Debug.println("Calibration complete, starting movement");
-                driveStartingPosition = drive.getDistanceTraveledInches();
-            }
-            if (drive.getDistanceTraveledInches() - driveStartingPosition < 36) {
-                drive.move(.8, .8);
-            } else {
-                drive.move(0, 0);
-                inAutonomousShootPosition = true;
-            }
-        }
-
-        if (inAutonomousShootPosition) {
-            if (petals.bothAreOpen()) {
-                if (pickup.isClear()) {
-                    chooChoo.fire();
-                    Debug.println("AUTONOMOUS SHOT FIRED");
-                } else {
-                    pickup.pickupIn();
+        switch (autoStage) {
+            case 0:
+                petals.step();
+                chooChoo.step();
+                drive.move(-0.8, -0.8);
+                petals.setEnabledState(true);
+                if (autoStartTime < System.currentTimeMillis()) {
+                    autoStage++;
                 }
-            } else {
-                petals.open();
-            }
+                break;
+            case 1:
+                drive.move(0, 0);
+                drive.enableSpeedControllers();
+                chooChoo.fire();
+                chooChoo.step();
+                autoStage++;
+                break;
+            case 2:
+                chooChoo.step();
+                pickup.stopWheels();
+                break;
         }
         DashboardDriverPlugin.updateBatteryVoltage(DriverStation.getInstance().getBatteryVoltage());
     }

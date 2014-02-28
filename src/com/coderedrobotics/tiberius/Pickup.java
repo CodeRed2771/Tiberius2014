@@ -23,7 +23,7 @@ public class Pickup implements PIDOutput {
     private static final int MANUAL = 0;
     
     private final double retractedPosition = 0.19;
-    private final double petalsClearPosition = 0.61;
+    private final double petalsClearPosition = 0.55;
     private final double extendedPosition = 1.03;
     
     private final double petalsClearSetpoint = 0.65;

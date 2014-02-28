@@ -42,7 +42,7 @@ public class Petals {
     private static final int OPEN = 1;
     private static final int CLOSE = 2;
     private static final int CLOSE_ON_BALL = 3;
-    private boolean enabled = true;
+    private boolean enabled = false;
     private long timeout;
 
     public Petals(DashBoard dashBoard) {
