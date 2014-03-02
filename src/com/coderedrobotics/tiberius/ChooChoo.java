@@ -56,7 +56,7 @@ public class ChooChoo {
             chooChooMotor.set(0);
         }
 
-        if (isFiring && System.currentTimeMillis() - fireTimeStamp > 400) {
+        if (isFiring && System.currentTimeMillis() - fireTimeStamp > 600) {
             isFiring = false;
             cock();
         }
@@ -73,7 +73,7 @@ public class ChooChoo {
         }
     }
 
-    private boolean isCocked() {
+    public boolean isCocked() {
         return sensor.get();
     }
 }

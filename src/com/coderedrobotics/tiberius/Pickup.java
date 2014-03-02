@@ -24,10 +24,10 @@ public class Pickup implements PIDOutput {
     
     private final double retractedPosition = 0.19;
     private final double petalsClearPosition = 0.55;
-    private final double extendedPosition = 1.03;
+    private final double extendedPosition = 1.05;
     
     private final double petalsClearSetpoint = 0.65;
-    private final double extendedSetpoint = 1.1;
+    private final double extendedSetpoint = 10;
     
     public final double WheelsInSpeed = -0.8;
     public final double WheelsOutSpeed = 0.8;
@@ -36,7 +36,7 @@ public class Pickup implements PIDOutput {
         armMotor = new Talon(Wiring.pickupArmMotorPort);
         wheelsMotor = new Talon(Wiring.pickupWheelsMotorPort);
         positionSensor = new SmartAnalogPotentiometer(Wiring.armPositionSensorPort, Tiberius.enableVirtualInputs);
-        controller = new PIDControllerAIAO(-12, 0, 0, positionSensor, this, dashBoard, "pickup");
+        controller = new PIDControllerAIAO(-6, 0, 0, positionSensor, this, dashBoard, "pickup");
         controller.enable();
         mode = MANUAL;
     }
@@ -73,6 +73,10 @@ public class Pickup implements PIDOutput {
     
     public boolean isClear() {
         return positionSensor.get() > petalsClearPosition;
+    }
+
+    public boolean isDown() {
+        return positionSensor.get() > extendedPosition;
     }
     
     public void pickupIn() {

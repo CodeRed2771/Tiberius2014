@@ -93,6 +93,7 @@ public class Petals {
 
     public void close() {
 //        mode = CLOSE;
+        closeOntoBall();
     }
 
     public void manualOpen() {

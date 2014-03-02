@@ -20,7 +20,7 @@ public class Drive {
     PIDControllerAIAO leftController;
     PIDControllerAIAO rightController;
     boolean speed = true;
-    
+
     double calibrateStartTime;
     boolean calibrating;
     private final double encoderRevolutionsPerInch = 3;
@@ -42,30 +42,44 @@ public class Drive {
 
     public void move(double left, double right) {
         if (speed) {
-            leftController.setSetpoint((-left*Math.abs(left)) * 0.05);
-            rightController.setSetpoint((right*Math.abs(right)) * 0.05);
+            leftController.setSetpoint((-left * Math.abs(left)) * 0.05);
+            if (leftController.getSetpoint() > 0) {
+                leftController.setOutputRange(0, 1);
+            } else if (leftController.getSetpoint() < 0) {
+                leftController.setOutputRange(-1, 0);
+            } else {
+                leftController.setOutputRange(0, 0);
+            }
+            rightController.setSetpoint((right * Math.abs(right)) * 0.05);
+            if (rightController.getSetpoint() > 0) {
+                rightController.setOutputRange(0, 1);
+            } else if (rightController.getSetpoint() < 0) {
+                rightController.setOutputRange(-1, 0);
+            } else {
+                rightController.setOutputRange(0, 0);
+            }
         } else {
-            this.left.set(-left*Math.abs(left));
-            this.right.set(right*Math.abs(right));
+            this.left.set(-left * Math.abs(left));
+            this.right.set(right * Math.abs(right));
         }
     }
-    
+
     public void calibrate() {
         if (!calibrating) {
             calibrating = true;
             calibrateStartTime = System.currentTimeMillis();
         }
-        
-        if(!isCalibrated()){
-            move(.5,.5);
+
+        if (!isCalibrated()) {
+            move(.5, .5);
         }
     }
-    
+
     public boolean isCalibrated() {
         // calibration is complete (hopefully) after 400ms
         return System.currentTimeMillis() - calibrateStartTime > 400;
     }
-    
+
     public double getDistanceTraveledInches() {
         return leftEncoder.getRaw() / encoderRevolutionsPerInch;
     }
