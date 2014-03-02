@@ -30,8 +30,8 @@ public class KeyMap {
     private final Button manualPetalExtend = LogitechF310.STICK_LEFT_RIGHT;
     private final Button manualPetalRetract = LogitechF310.STICK_LEFT_LEFT;
     private final Button pickupToPositionTwo = LogitechF310.TRIGGER_LEFT;
-    private final Button petalsToGrabPosition = LogitechF310.BACK;
-    private final Button petalsBoostAndExtend = LogitechF310.START;
+    private final Button petalsToGrabPosition = LogitechF310.START;
+    private final Button petalsBoostAndExtend = LogitechF310.BACK;
     private final Button wheelsMovingOut = LogitechF310.Y;
     private final Button wheelsMovingIn = LogitechF310.B;
     private final Button wheelsStop = LogitechF310.X;

@@ -18,7 +18,7 @@ public class Petals {
     Talon petalMotorLeft;
     Talon petalMotorRight;
     // MOVEMENT SPEEDS
-    private final double manualOpenSpeed = -0.8;
+    private final double manualOpenSpeed = -1;
     private final double manualCloseSpeed = 0.5;
     // LIMIT SWITCHES
     private final SmartDigitalInput leftExtend;
@@ -164,7 +164,7 @@ public class Petals {
     }
 
     public boolean leftIsOpen() {
-        return leftExtend.get() || (getLeftPot() > pedalsOutLimit);
+        return !leftExtend.get() || (getLeftPot() > pedalsOutLimit);
     }
 
     public boolean rightIsOpen() {

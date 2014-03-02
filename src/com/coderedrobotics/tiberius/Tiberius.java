@@ -185,9 +185,7 @@ public class Tiberius extends IterativeRobot {
         if (keyMap.getPetalsBoostAndExtendButton()) {
             petals.closeOntoBall();
             pickup.pickupIn();
-            //petals.setBoost(true);
-        } else {
-            //petals.setBoost(false);
+            pickup.stopWheels();
         }
 
         if (keyMap.getPetalsToGrabPostion()) {

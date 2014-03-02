@@ -24,13 +24,13 @@ public class Pickup implements PIDOutput {
     
     private final double retractedPosition = 0.19;
     private final double petalsClearPosition = 0.55;
-    private final double extendedPosition = 1.05;
+    private final double extendedPosition = 1.03;
     
     private final double petalsClearSetpoint = 0.65;
-    private final double extendedSetpoint = 10;
+    private final double extendedSetpoint = 1.05;
     
-    public final double WheelsInSpeed = -0.8;
-    public final double WheelsOutSpeed = 0.8;
+    public final double WheelsInSpeed = -1;
+    public final double WheelsOutSpeed = 1;
     
     public Pickup(DashBoard dashBoard) {
         armMotor = new Talon(Wiring.pickupArmMotorPort);
