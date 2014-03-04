@@ -43,103 +43,33 @@ public class Tiberius extends IterativeRobot {
     }
 
     public void autonomousInit() {
-        autoStage = 1;
+        autoStage = 0;
+        autoStartTime = System.currentTimeMillis() + 1800;
         drive.disableSpeedControllers();
+        pickup.pickupIn();
+        petals.open();
+        pickup.wheelsIn();
     }
 
     public void autonomousPeriodic() {
         switch (autoStage) {
-            case 1:
-                petals.open();
-                pickup.pickupOut();
-                autoStage++;
-            case 2:
-                if (petals.bothAreOpen() && pickup.isDown()) {
-                    resetTimer(100);
-                    petals.open();
-                    autoStage++;
-                }
-                break;
-            case 3:
-                advanceWhenReady();
-                break;
-            case 4:
-                petals.closeOntoBall();
-                pickup.setWheels(-0.55);//-0.7
-                resetTimer(300);//820
-                autoStage++;
-            case 5:
-                advanceWhenReady();
-                break;
-            case 6:
-                pickup.setWheels(-0.7);//-0.7
-                drive.move(-0.3, -0.3);
-                resetTimer(300);//820
-                autoStage++;
-            case 7:
-                advanceWhenReady();
-                break;
-            case 8:
-                pickup.setWheels(-0.5);//-0.7
-                drive.move(-0.6, -0.6);
-                resetTimer(440);//820
-                autoStage++;
-            case 9:
-                advanceWhenReady();
-                break;
-            case 10:
-                pickup.setWheels(-0.3);
-                resetTimer(100);
-                autoStage++;
-            case 11:
-                advanceWhenReady();
-                break;
-            case 12:
+            case 0:
                 drive.move(-0.8, -0.8);
-                resetTimer(1500);
-                autoStage++;
-            case 13:
-                advanceWhenReady();
-                break;
-            case 14:
-                drive.enableSpeedControllers();
-                drive.move(0, 0);
-                petals.open();
-                resetTimer(1000);
-                autoStage++;
-            case 15:
-                advanceWhenReady();
-                break;
-            case 16:
-                pickup.setWheels(-0.5);
-                chooChoo.fire();
-                pickup.pickupIn();
-                resetTimer(800);
-                autoStage++;
-                break;
-            case 17:
-                advanceWhenReady();
-                chooChoo.cock();
-                break;
-            case 18:
-                if (chooChoo.isCocked()) {
+                petals.setEnabledState(true);
+                if (autoStartTime < System.currentTimeMillis()) {
                     autoStage++;
                 }
                 break;
-            case 19:
-                petals.close();
-                resetTimer(200);
-                autoStage++;
-            case 20:
-                advanceWhenReady();
-                break;
-            case 21:
+            case 1:
+                drive.move(0, 0);
+                drive.enableSpeedControllers();
                 chooChoo.fire();
-                pickup.stopWheels();
                 autoStage++;
+                break;
+            case 2:
+                pickup.stopWheels();
                 break;
         }
-        petals.setEnabledState(pickup.isClear());
         petals.step();
         chooChoo.step();
         DashboardDriverPlugin.updateBatteryVoltage(DriverStation.getInstance().getBatteryVoltage());
