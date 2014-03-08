@@ -84,6 +84,10 @@ public class KeyMap {
     public void toggleReverseDrive() { // CHECK
         reverseDrive = !reverseDrive;
     }
+    
+    public boolean getReverseDrive() {
+        return reverseDrive;
+    }
 
     public void setSingleControllerMode(boolean state) { // DONE
         singleControllerMode = state;

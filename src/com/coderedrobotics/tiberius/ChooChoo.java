@@ -76,4 +76,8 @@ public class ChooChoo {
     public boolean isCocked() {
         return sensor.get();
     }
+    
+    public boolean isCocking(){
+        return isCocking;
+    }
 }
