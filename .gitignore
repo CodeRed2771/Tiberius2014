@@ -1,2 +1,5 @@
-/build/
-/nbproject/
+build/*
+nbproject/*
+*.class
+*.jar
+hs_err_pid*
