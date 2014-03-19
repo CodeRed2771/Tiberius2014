@@ -141,9 +141,9 @@ public class Tiberius extends IterativeRobot {
         }
 
         if (keyMap.getManualPickupExtendButton()) {
-            pickup.movePickup(-1);
+            pickup.movePickup(-0.5);
         } else if (keyMap.getManualPickupRetractButton()) {
-            pickup.movePickup(1);
+            pickup.movePickup(0.5);
         } else {
             pickup.movePickup(0);
         }
