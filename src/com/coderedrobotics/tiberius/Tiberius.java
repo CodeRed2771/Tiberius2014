@@ -31,6 +31,7 @@ public class Tiberius extends IterativeRobot {
     public void robotInit() {
         Debug.println("[INFO] TIBERIUS CODE DOWNLOAD COMPLETE.", Debug.STANDARD);
 
+        DashBoard.setConnectionAddress("socket://10.27.71.5:1180");
         dashBoard = new DashBoard();// Comment out this line to deactivate the dashboard.
         DashboardDriverPlugin.init(dashBoard);
 
@@ -166,6 +167,14 @@ public class Tiberius extends IterativeRobot {
 
         // DASHBOARD STUFFS
         DashboardDriverPlugin.updateBatteryVoltage(DriverStation.getInstance().getBatteryVoltage());
+        DashboardDriverPlugin.updateReverseDriveModeStatus(keyMap.getReverseDrive() ? 1 : 0);
+        DashboardDriverPlugin.updateCockedStatus(chooChoo.isCocked() ? 1 : 0);
+        DashboardDriverPlugin.updatePickupReadyStatus(pickup.isClear() ? 1 : 0);
+        DashboardDriverPlugin.updatePetalsReadyStatus(petals.bothAreOpen() ? 1 : 0);
+        DashboardDriverPlugin.updateCockingStatus(chooChoo.isCocking() ? 1 : 0);
+        DashboardDriverPlugin.updateStringPotStatus(1);
+        // Please note that not all of these are in this object, 
+        // there are some in Petals, Drive, and Pickup.
     }
 
     public void testInit() {

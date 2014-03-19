@@ -2,8 +2,8 @@ package com.coderedrobotics.tiberius;
 
 import com.coderedrobotics.tiberius.libs.DerivativeCalculator;
 import com.coderedrobotics.tiberius.libs.SmartDigitalInput;
-import com.coderedrobotics.tiberius.libs.dash.DSMListener;
 import com.coderedrobotics.tiberius.libs.dash.DashBoard;
+import com.coderedrobotics.tiberius.statics.DashboardDriverPlugin;
 import com.coderedrobotics.tiberius.statics.Wiring;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.Talon;
@@ -19,7 +19,7 @@ public class Petals {
     Talon petalMotorRight;
     // MOVEMENT SPEEDS
     private final double manualOpenSpeed = -1;
-    private final double manualCloseSpeed = 0.5;
+    private final double manualCloseSpeed = 1;
     // LIMIT SWITCHES
     private final SmartDigitalInput leftExtend;
     private final SmartDigitalInput rightExtend;
@@ -125,6 +125,7 @@ public class Petals {
     private void set(double speed) {
         setLeft(speed);
         setRight(speed);
+        DashboardDriverPlugin.updatePetalsMovingStatus(speed != 0 ? 1 : 0);
     }
 
     private void setLeft(double speed) {
@@ -212,20 +213,4 @@ public class Petals {
     private double rightPotChange() {
         return rightDerivativeCalculator.calculate(getRightPot());
     }
-
-//    public void pidWrite(double d) {
-//        if (mode != MANUAL) {
-//            double right = getRightPot();
-//            double left = getLeftPot();
-//            double dif = right - left;
-//            dif *= 1;
-//            right += dif;
-//            left += -dif;
-//            setRight(right);
-//            setLeft(left);
-//        }
-//    }
-//    public double pidGet() {
-//        return (getLeftPot() + getRightPot()) / 2;
-//    }
 }

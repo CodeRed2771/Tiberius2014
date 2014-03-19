@@ -16,7 +16,7 @@ public class DashboardDriverPlugin {
     private static final String stringPotStatusStream = "stringPot";
     private static final String pickupWheelsStatusStream = "pickupWheels";
     private static final String pickupMovingStatusStream = "pickupMoving";
-    private static final String singleControllerModeStatusStream = "singleController";
+    private static final String reverseDriveModeStatusStream = "singleController";
     private static final String hallEncoderStatusStream = "hallEncoder";
     private static final String pickupReadyStatusStream = "pickupReady";
     private static final String petalsReadyStatusStream = "petalsReady";
@@ -35,7 +35,7 @@ public class DashboardDriverPlugin {
         sendUpdate(val, cockingStatusStream);
     }
 
-    public static void updatePedalsMovingStatus(double val) {
+    public static void updatePetalsMovingStatus(double val) {
         sendUpdate(val, petalsMovingStatusStream);
     }
 
@@ -51,8 +51,8 @@ public class DashboardDriverPlugin {
         sendUpdate(val, pickupMovingStatusStream);
     }
 
-    public static void updateSingleControllerModeStatus(double val) {
-        sendUpdate(val, singleControllerModeStatusStream);
+    public static void updateReverseDriveModeStatus(double val) {
+        sendUpdate(val, reverseDriveModeStatusStream);
     }
 
     public static void updateHallEncodersStatus(double val) {
@@ -63,7 +63,7 @@ public class DashboardDriverPlugin {
         sendUpdate(val, pickupReadyStatusStream);
     }
 
-    public static void updatePedalsReadyStatus(double val) {
+    public static void updatePetalsReadyStatus(double val) {
         sendUpdate(val, petalsReadyStatusStream);
     }
 
