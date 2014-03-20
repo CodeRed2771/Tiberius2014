@@ -3,6 +3,7 @@ package com.coderedrobotics.tiberius;
 import com.coderedrobotics.tiberius.libs.SmartAnalogPotentiometer;
 import com.coderedrobotics.tiberius.libs.dash.DashBoard;
 import com.coderedrobotics.tiberius.libs.dash.PIDControllerAIAO;
+import com.coderedrobotics.tiberius.statics.Calibration;
 import com.coderedrobotics.tiberius.statics.DashboardDriverPlugin;
 import com.coderedrobotics.tiberius.statics.Wiring;
 import edu.wpi.first.wpilibj.Talon;
@@ -23,13 +24,6 @@ public class Pickup implements PIDOutput {
     private static final int IN = 1;
     private static final int MANUAL = 0;
 
-    private final double retractedPosition = 0.286703492;
-    private final double petalsClearPosition = 0.6312255990000001;
-    private final double extendedPosition = 1.244;
-
-    private final double petalsClearSetpoint = 0.7;
-    private final double extendedSetpoint = extendedPosition;
-
     public final double WheelsInSpeed = -.8;
     public final double WheelsOutSpeed = .8;
 
@@ -45,21 +39,21 @@ public class Pickup implements PIDOutput {
     private void setMode(int mode) {
         switch (mode) {
             case IN:
-                controller.setSetpoint(petalsClearSetpoint);
+                controller.setSetpoint(Calibration.pickupClearSetpoint);
                 break;
             case OUT:
-                controller.setSetpoint(extendedSetpoint);
+                controller.setSetpoint(Calibration.pickupExtendedSetpoint);
                 break;
         }
         this.mode = mode;
     }
 
     private void setPickup(double value) {
-        if (positionSensor.get() > extendedPosition && value < 0) {
+        if (positionSensor.get() > Calibration.pickupExtendedLimit && value < 0) {
             armMotor.set(0);
             return;
         }
-        if (positionSensor.get() < retractedPosition && value > 0) {
+        if (positionSensor.get() < Calibration.pickupRetractedLimit && value > 0) {
             armMotor.set(0);
             return;
         }
@@ -74,11 +68,11 @@ public class Pickup implements PIDOutput {
     }
 
     public boolean isClear() {
-        return positionSensor.get() > petalsClearPosition;
+        return positionSensor.get() > Calibration.pickupClearLimit;
     }
 
     public boolean isDown() {
-        return positionSensor.get() > extendedPosition;
+        return positionSensor.get() > Calibration.pickupExtendedLimit;
     }
 
     public void pickupIn() {
