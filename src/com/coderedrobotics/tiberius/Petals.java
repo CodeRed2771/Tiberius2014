@@ -3,6 +3,7 @@ package com.coderedrobotics.tiberius;
 import com.coderedrobotics.tiberius.libs.DerivativeCalculator;
 import com.coderedrobotics.tiberius.libs.SmartDigitalInput;
 import com.coderedrobotics.tiberius.libs.dash.DashBoard;
+import com.coderedrobotics.tiberius.statics.Calibration;
 import com.coderedrobotics.tiberius.statics.DashboardDriverPlugin;
 import com.coderedrobotics.tiberius.statics.Wiring;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
@@ -24,15 +25,10 @@ public class Petals {
     private final SmartDigitalInput leftExtend;
     private final SmartDigitalInput rightExtend;
     //POTS
-    private final AnalogPotentiometer leftPotentiometer;
-    private final AnalogPotentiometer rightPotentiometer;
+    public final AnalogPotentiometer leftPotentiometer;
+    public final AnalogPotentiometer rightPotentiometer;
     private final DerivativeCalculator leftDerivativeCalculator;
     private final DerivativeCalculator rightDerivativeCalculator;
-    // STRING POT CALIBRATIONS
-    private final double leftOuterLimit = 2.250603587;
-    private final double leftInnerLimit = 2.821572935;
-    private final double rightOuterLimit = 2.374034308;
-    private final double rightInnerLimit = 2.631222508;
     //LIMITS
     private final double pedalsInLimit = -0.7;
     private final double pedalsOutLimit = 0.9;
@@ -134,8 +130,6 @@ public class Petals {
                 petalMotorLeft.set(0);
             } else if (speed > 0 && leftIsClosed()) {
                 petalMotorLeft.set(0);
-            } else if (speed > 0 && Math.abs(leftPotChange()) < 0.0002) {
-                //setLeft(manualOpenSpeed);
             } else {
                 petalMotorLeft.set(speed);
             }
@@ -150,8 +144,6 @@ public class Petals {
                 petalMotorRight.set(0);
             } else if (speed > 0 && rightIsClosed()) {
                 petalMotorRight.set(0);
-            } else if (speed > 0 && Math.abs(rightPotChange()) < 0.0002) {
-                //setRight(manualOpenSpeed);
             } else {
                 petalMotorRight.set(speed);
             }
@@ -165,19 +157,19 @@ public class Petals {
     }
 
     public boolean leftIsOpen() {
-        return !leftExtend.get() || (getLeftPot() > pedalsOutLimit);
+        return !leftExtend.get() || (leftPotentiometer.get() < Calibration.leftOuterLimit);
     }
 
     public boolean rightIsOpen() {
-        return rightExtend.get() || (getRightPot() > pedalsOutLimit);
+        return rightExtend.get() || (rightPotentiometer.get() < Calibration.rightOuterLimit);
     }
 
     public boolean leftIsClosed() {
-        return getLeftPot() < pedalsInLimit;
+        return leftPotentiometer.get() > Calibration.leftInnerLimit;
     }
 
     public boolean rightIsClosed() {
-        return getRightPot() < pedalsInLimit;
+        return rightPotentiometer.get() > Calibration.rightInnerLimit;
     }
 
     public boolean bothAreOpen() {
@@ -192,25 +184,17 @@ public class Petals {
         return (((d - low) / dif) * 2) - 1;
     }
 
-    private double getLeftPot() {
-        return scale(
-                leftInnerLimit,
-                leftOuterLimit,
-                leftPotentiometer.get());
-    }
-
-    private double getRightPot() {
-        return scale(
-                rightInnerLimit,
-                rightOuterLimit,
-                rightPotentiometer.get());
-    }
-
-    private double leftPotChange() {
-        return leftDerivativeCalculator.calculate(getLeftPot());
-    }
-
-    private double rightPotChange() {
-        return rightDerivativeCalculator.calculate(getRightPot());
-    }
+//    private double getLeftPot() {
+//        return scale(
+//                leftInnerLimit,
+//                leftOuterLimit,
+//                leftPotentiometer.get());
+//    }
+//
+//    private double getRightPot() {
+//        return scale(
+//                rightInnerLimit,
+//                rightOuterLimit,
+//                rightPotentiometer.get());
+//    }
 }

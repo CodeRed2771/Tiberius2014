@@ -31,7 +31,7 @@ public class Pickup implements PIDOutput {
         armMotor = new Talon(Wiring.pickupArmMotorPort);
         wheelsMotor = new Talon(Wiring.pickupWheelsMotorPort);
         positionSensor = new SmartAnalogPotentiometer(Wiring.armPositionSensorPort, Tiberius.enableVirtualInputs);
-        controller = new PIDControllerAIAO(-3, 0, 0, positionSensor, this, dashBoard, "pickup");
+        controller = new PIDControllerAIAO(-8, 0, 4.5, positionSensor, this, dashBoard, "pickup");
         controller.enable();
         mode = MANUAL;
     }

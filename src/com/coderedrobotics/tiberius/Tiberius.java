@@ -95,6 +95,9 @@ public class Tiberius extends IterativeRobot {
     }
 
     public void teleopPeriodic() {
+
+        System.out.println("left: " + petals.leftPotentiometer.get() + "\tright: " + petals.rightPotentiometer.get());
+
         // DRIVE OBJECT
         drive.move(keyMap.getLeftDriveAxis(), keyMap.getRightDriveAxis());
 
