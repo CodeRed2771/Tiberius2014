@@ -15,13 +15,8 @@ public class ChooChoo {
     SmartDigitalInput sensor;
     Talon chooChooMotor;
     public final double motorSpinSpeed = 1;
-    public final int shooterRetractedValue = 465;
-    private boolean isFiring = false;
-    private boolean isCocking = false;
-    private long fireTimeStamp = 0;
-
-    private boolean lastSentIsCocked;
-    private boolean lastSentIsCocking;
+    private boolean switchState = false;
+    private int stage = 2;
 
     public ChooChoo() {
         sensor = new SmartDigitalInput(Wiring.chooChooArmedSensor, Tiberius.enableVirtualInputs);
@@ -29,55 +24,46 @@ public class ChooChoo {
     }
 
     public void fire() {
-        isFiring = true;
-        fireTimeStamp = System.currentTimeMillis();
-    }
-
-    public void stop() {
-        isFiring = false;
-        chooChooMotor.set(0);
+        stage = 1;
     }
 
     public void cock() {
-        isCocking = true;
-        if (!isCocked()) {
-            chooChooMotor.set(motorSpinSpeed);
-        } else {
-            isCocking = false;
-        }
+        stage = 2;
     }
 
     public void step() {
-
         //  Debug.println("Infrared distance sensor" + positionSensor.getVoltage() + "    value: " + positionSensor.getValue());
-        if (isFiring || isCocking) {
-            chooChooMotor.set(motorSpinSpeed);
-        } else {
-            chooChooMotor.set(0);
-        }
-
-        if (isFiring && System.currentTimeMillis() - fireTimeStamp > 600) {
-            isFiring = false;
-            cock();
-        }
-
-        if (isCocking && isCocked()) {
-            isCocking = false;
-        }
-
-        if (lastSentIsCocked != isCocked()) {
-            DashboardDriverPlugin.updateCockingStatus(isCocking ? 1 : 0);
-        }
-        if (lastSentIsCocking != isCocking) {
-            DashboardDriverPlugin.updateCockedStatus(isCocked() ? 1 : 0);
+        switch (stage) {
+            case 0:
+                chooChooMotor.set(0);
+                break;
+            case 1:
+                chooChooMotor.set(motorSpinSpeed);
+                if (isReleased()) {
+                    stage = 2;
+                }
+                break;
+            case 2:
+                chooChooMotor.set(motorSpinSpeed);
+                if (sensor.get()) {
+                    stage = 0;
+                }
+                break;
         }
     }
 
     public boolean isCocked() {
-        return sensor.get();
+        return stage == 0;
     }
-    
-    public boolean isCocking(){
-        return isCocking;
+
+    public boolean isCocking() {
+        return stage == 2;
+    }
+
+    private boolean isReleased() {
+        boolean state = sensor.get();
+        boolean result = !state && switchState;
+        switchState = state;
+        return result;
     }
 }
