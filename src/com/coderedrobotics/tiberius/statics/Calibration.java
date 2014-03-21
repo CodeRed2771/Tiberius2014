@@ -17,8 +17,8 @@ public class Calibration {
     public static double pickupRetractedLimit = 0.2867;
     public static double pickupClearLimit = 0.6312;
     
-    public static double leftOuterLimit = 2.250603587;
-    public static double leftInnerLimit = 2.821572935;
-    public static double rightOuterLimit = 2.374034308;
-    public static double rightInnerLimit = 2.631222508;
+    public static double leftOuterLimit = 2.51;
+    public static double leftInnerLimit = 2.96;
+    public static double rightOuterLimit = 2.31;
+    public static double rightInnerLimit = 2.55;
 }
