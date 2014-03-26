@@ -12,12 +12,12 @@ package com.coderedrobotics.tiberius.statics;
  */
 public class Calibration {
     public static double pickupClearSetpoint = 0.7;
-    public static double pickupExtendedSetpoint = 1.244;
-    public static double pickupExtendedLimit = 1.244;
+    public static double pickupExtendedSetpoint = 1.191;
+    public static double pickupExtendedLimit = 1.195;
     public static double pickupRetractedLimit = 0.2867;
     public static double pickupClearLimit = 0.6312;
     
-    public static double leftOuterLimit = 2.51;
+    public static double leftOuterLimit = 2.51;//2.421
     public static double leftInnerLimit = 2.96;
     public static double rightOuterLimit = 2.31;
     public static double rightInnerLimit = 2.55;

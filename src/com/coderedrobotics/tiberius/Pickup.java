@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.PIDOutput;
 public class Pickup implements PIDOutput {
 
     private final Talon armMotor, wheelsMotor;
-    private final SmartAnalogPotentiometer positionSensor;
+    public final SmartAnalogPotentiometer positionSensor;
     private final PIDControllerAIAO controller;
     private int mode;
 
