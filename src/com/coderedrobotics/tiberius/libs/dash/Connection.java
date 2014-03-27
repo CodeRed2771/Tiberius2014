@@ -13,8 +13,15 @@ public class Connection implements SimpleSock {
     private SocketConnection connection;
     private InputStreamBuffer dataInputStream;
     private OutputStreamBuffer dataOutputStream;
+    
+    String address = "socket://10.27.71.5:1180";
 
-    public Connection() {
+    public Connection(String address) {
+        connection = null;
+        this.address = address;
+    }
+    
+    public Connection () {
         connection = null;
     }
 
@@ -36,15 +43,15 @@ public class Connection implements SimpleSock {
             }
             connection = null;
             while (connection == null) {//keeps trying to connect
-                System.out.println("Connecting");
+                System.out.println("Attempting Connection...");
                 try {
                     connection = (SocketConnection) Connector.open(
-                            "socket://10.27.71.9:1180", Connector.READ_WRITE);
+                            address, Connector.READ_WRITE);
 
-                    System.out.println("Connected");
+                    System.out.println("Dashboard Connected!");
                 } catch (IOException ex) {
                     connection = null;
-                    System.out.println("No Connection");
+                    System.out.println("No Dashboard Connection!");
                     try {
                         Thread.sleep(10000);
                     } catch (InterruptedException ex1) {

@@ -33,14 +33,14 @@ public class HallEncoder implements Runnable, PIDSource {
         this.b = b;
         this.name = name;
         this.dashBoard = dashBoard;
-        calculator = new DerivativeCalculator();
+        calculator = new DerivativeCalculator(50);
         aScaler = new Scaler();
         bScaler = new Scaler();
         xScaler = new Scaler();
         yScaler = new Scaler();
         thread = new Thread(this);
         thread.setPriority(Thread.MAX_PRIORITY);
-        restart(pollDelay);
+        //restart(pollDelay);
     }
 
     public HallEncoder(
@@ -125,55 +125,82 @@ public class HallEncoder implements Runnable, PIDSource {
         yScaler.checkCaps(y);
         x = xScaler.scale(x);
         y = yScaler.scale(y);
+        if (Double.isNaN(x)) {
+            x = 0;
+        }
+        if (Double.isNaN(y)) {
+            y = 0;
+        }
         if (dashBoard != null) {
             dashBoard.streamPacket(a, "HallRaw1a" + name);
             dashBoard.streamPacket(b, "HallRaw2a" + name);
             dashBoard.streamPacket(x, "HallWave1a" + name);
             dashBoard.streamPacket(y, "HallWave2a" + name);
         }
-        if (x == Double.NaN) {
-            x = 0;
-        }
-        if (y == Double.NaN) {
-            y = 0;
-        }
-        int phase;
-        double z;
-        if (x * x > y * y) {
-            if (x > 0) {
-                phase = 1;
-            } else {
-                phase = 3;
-            }
-            z = MathUtils.asin(y);
-        } else {
-            if (y > 0) {
-                phase = 2;
-            } else {
-                phase = 0;
-            }
-            z = MathUtils.asin(x);
-        }
-        z = z / Math.PI;
-        z = z / 2;
-        z += 0.125d;
-        if (phase > 1) {
-            z = 0.25d - z;
-        }
-        z += phase * 0.25;
-        double old = ((angle % 1) + 1) % 1;
-        double dif = z - old;
-        dif = ((dif % 1) + 1) % 1;
-        if (dif > 0.5) {
-            dif -= 1;
-        }
-        angle += dif;
 
-        if (angle == Double.NaN) {
-            System.exit(35);
+        double xPrecision, yPrecision, z;
+
+        boolean signy = y > 0;
+
+        ///0.5-(arcsin cos x)/(2pi)
+        y = MathUtils.asin(y);
+        yPrecision = Math.cos(y);
+        y = y / (2 * Math.PI);
+        if (x > 0) {
+            y = y + 0.25;
+        } else {
+            y = 0.75 - y;
+        }
+
+        x = MathUtils.asin(x);
+        xPrecision = Math.cos(x);
+        x = x / (2 * Math.PI);
+        if (signy) {
+            x = 0.5 - x;
+        } else {
+            x = x;
+        }
+        if (x < 0d) {
+            x += 1d;
+        }
+
+        if (Math.abs(x - y) > 0.5d) {
+            if (x < 0.5d) {
+                x += 1d;
+            } else {
+                y += 1d;
+            }
+        }
+
+        z = ((x * xPrecision) + (y * yPrecision)) / (xPrecision + yPrecision);
+        z = z % 1d;
+            //dashBoard.streamPacket(z, "HallRawOut" + name);
+
+        //System.out.println("Z: " + z);
+        if (Double.isNaN(z)) {
+            z = 0d;
+        }
+
+        double old = ((angle % 1d) + 1d) % 1d;
+        if (!(old > 0d && old < 1d)) {
+            old = 0;
+        }
+        //dashBoard.streamPacket(old, "HallRawOut" + name);
+        double dif = z - old;
+
+        dif = ((dif % 1d) + 1d) % 1d;
+        if (dif > 0.5d) {
+            dif -= 1d;
+        }
+        //dashBoard.streamPacket(dif, "HallRawOut" + name);
+
+        
+        angle = angle + dif;
+        if (Double.isNaN(angle)) {
+            angle = 0;
         }
         if (dashBoard != null) {
-            dashBoard.streamPacket(((angle % 1) + 1) % 1, "HallRawOut" + name);
+            dashBoard.streamPacket(((angle % 1d) + 1d) % 1d, "HallRawOut" + name);
         }
     }
 
@@ -213,8 +240,8 @@ public class HallEncoder implements Runnable, PIDSource {
 
     private class Scaler {
 
-        double high = 0, low = 0;
-        boolean init = false;
+        private double high = 0, low = 0;
+        private boolean init = false;
 
         private double checkCaps(double d) {
             if (!init) {
@@ -250,6 +277,10 @@ public class HallEncoder implements Runnable, PIDSource {
             if (d < 0) {
                 high += d;
             }
+        }
+
+        public double getRange() {
+            return high - low;
         }
     }
 }

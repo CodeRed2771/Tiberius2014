@@ -1,9 +1,9 @@
 package com.coderedrobotics.tiberius;
 
-import com.coderedrobotics.tiberius.libs.Debug;
+import com.coderedrobotics.tiberius.libs.SmartDigitalInput;
+import com.coderedrobotics.tiberius.statics.DashboardDriverPlugin;
 import com.coderedrobotics.tiberius.statics.Wiring;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.Talon;
 
 /**
@@ -12,25 +12,25 @@ import edu.wpi.first.wpilibj.Talon;
  */
 public class ChooChoo {
 
-    DigitalInput sensor;
+    SmartDigitalInput sensor;
     Talon chooChooMotor;
-    AnalogChannel positionSensor;
-    public final double motorSpinSpeed = .7;
+    public final double motorSpinSpeed = 1;
     public final int shooterRetractedValue = 465;
     private boolean isFiring = false;
     private boolean isCocking = false;
     private long fireTimeStamp = 0;
 
+    private boolean lastSentIsCocked;
+    private boolean lastSentIsCocking;
+
     public ChooChoo() {
-        sensor = new DigitalInput(Wiring.chooChooArmedSensor);
+        sensor = new SmartDigitalInput(Wiring.chooChooArmedSensor, Tiberius.enableVirtualInputs);
         chooChooMotor = new Talon(Wiring.chooChooMotorPort);
-        positionSensor = new AnalogChannel(Wiring.chooChooPositionSensorPort);
     }
 
     public void fire() {
         isFiring = true;
         fireTimeStamp = System.currentTimeMillis();
-        Debug.println("[INFO] Fire Button Pressed", Debug.STANDARD);
     }
 
     public void stop() {
@@ -56,18 +56,28 @@ public class ChooChoo {
             chooChooMotor.set(0);
         }
 
-        if (isFiring && System.currentTimeMillis() - fireTimeStamp > 300) {
+        if (isFiring && System.currentTimeMillis() - fireTimeStamp > 600) {
             isFiring = false;
             cock();
         }
-        
+
         if (isCocking && isCocked()) {
             isCocking = false;
         }
 
+        if (lastSentIsCocked != isCocked()) {
+            DashboardDriverPlugin.updateCockingStatus(isCocking ? 1 : 0);
+        }
+        if (lastSentIsCocking != isCocking) {
+            DashboardDriverPlugin.updateCockedStatus(isCocked() ? 1 : 0);
+        }
+    }
+
+    public boolean isCocked() {
+        return sensor.get();
     }
     
-    private boolean isCocked() {
-        return sensor.get();
+    public boolean isCocking(){
+        return isCocking;
     }
 }

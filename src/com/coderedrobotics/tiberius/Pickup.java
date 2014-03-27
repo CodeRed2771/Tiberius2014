@@ -1,158 +1,109 @@
 package com.coderedrobotics.tiberius;
 
-import com.coderedrobotics.tiberius.libs.Debug;
+import com.coderedrobotics.tiberius.libs.SmartAnalogPotentiometer;
+import com.coderedrobotics.tiberius.libs.dash.DashBoard;
+import com.coderedrobotics.tiberius.libs.dash.PIDControllerAIAO;
+import com.coderedrobotics.tiberius.statics.Calibration;
+import com.coderedrobotics.tiberius.statics.DashboardDriverPlugin;
 import com.coderedrobotics.tiberius.statics.Wiring;
 import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj.AnalogPotentiometer;
+import edu.wpi.first.wpilibj.PIDOutput;
 
 /**
  *
  * @author Michael
  */
-public class Pickup {
+public class Pickup implements PIDOutput {
 
-    Talon pickupArmMotor;
-    Talon spinWheelsMotor;
-    AnalogPotentiometer armPositionSensor;
-    private static final double pickupArmSensorRetractedReading = 1.07;// (.17v per inch)
-    private static final double pickupArmSensorExtendedReading = 1.48;
-    private static final double pickupArmSensorShootPosition = 1.36;
-    
-    public final double pickupWheelsForward = 0.75;
-    public final double pickupWheelsReverse = -0.75;
-    public final double pickupArmExtend = -0.12;
-    public final double pickupArmRetract = 0.12;
-    public final double pickupArmStop = 0;
-    private boolean isExtending;
-    private boolean isRetracting;
-    private boolean isMovingToShootPosition;
+    private final Talon armMotor, wheelsMotor;
+    public final SmartAnalogPotentiometer positionSensor;
+    private final PIDControllerAIAO controller;
+    private int mode;
 
-    /**
-     * The Pickup object controls the robot's Pickup arm and all of its
-     * components. This includes the pickup wheels and all sensors required to
-     * automate the pickup process.
-     * 
-     */
-    public Pickup() {
-        pickupArmMotor = new Talon(Wiring.pickupArmMotorPort);
-        spinWheelsMotor = new Talon(Wiring.pickupWheelsMotorPort);
-        armPositionSensor = new AnalogPotentiometer(Wiring.armPositionSensorPort);
-        isExtending = false;
-        isRetracting = false;
-        isMovingToShootPosition = false;
+    private static final int OUT = 2;
+    private static final int IN = 1;
+    private static final int MANUAL = 0;
+
+    public final double WheelsInSpeed = -.8;
+    public final double WheelsOutSpeed = .8;
+
+    public Pickup(DashBoard dashBoard) {
+        armMotor = new Talon(Wiring.pickupArmMotorPort);
+        wheelsMotor = new Talon(Wiring.pickupWheelsMotorPort);
+        positionSensor = new SmartAnalogPotentiometer(Wiring.armPositionSensorPort, Tiberius.enableVirtualInputs);
+        controller = new PIDControllerAIAO(-8, 0, 4.5, positionSensor, this, dashBoard, "pickup");
+        controller.enable();
+        mode = MANUAL;
     }
 
-    public void step() {
-        
-        System.out.println(armPositionSensor.get());
-
-        // now check if any movement is called for
-        if (isExtending) {
-            if (isExtended()) {
-                Debug.println("Pickup.togglePickup: EXTENSION COMPLETE", Debug.STANDARD);
-                isExtending = false;
-                pickupArmMotor.set(0);
-            } else {
-                pickupArmMotor.set(pickupArmExtend);
-            }
-        } else if (isRetracting) {
-            if (isRetracted()) {
-                Debug.println("Pickup.togglePickup: RETRACTION COMPLETE", Debug.STANDARD);
-                isRetracting = false;
-                stopWheels();
-                pickupArmMotor.set(0);
-            } else {
-                pickupArmMotor.set(pickupArmRetract);
-            }
-        } else if (isMovingToShootPosition) {
-            if (isSafeForShooting()) {                
-                Debug.println("Pickup.MovingToShoot: SHOOTING EXTENSION COMPLETE", Debug.STANDARD);
-                pickupArmMotor.set(0);
-                isMovingToShootPosition = false;
-            } else {
-                pickupArmMotor.set(pickupArmExtend);
-            }
+    private void setMode(int mode) {
+        switch (mode) {
+            case IN:
+                controller.setSetpoint(Calibration.pickupClearSetpoint);
+                break;
+            case OUT:
+                controller.setSetpoint(Calibration.pickupExtendedSetpoint);
+                break;
         }
-
-       // Debug.println("Pickup.Step armPos: " + armPositionSensor.get() + " isRetracted: " + isRetracted() + " isExtended: " + isExtended() + " isRetracting: " + isRetracting + " isExtending: " + isExtending, Debug.STANDARD);
+        this.mode = mode;
     }
 
-    public boolean isRetracted() {
-        return false; //we don't have pot
-        //return (armPositionSensor.get() <= pickupArmSensorRetractedReading);
+    private void setPickup(double value) {
+        if (positionSensor.get() > Calibration.pickupExtendedLimit && value < 0) {
+            armMotor.set(0);
+            return;
+        }
+        if (positionSensor.get() < Calibration.pickupRetractedLimit && value > 0) {
+            armMotor.set(0);
+            return;
+        }
+        armMotor.set(-value);
+        DashboardDriverPlugin.updatePickupMovingStatus(value);
     }
 
-    public boolean isExtended() {
-        return false; //we don't have pot
-        //return (armPositionSensor.get() >= pickupArmSensorExtendedReading);
-    }
-
-    public boolean isSafeForShooting() {
-        return (armPositionSensor.get() >= pickupArmSensorShootPosition);
-    }
-    public void setShootingPosition() {
-        isRetracting = false;
-        isExtending = false;
-        isMovingToShootPosition = true;
-    }
-    public void movePickup(double value) {
-        /*
-         * if the value is 0, we don't want to pass it through if we are
-         * currently extending or retracting automatically because the 0 is
-         * coming from the main program due to lack of controller input.
-         */
-        if (value == 0) {
-            if (!(isExtending || isRetracting)) {
-                pickupArmMotor.set(value);
-            }
-        } else {
-            if (value == pickupArmExtend) {
-                if (isExtended()) {
-                    pickupArmMotor.set(0); // we are extended, so stop the motor
-                } else {
-                    pickupArmMotor.set(value);
-                }
-            } else if (value == pickupArmRetract) {
-                if (isRetracted()) {
-                    pickupArmMotor.set(0); // we are retracted, so stop the motor
-                } else {
-                    pickupArmMotor.set(value);
-                }
-            }
+    public void pidWrite(double d) {
+        if (mode != MANUAL) {
+            setPickup(d);
         }
     }
 
-    public void extendPickup() {
-        isExtending = true;
-        isRetracting = false;
-        spinWheels(pickupWheelsForward);
+    public boolean isClear() {
+        return positionSensor.get() > Calibration.pickupClearLimit;
     }
 
-    public void retractPickup() {
-        isRetracting = true;
-        isExtending = false;
+    public boolean isDown() {
+        return positionSensor.get() > Calibration.pickupExtendedLimit;
     }
 
-    public void togglePickup() {
-        if (isExtending || isExtended()) {
-            Debug.println("Pickup.togglePickup: Now RETRACTING", Debug.STANDARD);
-            retractPickup();
-        } else {
-            Debug.println("Pickup.togglePickup: Now EXTENDING", Debug.STANDARD);
+    public void pickupIn() {
+        setMode(IN);
+    }
 
-            extendPickup();
+    public void pickupOut() {
+        setMode(OUT);
+    }
+
+    public void movePickup(double speed) {
+        if (mode == MANUAL || speed != 0) {
+            setMode(MANUAL);
+            setPickup(speed);
         }
     }
 
-    public void spinWheels(double direction) {
-        spinWheelsMotor.set(direction);
+    public void wheelsIn() {
+        setWheels(WheelsInSpeed);
+    }
+
+    public void wheelsOut() {
+        setWheels(WheelsOutSpeed);
     }
 
     public void stopWheels() {
-        spinWheelsMotor.set(0);
+        setWheels(0);
+    }
 
-        isRetracting = false;    // for safety sake, we'll stop the arm too
-        isExtending = false;     // for safety sake, we'll stop the arm too
-        pickupArmMotor.set(0);   // for safety sake, we'll stop the arm too
+    public void setWheels(double speed) {
+        wheelsMotor.set(speed);
+        DashboardDriverPlugin.updatePickupWheelsStatus(speed);
     }
 }

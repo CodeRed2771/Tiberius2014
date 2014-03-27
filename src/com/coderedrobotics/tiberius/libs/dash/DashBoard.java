@@ -17,11 +17,13 @@ public class DashBoard {
     JaguarMonitor jaguarMonitor;
     DashBoard dashBoard;
     SidecarMonitor sidecarMonitor;
+    
+    private static String connectionAddress;
 
     public DashBoard() {
         dataStreamingModule = new DataStreamingModule();
         jaguarMonitor = new JaguarMonitor(dataStreamingModule);
-        connection = new Connection();
+        connection = new Connection(connectionAddress);
         synchronizedRegisterArray = new SynchronizedRegisterArray();
         communicationsThread = new CommunicationsThread(
                 connection,
@@ -30,6 +32,10 @@ public class DashBoard {
         sidecarMonitor = new SidecarMonitor(dataStreamingModule, 12);
     }
 
+    public static void setConnectionAddress(String address){
+        connectionAddress = address;
+    }
+    
     public void streamPacket(double val, String name) {
         dataStreamingModule.sendPacket(val, name);
     }
