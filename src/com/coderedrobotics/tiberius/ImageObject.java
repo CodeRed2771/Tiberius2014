@@ -73,12 +73,6 @@ public class ImageObject implements Runnable {
                 particles.copyInto(thresholdImage.getOrderedParticleAnalysisReports());
 
                 Debug.println("Number of particles: " + new Integer(particles.size()), Debug.STANDARD/*change to ex*/);
-    //endTime = System.currentTimeMillis();106
-
-                //imageAcquisitionMS = endTime - startTime;
-                //System.out.println("Image Acquisition Time: " + imageAcquisitionMS);
-                //System.out.println("particles found: " + particles.length);
-                // Sort the particles so the one highest in the image is first
                 for (int i = 0; i < particles.size(); ++i) {
                     if (((ParticleAnalysisReport) particles.elementAt(i)).particleArea
                             > areaThreshold) {
