@@ -1,9 +1,7 @@
 package com.coderedrobotics.tiberius;
 
 import com.coderedrobotics.tiberius.libs.SmartDigitalInput;
-import com.coderedrobotics.tiberius.statics.DashboardDriverPlugin;
 import com.coderedrobotics.tiberius.statics.Wiring;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Talon;
 
 /**
@@ -33,6 +31,7 @@ public class ChooChoo {
 
     public void step() {
         //  Debug.println("Infrared distance sensor" + positionSensor.getVoltage() + "    value: " + positionSensor.getValue());
+        System.out.println("Stage: " + stage + "\tsensor: " + sensor.get());
         switch (stage) {
             case 0:
                 chooChooMotor.set(0);
@@ -45,6 +44,7 @@ public class ChooChoo {
                 break;
             case 2:
                 chooChooMotor.set(motorSpinSpeed);
+                switchState = false;
                 if (sensor.get()) {
                     stage = 0;
                 }
@@ -63,7 +63,9 @@ public class ChooChoo {
     private boolean isReleased() {
         boolean state = sensor.get();
         boolean result = !state && switchState;
-        switchState = state;
+        if (state) {
+            switchState = state;
+        }
         return result;
     }
 }
