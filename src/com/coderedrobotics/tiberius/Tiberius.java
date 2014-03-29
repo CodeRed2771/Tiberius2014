@@ -2,6 +2,7 @@ package com.coderedrobotics.tiberius;
 
 import com.coderedrobotics.tiberius.libs.Debug;
 import com.coderedrobotics.tiberius.libs.dash.DashBoard;
+import com.coderedrobotics.tiberius.statics.Calibration;
 import com.coderedrobotics.tiberius.statics.DashboardDriverPlugin;
 import com.coderedrobotics.tiberius.statics.KeyMap;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -14,6 +15,7 @@ public class Tiberius extends IterativeRobot {
     ChooChoo chooChoo;
     Pickup pickup;
     Petals petals;
+    Calibration calibration;
 
     int testStage = 0;
     long testStartTime = 0;
@@ -41,6 +43,7 @@ public class Tiberius extends IterativeRobot {
         chooChoo = new ChooChoo();
         pickup = new Pickup(dashBoard);
         petals = new Petals(dashBoard);
+        calibration = new Calibration(pickup, petals, dashBoard);
     }
 
     public void autonomousInit() {
@@ -95,8 +98,9 @@ public class Tiberius extends IterativeRobot {
     }
 
     public void teleopPeriodic() {
+        System.out.println(pickup.positionSensor.get());
 
-        System.out.println("left: " + petals.leftPotentiometer.get() + "\tright: " + petals.rightPotentiometer.get());
+//        System.out.println("left: " + petals.leftPotentiometer.get() + "\tright: " + petals.rightPotentiometer.get());
         //System.out.println("pickup: " + pickup.positionSensor.get());
 
         // DRIVE OBJECT
