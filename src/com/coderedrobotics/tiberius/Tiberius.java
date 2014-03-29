@@ -14,6 +14,7 @@ public class Tiberius extends IterativeRobot {
     ChooChoo chooChoo;
     Pickup pickup;
     Petals petals;
+    ImageObject imageObject;
 
     int testStage = 0;
     long testStartTime = 0;
@@ -29,6 +30,9 @@ public class Tiberius extends IterativeRobot {
     // NO REALLY.... please disable in real matches..... or else.
 
     public void robotInit() {
+        
+        imageObject = new ImageObject();
+        
         Debug.println("[INFO] TIBERIUS CODE DOWNLOAD COMPLETE.", Debug.STANDARD);
 
         DashBoard.setConnectionAddress("socket://10.27.71.5:1180");
@@ -55,19 +59,21 @@ public class Tiberius extends IterativeRobot {
     public void autonomousPeriodic() {
         switch (autoStage) {
             case 0:
+                
+            case 1:
                 drive.move(-0.8, -0.8);
                 petals.setEnabledState(true);
                 if (autoStartTime < System.currentTimeMillis()) {
                     autoStage++;
                 }
                 break;
-            case 1:
+            case 2:
                 drive.move(0, 0);
                 drive.enableSpeedControllers();
                 chooChoo.fire();
                 autoStage++;
                 break;
-            case 2:
+            case 3:
                 pickup.stopWheels();
                 break;
         }
@@ -96,7 +102,7 @@ public class Tiberius extends IterativeRobot {
 
     public void teleopPeriodic() {
 
-        System.out.println("left: " + petals.leftPotentiometer.get() + "\tright: " + petals.rightPotentiometer.get());
+        //System.out.println("left: " + petals.leftPotentiometer.get() + "\tright: " + petals.rightPotentiometer.get());
         //System.out.println("pickup: " + pickup.positionSensor.get());
 
         // DRIVE OBJECT

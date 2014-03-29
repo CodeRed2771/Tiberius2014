@@ -14,16 +14,16 @@ public class ImageObject implements Runnable {
 
     private AxisCamera camera;
     private Thread thread;
-    private boolean gettingImage = false;
+    private boolean gettingImage = true;
     private boolean hot = false;
     private final int areaThreshold = 25;
-    private final int brightnessThreshold = 160;
+    private final int brightnessThreshold = 20;
 
     ImageObject() {
         thread = new Thread(this);
         try {
             camera = AxisCamera.getInstance();
-            //myCamera.writeResolution(AxisCamera.ResolutionT.k320x240);
+            camera.writeResolution(AxisCamera.ResolutionT.k320x240);
             thread.start();
         } catch (Exception ex) {
             Debug.println("CAMERA - FAILED TO INITIALIZE", Debug.WARNING);
@@ -37,10 +37,15 @@ public class ImageObject implements Runnable {
 
                 long startTime = System.currentTimeMillis();
                 hot = GetImage();
-                Debug.println("Image Acquisition Time: "
-                        + (System.currentTimeMillis() - startTime),
-                        Debug.EXTENDED);
+                System.out.println(hot);
+//                Debug.println("Image Acquisition Time: "
+//                        + (System.currentTimeMillis() - startTime),
+//                        Debug.EXTENDED);
                 cancelRequest();
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ex) {
+                }
             }
             try {
                 Thread.sleep(100);
@@ -49,7 +54,7 @@ public class ImageObject implements Runnable {
         }
     }
 
-    public boolean GetImage() {
+    private boolean GetImage() {
 
         if (camera != null && DriverStation.getInstance().isEnabled()) {
 
@@ -59,7 +64,8 @@ public class ImageObject implements Runnable {
                 image = camera.getImage();
             } catch (AxisCameraException ex) {
             } catch (NIVisionException ex) {
-                Debug.println("error getting image", Debug.WARNING);
+                //Debug.println("error getting image", Debug.WARNING);
+                System.out.println("Error 4923");
             }
 
             Vector particles = new Vector();
@@ -75,7 +81,10 @@ public class ImageObject implements Runnable {
                 Debug.println("Number of particles: " + new Integer(particles.size()), Debug.STANDARD/*change to ex*/);
                 for (int i = 0; i < particles.size(); ++i) {
                     if (((ParticleAnalysisReport) particles.elementAt(i)).particleArea
-                            > areaThreshold) {
+                            > areaThreshold
+                            && ((ParticleAnalysisReport) particles.elementAt(i)).boundingRectWidth
+                            / ((ParticleAnalysisReport) particles.elementAt(i)).boundingRectHeight
+                            > 2d) {
                         Debug.println("Accepted" + i, Debug.STANDARD/*change to ex*/);
                         thresholdImage.free();
                         image.free();
@@ -94,12 +103,12 @@ public class ImageObject implements Runnable {
     }
 
     public void cancelRequest() {
-        gettingImage = false;
+        //gettingImage = false;
     }
 
     public void request() {
         gettingImage = true;
-        reset();
+        //reset();//////////////////////////////////////////////////////////////////////
     }
 
     public boolean isHot() {
