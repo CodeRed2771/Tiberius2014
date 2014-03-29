@@ -229,7 +229,6 @@ public class Tiberius extends IterativeRobot {
                 pickup.stopWheels();
                 pickup.movePickup(0);
                 petals.stop();
-                chooChoo.stop();
                 drive.move(0, 0);
                 break;
         }
