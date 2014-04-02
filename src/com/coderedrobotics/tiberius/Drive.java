@@ -43,7 +43,7 @@ public class Drive {
     public void move(double left, double right) {
         System.out.println("Swag: " + leftEncoder.pidGet() + "\t" + rightEncoder.pidGet());
         if (speed) {
-            leftController.setSetpoint((-left * Math.abs(left)) * 0.1);
+            leftController.setSetpoint((-left * Math.abs(left)) * 0.05);
             if (leftController.getSetpoint() > 0) {
                 leftController.setOutputRange(0, 1);
             } else if (leftController.getSetpoint() < 0) {
@@ -51,7 +51,7 @@ public class Drive {
             } else {
                 leftController.setOutputRange(0, 0);
             }
-            rightController.setSetpoint((right * Math.abs(right)) * 0.1);
+            rightController.setSetpoint((right * Math.abs(right)) * 0.05);
             if (rightController.getSetpoint() > 0) {
                 rightController.setOutputRange(0, 1);
             } else if (rightController.getSetpoint() < 0) {
