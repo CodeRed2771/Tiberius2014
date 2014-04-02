@@ -14,14 +14,15 @@ public class ImageObject implements Runnable {
 
     private AxisCamera camera;
     private Thread thread;
-    private boolean gettingImage = true;
+    private boolean gettingImage = false;
     private boolean hot = false;
     private final int areaThreshold = 25;
-    private final int brightnessThreshold = 20;
+    private final int brightnessThreshold = 30;
 
     ImageObject() {
         thread = new Thread(this);
         try {
+            //System.out.println("How are you again?");
             camera = AxisCamera.getInstance();
             camera.writeResolution(AxisCamera.ResolutionT.k320x240);
             thread.start();
@@ -38,14 +39,10 @@ public class ImageObject implements Runnable {
                 long startTime = System.currentTimeMillis();
                 hot = GetImage();
                 System.out.println(hot);
-//                Debug.println("Image Acquisition Time: "
-//                        + (System.currentTimeMillis() - startTime),
-//                        Debug.EXTENDED);
+                Debug.println("Image Acquisition Time: "
+                        + (System.currentTimeMillis() - startTime),
+                        Debug.STANDARD);
                 cancelRequest();
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException ex) {
-                }
             }
             try {
                 Thread.sleep(100);
@@ -64,11 +61,10 @@ public class ImageObject implements Runnable {
                 image = camera.getImage();
             } catch (AxisCameraException ex) {
             } catch (NIVisionException ex) {
-                //Debug.println("error getting image", Debug.WARNING);
-                System.out.println("Error 4923");
+                Debug.println("error getting image", Debug.WARNING);
             }
 
-            Vector particles = new Vector();
+            ParticleAnalysisReport[] particles;
 
             try {
                 BinaryImage thresholdImage
@@ -76,21 +72,21 @@ public class ImageObject implements Runnable {
                                 brightnessThreshold, 255,
                                 brightnessThreshold, 255,
                                 brightnessThreshold, 255);   // keep only bright objects
-                particles.copyInto(thresholdImage.getOrderedParticleAnalysisReports());
+                particles = thresholdImage.getOrderedParticleAnalysisReports();
 
-                Debug.println("Number of particles: " + new Integer(particles.size()), Debug.STANDARD/*change to ex*/);
-                for (int i = 0; i < particles.size(); ++i) {
-                    if (((ParticleAnalysisReport) particles.elementAt(i)).particleArea
+                Debug.println("Number of particles: " + new Integer(particles.length), Debug.EXTENDED);
+                for (int i = 0; i < particles.length; ++i) {
+                    if (((ParticleAnalysisReport) particles[i]).particleArea
                             > areaThreshold
-                            && ((ParticleAnalysisReport) particles.elementAt(i)).boundingRectWidth
-                            / ((ParticleAnalysisReport) particles.elementAt(i)).boundingRectHeight
+                            && ((ParticleAnalysisReport) particles[i]).boundingRectWidth
+                            / ((ParticleAnalysisReport) particles[i]).boundingRectHeight
                             > 2d) {
-                        Debug.println("Accepted" + i, Debug.STANDARD/*change to ex*/);
+                        Debug.println("Accepted" + i, Debug.EXTENDED);
                         thresholdImage.free();
                         image.free();
                         return true;
                     } else {
-                        Debug.println("Rejected" + i, Debug.STANDARD/*change to ex*/);
+                        Debug.println("Rejected" + i, Debug.EXTENDED);
                     }
                 }
 
@@ -103,12 +99,12 @@ public class ImageObject implements Runnable {
     }
 
     public void cancelRequest() {
-        //gettingImage = false;
+        gettingImage = false;
     }
 
     public void request() {
         gettingImage = true;
-        //reset();//////////////////////////////////////////////////////////////////////
+        reset();
     }
 
     public boolean isHot() {

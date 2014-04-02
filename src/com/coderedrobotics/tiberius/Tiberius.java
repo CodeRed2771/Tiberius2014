@@ -30,15 +30,14 @@ public class Tiberius extends IterativeRobot {
     // NO REALLY.... please disable in real matches..... or else.
 
     public void robotInit() {
-        
-        imageObject = new ImageObject();
-        
+
         Debug.println("[INFO] TIBERIUS CODE DOWNLOAD COMPLETE.", Debug.STANDARD);
 
         DashBoard.setConnectionAddress("socket://10.27.71.5:1180");
         dashBoard = new DashBoard();// Comment out this line to deactivate the dashboard.
         DashboardDriverPlugin.init(dashBoard);
 
+        imageObject = new ImageObject();
         keyMap = new KeyMap();
         keyMap.setSingleControllerMode(false); // For ease of testing
         drive = new Drive(dashBoard);
@@ -49,31 +48,47 @@ public class Tiberius extends IterativeRobot {
 
     public void autonomousInit() {
         autoStage = 0;
-        autoStartTime = System.currentTimeMillis() + 1800;
+        autoStartTime = System.currentTimeMillis();
         drive.disableSpeedControllers();
         pickup.pickupIn();
         petals.open();
+        petals.setEnabledState(true);
         pickup.wheelsIn();
+        imageObject.reset();
+        imageObject.request();
     }
 
     public void autonomousPeriodic() {
         switch (autoStage) {
             case 0:
-                
-            case 1:
-                drive.move(-0.8, -0.8);
-                petals.setEnabledState(true);
-                if (autoStartTime < System.currentTimeMillis()) {
+                if (autoStartTime < System.currentTimeMillis() - 1000) {
                     autoStage++;
                 }
                 break;
+            case 1:
+                if (autoStartTime < System.currentTimeMillis() - 5000
+                        || imageObject.isHot()) {
+                    autoStage++;
+                    autoStartTime = System.currentTimeMillis();
+                }
+                break;
             case 2:
-                drive.move(0, 0);
-                drive.enableSpeedControllers();
-                chooChoo.fire();
-                autoStage++;
+                drive.move(-0.8, -0.8);
+                if (autoStartTime < System.currentTimeMillis() - 200) {
+                    autoStage++;
+                }
                 break;
             case 3:
+                drive.enableSpeedControllers();
+                drive.move(-0.8, -0.8);
+                if (autoStartTime < System.currentTimeMillis() - 1800) {
+                    autoStage++;
+                    chooChoo.fire();
+                }
+                break;
+            case 4:
+                drive.move(0, 0);
+                drive.enableSpeedControllers();
                 pickup.stopWheels();
                 break;
         }
@@ -104,7 +119,6 @@ public class Tiberius extends IterativeRobot {
 
         //System.out.println("left: " + petals.leftPotentiometer.get() + "\tright: " + petals.rightPotentiometer.get());
         //System.out.println("pickup: " + pickup.positionSensor.get());
-
         // DRIVE OBJECT
         drive.move(keyMap.getLeftDriveAxis(), keyMap.getRightDriveAxis());
 
