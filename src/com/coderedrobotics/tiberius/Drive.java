@@ -30,17 +30,18 @@ public class Drive {
         leftEncoder = new HallEncoder(Wiring.leftDriveEncoderAPort,
                 Wiring.leftDriveEncoderBPort, dashBoard, "left");
         leftController = new PIDControllerAIAO(
-                30, 0, 0, leftEncoder, left, 0.005, dashBoard, "left");
+                60, 0, 0, leftEncoder, left, 0.005, dashBoard, "left");
         leftController.enable();
         right = new Talon(Wiring.rightDriveTalonPort);
         rightEncoder = new HallEncoder(Wiring.rightDriveEncoderAPort,
                 Wiring.rightDriveEncoderBPort, dashBoard, "right");
         rightController = new PIDControllerAIAO(
-                30, 0, 0, rightEncoder, right, 0.005, dashBoard, "right");
+                60, 0, 0, rightEncoder, right, 0.005, dashBoard, "right");
         rightController.enable();
     }
 
     public void move(double left, double right) {
+        System.out.println("Swag: " + leftEncoder.pidGet() + "\t" + rightEncoder.pidGet());
         if (speed) {
             leftController.setSetpoint((-left * Math.abs(left)) * 0.05);
             if (leftController.getSetpoint() > 0) {
