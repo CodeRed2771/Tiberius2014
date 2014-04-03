@@ -30,7 +30,6 @@ public class Tiberius extends IterativeRobot {
     // NO REALLY.... please disable in real matches..... or else.
 
     public void robotInit() {
-
         Debug.println("[INFO] TIBERIUS CODE DOWNLOAD COMPLETE.", Debug.STANDARD);
 
         DashBoard.setConnectionAddress("socket://10.27.71.5:1180");
@@ -73,15 +72,15 @@ public class Tiberius extends IterativeRobot {
                 }
                 break;
             case 2:
-                drive.move(-0.8, -0.8);
+                drive.move(-0.67, -0.7);
                 if (autoStartTime < System.currentTimeMillis() - 200) {
                     autoStage++;
                 }
                 break;
             case 3:
                 drive.enableSpeedControllers();
-                drive.move(-0.8, -0.8);
-                if (autoStartTime < System.currentTimeMillis() - 1800) {
+                drive.move(-0.67, -0.7);
+                if (autoStartTime < System.currentTimeMillis() - 1600) {
                     autoStage++;
                     chooChoo.fire();
                 }
@@ -245,7 +244,6 @@ public class Tiberius extends IterativeRobot {
                 pickup.stopWheels();
                 pickup.movePickup(0);
                 petals.stop();
-                chooChoo.stop();
                 drive.move(0, 0);
                 break;
         }
