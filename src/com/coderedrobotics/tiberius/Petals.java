@@ -157,19 +157,19 @@ public class Petals {
     }
 
     public boolean leftIsOpen() {
-        return !leftExtend.get() || (leftPotentiometer.get() < Calibration.leftOuterLimit);
+        return !leftExtend.get() || (leftPotentiometer.get() < Calibration.petalLeftOuterLimit);
     }
 
     public boolean rightIsOpen() {
-        return rightExtend.get() || (rightPotentiometer.get() < Calibration.rightOuterLimit);
+        return rightExtend.get() || (rightPotentiometer.get() < Calibration.petalRightOuterLimit);
     }
 
     public boolean leftIsClosed() {
-        return leftPotentiometer.get() > Calibration.leftInnerLimit;
+        return leftPotentiometer.get() > Calibration.petalLeftInnerLimit;
     }
 
     public boolean rightIsClosed() {
-        return rightPotentiometer.get() > Calibration.rightInnerLimit;
+        return rightPotentiometer.get() > Calibration.petalRightInnerLimit;
     }
 
     public boolean bothAreOpen() {
