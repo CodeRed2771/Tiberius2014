@@ -54,7 +54,7 @@ public class Tiberius extends IterativeRobot {
         pickup.pickupIn();
         petals.open();
         pickup.wheelsIn();
-        timer.resetTimer(500);
+        timer.resetTimer(700);
     }
 
     public void autonomousPeriodic() {
@@ -68,7 +68,7 @@ public class Tiberius extends IterativeRobot {
                 }
                 break;
             case 1:
-                drive.move(-0.637, -0);
+                drive.move(-0.7, -0.7);
                 if (timer.ready()) {
                     if (imageObject.isHot()) {
                         timer.resetTimer(100);

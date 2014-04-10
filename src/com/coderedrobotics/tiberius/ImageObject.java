@@ -17,7 +17,7 @@ public class ImageObject implements Runnable {
     private boolean gettingImage = false;
     private boolean hot = false;
     private final int areaThreshold = 25;
-    private final int brightnessThreshold = 30;
+    private final int brightnessThreshold = 50;
 
     ImageObject() {
         thread = new Thread(this);
@@ -31,12 +31,14 @@ public class ImageObject implements Runnable {
     public void run() {
         camera = AxisCamera.getInstance();
         camera.writeResolution(AxisCamera.ResolutionT.k320x240);
+        Debug.println("CAMERA INITIALIZED", Debug.STANDARD);
         while (true) {
             if (gettingImage) {
                 Debug.println("getting image", Debug.STANDARD);
 
                 long startTime = System.currentTimeMillis();
                 hot = GetImage();
+                Debug.printDriverStationMessage(3, 1, String.valueOf(hot));
                 System.out.println(String.valueOf(hot));
                 System.out.println("Image Acquisition Time: "
                         + String.valueOf(System.currentTimeMillis() - startTime));
@@ -74,7 +76,6 @@ public class ImageObject implements Runnable {
 
                 System.out.println("Number of particles: " + new Integer(particles.length));
                 for (int i = 0; i < particles.length; ++i) {
-                    System.out.println("Particle: " + particles[i] + "\tWidth: " + particles[i].boundingRectWidth);
                     if (((ParticleAnalysisReport) particles[i]).particleArea
                             > areaThreshold
                             && ((ParticleAnalysisReport) particles[i]).boundingRectWidth
@@ -83,12 +84,13 @@ public class ImageObject implements Runnable {
                         System.out.println("ACCEPTED: \tX: " + particles[i].center_mass_x + "\tY: " + particles[i].center_mass_y);
                         Debug.printDriverStationMessage(1, 1, particles[i].center_mass_x + " " + particles[i].center_mass_y);
                         Debug.printDriverStationMessage(2, 1, particles[i].boundingRectWidth + " " + particles[i].boundingRectHeight);
+                        System.out.println("Particle: " + particles[i] + "\tWidth: " + particles[i].boundingRectWidth);
                         Debug.println("Accepted" + i, Debug.EXTENDED);
                         thresholdImage.free();
                         image.free();
                         return true;
                     } else {
-                        Debug.println("Rejected" + i, Debug.EXTENDED);
+                        //Debug.println("Rejected" + i, Debug.EXTENDED);
                     }
                 }
 
