@@ -14,7 +14,7 @@ public class ChooChoo {
     Talon chooChooMotor;
     public final double motorSpinSpeed = 1;
     private boolean switchState = false;
-    private int stage = 2;
+    private int stage = 0;
 
     public ChooChoo() {
         sensor = new SmartDigitalInput(Wiring.chooChooArmedSensor, Tiberius.enableVirtualInputs);

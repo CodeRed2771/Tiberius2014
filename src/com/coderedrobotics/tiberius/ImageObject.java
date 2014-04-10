@@ -18,13 +18,10 @@ public class ImageObject implements Runnable {
     private boolean hot = false;
     private final int areaThreshold = 25;
     private final int brightnessThreshold = 30;
-    
+
     ImageObject() {
         thread = new Thread(this);
         try {
-            //System.out.println("How are you again?");
-            camera = AxisCamera.getInstance();
-            camera.writeResolution(AxisCamera.ResolutionT.k320x240);
             thread.start();
         } catch (Exception ex) {
             Debug.println("CAMERA - FAILED TO INITIALIZE", Debug.WARNING);
@@ -32,6 +29,8 @@ public class ImageObject implements Runnable {
     }
 
     public void run() {
+        camera = AxisCamera.getInstance();
+        camera.writeResolution(AxisCamera.ResolutionT.k320x240);
         while (true) {
             if (gettingImage) {
                 Debug.println("getting image", Debug.STANDARD);

@@ -21,7 +21,7 @@ public class Calibration implements SRAListener {
     // PETALS
     public static double petalLeftOuterLimit = 2.51;//2.421
     public static double petalLeftInnerLimit = 2.96;
-    public static double petalRightOuterLimit = 2.31;
+    public static double petalRightOuterLimit = 2.26;
     public static double petalRightInnerLimit = 2.55;
 
     // TEMPS

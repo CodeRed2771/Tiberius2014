@@ -54,7 +54,7 @@ public class Tiberius extends IterativeRobot {
         pickup.pickupIn();
         petals.open();
         pickup.wheelsIn();
-        timer.resetTimer(150);
+        timer.resetTimer(500);
     }
 
     public void autonomousPeriodic() {
@@ -68,7 +68,7 @@ public class Tiberius extends IterativeRobot {
                 }
                 break;
             case 1:
-                drive.move(-0.637, -0.7);
+                drive.move(-0.637, -0);
                 if (timer.ready()) {
                     if (imageObject.isHot()) {
                         timer.resetTimer(100);
@@ -99,17 +99,17 @@ public class Tiberius extends IterativeRobot {
     }
 
     public void disabledInit() {
-        drive.enableSpeedControllers();
+        drive.disableSpeedControllers();
     }
 
     public void teleopInit() {
-        drive.enableSpeedControllers();
+        drive.disableSpeedControllers();
         chooChoo.cock();
     }
 
     public void teleopPeriodic() {
 
-        //System.out.println("left: " + petals.leftPotentiometer.get() + "\tright: " + petals.rightPotentiometer.get());
+        System.out.println("left: " + petals.leftPotentiometer.get() + "\tright: " + petals.rightPotentiometer.get());
         //System.out.println("pickup: " + pickup.positionSensor.get());
         // DRIVE OBJECT
         drive.move(keyMap.getLeftDriveAxis(), keyMap.getRightDriveAxis());
