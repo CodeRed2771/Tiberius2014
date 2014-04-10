@@ -18,7 +18,7 @@ public class ImageObject implements Runnable {
     private boolean hot = false;
     private final int areaThreshold = 25;
     private final int brightnessThreshold = 30;
-
+    
     ImageObject() {
         thread = new Thread(this);
         try {
@@ -38,10 +38,9 @@ public class ImageObject implements Runnable {
 
                 long startTime = System.currentTimeMillis();
                 hot = GetImage();
-                System.out.println(hot);
-                Debug.println("Image Acquisition Time: "
-                        + (System.currentTimeMillis() - startTime),
-                        Debug.STANDARD);
+                System.out.println(String.valueOf(hot));
+                System.out.println("Image Acquisition Time: "
+                        + String.valueOf(System.currentTimeMillis() - startTime));
                 cancelRequest();
             }
             try {
@@ -74,13 +73,17 @@ public class ImageObject implements Runnable {
                                 brightnessThreshold, 255);   // keep only bright objects
                 particles = thresholdImage.getOrderedParticleAnalysisReports();
 
-                Debug.println("Number of particles: " + new Integer(particles.length), Debug.EXTENDED);
+                System.out.println("Number of particles: " + new Integer(particles.length));
                 for (int i = 0; i < particles.length; ++i) {
+                    System.out.println("Particle: " + particles[i] + "\tWidth: " + particles[i].boundingRectWidth);
                     if (((ParticleAnalysisReport) particles[i]).particleArea
                             > areaThreshold
                             && ((ParticleAnalysisReport) particles[i]).boundingRectWidth
                             / ((ParticleAnalysisReport) particles[i]).boundingRectHeight
                             > 2d) {
+                        System.out.println("ACCEPTED: \tX: " + particles[i].center_mass_x + "\tY: " + particles[i].center_mass_y);
+                        Debug.printDriverStationMessage(1, 1, particles[i].center_mass_x + " " + particles[i].center_mass_y);
+                        Debug.printDriverStationMessage(2, 1, particles[i].boundingRectWidth + " " + particles[i].boundingRectHeight);
                         Debug.println("Accepted" + i, Debug.EXTENDED);
                         thresholdImage.free();
                         image.free();

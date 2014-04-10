@@ -1,6 +1,7 @@
 package com.coderedrobotics.tiberius;
 
 import com.coderedrobotics.tiberius.libs.Debug;
+import com.coderedrobotics.tiberius.libs.Timer;
 import com.coderedrobotics.tiberius.libs.dash.DashBoard;
 import com.coderedrobotics.tiberius.statics.DashboardDriverPlugin;
 import com.coderedrobotics.tiberius.statics.KeyMap;
@@ -14,12 +15,13 @@ public class Tiberius extends IterativeRobot {
     ChooChoo chooChoo;
     Pickup pickup;
     Petals petals;
-    ImageObject imageObject;
+//    ImageObject imageObject;
 
-    int testStage = 0;
-    long testStartTime = 0;
-    int autoStage = 0;
-    long autoStartTime = 0;
+//    int testStage = 0;
+//    long testStartTime = 0;
+//    int autoStage = 0;
+//    long autoStartTime = 0;
+    Timer timer;
     double driveStartingPosition = 0;
     boolean inAutonomousShootPosition = false;
 
@@ -33,62 +35,51 @@ public class Tiberius extends IterativeRobot {
         Debug.println("[INFO] TIBERIUS CODE DOWNLOAD COMPLETE.", Debug.STANDARD);
 
         DashBoard.setConnectionAddress("socket://10.27.71.5:1180");
-        dashBoard = new DashBoard();// Comment out this line to deactivate the dashboard.
+        dashBoard = new DashBoard(); // Comment out this line to deactivate the dashboard.
         DashboardDriverPlugin.init(dashBoard);
 
-        imageObject = new ImageObject();
+//        imageObject = new ImageObject();
         keyMap = new KeyMap();
         keyMap.setSingleControllerMode(false); // For ease of testing
         drive = new Drive(dashBoard);
         chooChoo = new ChooChoo();
         pickup = new Pickup(dashBoard);
         petals = new Petals(dashBoard);
+        timer = new Timer();
     }
 
     public void autonomousInit() {
-        autoStage = 0;
-        autoStartTime = System.currentTimeMillis();
+        timer.setStage(0);
         drive.disableSpeedControllers();
         pickup.pickupIn();
         petals.open();
-        petals.setEnabledState(true);
         pickup.wheelsIn();
-        imageObject.reset();
-        imageObject.request();
+        timer.resetTimer(3000);
     }
 
     public void autonomousPeriodic() {
-        switch (autoStage) {
+        switch (timer.getStage()) {
             case 0:
-                if (autoStartTime < System.currentTimeMillis() - 1000) {
-                    autoStage++;
+                drive.move(-0.637, -0.7);
+                petals.setEnabledState(true);
+                if (timer.ready()) {
+                    timer.resetTimer(100);
+                    timer.nextStage();
                 }
                 break;
             case 1:
-                if (autoStartTime < System.currentTimeMillis() - 5000
-                        || imageObject.isHot()) {
-                    autoStage++;
-                    autoStartTime = System.currentTimeMillis();
+                drive.move(0, 0);
+                if (timer.ready()) {
+                    timer.nextStage();
                 }
                 break;
             case 2:
-                drive.move(-0.67, -0.7);
-                if (autoStartTime < System.currentTimeMillis() - 200) {
-                    autoStage++;
-                }
+                chooChoo.fire();
+                timer.nextStage();
                 break;
-            case 3:
-                drive.enableSpeedControllers();
-                drive.move(-0.67, -0.7);
-                if (autoStartTime < System.currentTimeMillis() - 1600) {
-                    autoStage++;
-                    chooChoo.fire();
-                }
-                break;
-            case 4:
-                drive.move(0, 0);
-                drive.enableSpeedControllers();
+            default:
                 pickup.stopWheels();
+                drive.move(0, 0);
                 break;
         }
         petals.step();
@@ -96,21 +87,12 @@ public class Tiberius extends IterativeRobot {
         DashboardDriverPlugin.updateBatteryVoltage(DriverStation.getInstance().getBatteryVoltage());
     }
 
-    private void resetTimer(long t) {
-        autoStartTime = System.currentTimeMillis() + t;
-    }
-
-    private void advanceWhenReady() {
-        if (autoStartTime < System.currentTimeMillis()) {
-            autoStage++;
-        }
-    }
-
     public void disabledInit() {
         drive.enableSpeedControllers();
     }
 
     public void teleopInit() {
+        drive.enableSpeedControllers();
         chooChoo.cock();
     }
 
@@ -201,52 +183,52 @@ public class Tiberius extends IterativeRobot {
     }
 
     public void testInit() {
-        testStartTime = System.currentTimeMillis();
+//        testStartTime = System.currentTimeMillis();
     }
 
     public void testPeriodic() {
-        long elapsedTime = System.currentTimeMillis() - testStartTime;
-
-        if (elapsedTime > 1300) {
-            testStage++;
-            testStartTime = System.currentTimeMillis();
-        }
-
-        switch (testStage) {
-            case 0:
-                drive.move(0.5, 0);
-                break;
-            case 1:
-                drive.move(0, 0.5);
-                break;
-            case 2:
-                drive.move(0, 0);
-                chooChoo.fire();
-                break;
-            case 3:
-                pickup.wheelsIn();
-                break;
-            case 4:
-                pickup.wheelsOut();
-                break;
-            case 5:
-                pickup.stopWheels();
-                pickup.pickupOut();
-                break;
-            case 6:
-                pickup.pickupIn();
-                break;
-            case 7:
-                petals.open();
-            case 8:
-                petals.closeOntoBall();
-            default:
-                pickup.stopWheels();
-                pickup.movePickup(0);
-                petals.stop();
-                drive.move(0, 0);
-                break;
-        }
+//        long elapsedTime = System.currentTimeMillis() - testStartTime;
+//
+//        if (elapsedTime > 1300) {
+//            testStage++;
+//            testStartTime = System.currentTimeMillis();
+//        }
+//
+//        switch (testStage) {
+//            case 0:
+//                drive.move(0.5, 0);
+//                break;
+//            case 1:
+//                drive.move(0, 0.5);
+//                break;
+//            case 2:
+//                drive.move(0, 0);
+//                chooChoo.fire();
+//                break;
+//            case 3:
+//                pickup.wheelsIn();
+//                break;
+//            case 4:
+//                pickup.wheelsOut();
+//                break;
+//            case 5:
+//                pickup.stopWheels();
+//                pickup.pickupOut();
+//                break;
+//            case 6:
+//                pickup.pickupIn();
+//                break;
+//            case 7:
+//                petals.open();
+//            case 8:
+//                petals.closeOntoBall();
+//            default:
+//                pickup.stopWheels();
+//                pickup.movePickup(0);
+//                petals.stop();
+//                drive.move(0, 0);
+//                break;
+//        }
     }
 
     public void disabledPeriodic() {
