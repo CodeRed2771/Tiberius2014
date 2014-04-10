@@ -31,7 +31,7 @@ public class ChooChoo {
 
     public void step() {
         //  Debug.println("Infrared distance sensor" + positionSensor.getVoltage() + "    value: " + positionSensor.getValue());
-        System.out.println("Stage: " + stage + "\tsensor: " + sensor.get());
+//        System.out.println("Stage: " + stage + "\tsensor: " + sensor.get());
         switch (stage) {
             case 0:
                 chooChooMotor.set(0);

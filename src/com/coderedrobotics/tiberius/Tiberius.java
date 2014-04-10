@@ -3,7 +3,6 @@ package com.coderedrobotics.tiberius;
 import com.coderedrobotics.tiberius.libs.Debug;
 import com.coderedrobotics.tiberius.libs.Timer;
 import com.coderedrobotics.tiberius.libs.dash.DashBoard;
-import com.coderedrobotics.tiberius.statics.Calibration;
 import com.coderedrobotics.tiberius.statics.DashboardDriverPlugin;
 import com.coderedrobotics.tiberius.statics.KeyMap;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -16,9 +15,14 @@ public class Tiberius extends IterativeRobot {
     ChooChoo chooChoo;
     Pickup pickup;
     Petals petals;
-    Calibration calibration;
+//    ImageObject imageObject;
 
+//    int testStage = 0;
+//    long testStartTime = 0;
+//    int autoStage = 0;
+//    long autoStartTime = 0;
     Timer timer;
+    double driveStartingPosition = 0;
     boolean inAutonomousShootPosition = false;
 
     DashBoard dashBoard;
@@ -31,43 +35,51 @@ public class Tiberius extends IterativeRobot {
         Debug.println("[INFO] TIBERIUS CODE DOWNLOAD COMPLETE.", Debug.STANDARD);
 
         DashBoard.setConnectionAddress("socket://10.27.71.5:1180");
-        dashBoard = new DashBoard();// Comment out this line to deactivate the dashboard.
+        dashBoard = new DashBoard(); // Comment out this line to deactivate the dashboard.
         DashboardDriverPlugin.init(dashBoard);
 
+//        imageObject = new ImageObject();
         keyMap = new KeyMap();
         keyMap.setSingleControllerMode(false); // For ease of testing
         drive = new Drive(dashBoard);
         chooChoo = new ChooChoo();
         pickup = new Pickup(dashBoard);
         petals = new Petals(dashBoard);
-        calibration = new Calibration(pickup, petals, dashBoard);
         timer = new Timer();
     }
 
     public void autonomousInit() {
         timer.setStage(0);
-        timer.resetTimer(1800);
         drive.disableSpeedControllers();
         pickup.pickupIn();
         petals.open();
         pickup.wheelsIn();
+        timer.resetTimer(3000);
     }
 
     public void autonomousPeriodic() {
         switch (timer.getStage()) {
             case 0:
-                drive.move(-0.8, -0.8);
+                drive.move(-0.637, -0.7);
                 petals.setEnabledState(true);
-                timer.advanceWhenReady();
+                if (timer.ready()) {
+                    timer.resetTimer(100);
+                    timer.nextStage();
+                }
                 break;
             case 1:
                 drive.move(0, 0);
-                drive.enableSpeedControllers();
+                if (timer.ready()) {
+                    timer.nextStage();
+                }
+                break;
+            case 2:
                 chooChoo.fire();
                 timer.nextStage();
                 break;
-            case 2:
+            default:
                 pickup.stopWheels();
+                drive.move(0, 0);
                 break;
         }
         petals.step();
@@ -75,22 +87,19 @@ public class Tiberius extends IterativeRobot {
         DashboardDriverPlugin.updateBatteryVoltage(DriverStation.getInstance().getBatteryVoltage());
     }
 
-    
-
     public void disabledInit() {
         drive.enableSpeedControllers();
     }
 
     public void teleopInit() {
+        drive.enableSpeedControllers();
         chooChoo.cock();
     }
 
     public void teleopPeriodic() {
-        System.out.println(pickup.positionSensor.get());
 
-//        System.out.println("left: " + petals.leftPotentiometer.get() + "\tright: " + petals.rightPotentiometer.get());
+        //System.out.println("left: " + petals.leftPotentiometer.get() + "\tright: " + petals.rightPotentiometer.get());
         //System.out.println("pickup: " + pickup.positionSensor.get());
-
         // DRIVE OBJECT
         drive.move(keyMap.getLeftDriveAxis(), keyMap.getRightDriveAxis());
 
@@ -174,13 +183,10 @@ public class Tiberius extends IterativeRobot {
     }
 
     public void testInit() {
-        timer.setStage(0);
-        timer.resetTimer(0);
+//        testStartTime = System.currentTimeMillis();
     }
 
     public void testPeriodic() {
-        // THIS CODE NEEDS TO BE REDONE
-        
 //        long elapsedTime = System.currentTimeMillis() - testStartTime;
 //
 //        if (elapsedTime > 1300) {

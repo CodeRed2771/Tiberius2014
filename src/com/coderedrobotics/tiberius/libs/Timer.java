@@ -22,6 +22,10 @@ public class Timer {
             stage++;
         }
     }
+    
+    public boolean ready() {
+        return startTime < System.currentTimeMillis();
+    }
 
     public int getStage() {
         return stage;
