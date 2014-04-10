@@ -62,13 +62,13 @@ public class Tiberius extends IterativeRobot {
             case 0:
                 petals.setEnabledState(true);
                 if (timer.ready()) {
-                    timer.resetTimer(3000);
+                    timer.resetTimer(2300);
                     timer.nextStage();
                     imageObject.request();
                 }
                 break;
             case 1:
-                drive.move(-0.7, -0.7);
+                drive.move(-0.8, -0.8);
                 if (timer.ready()) {
                     if (imageObject.isHot()) {
                         timer.resetTimer(100);
