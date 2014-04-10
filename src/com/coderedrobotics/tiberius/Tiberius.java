@@ -15,7 +15,7 @@ public class Tiberius extends IterativeRobot {
     ChooChoo chooChoo;
     Pickup pickup;
     Petals petals;
-//    ImageObject imageObject;
+    ImageObject imageObject;
 
 //    int testStage = 0;
 //    long testStartTime = 0;
@@ -38,7 +38,7 @@ public class Tiberius extends IterativeRobot {
         dashBoard = new DashBoard(); // Comment out this line to deactivate the dashboard.
         DashboardDriverPlugin.init(dashBoard);
 
-//        imageObject = new ImageObject();
+        imageObject = new ImageObject();
         keyMap = new KeyMap();
         keyMap.setSingleControllerMode(false); // For ease of testing
         drive = new Drive(dashBoard);
@@ -54,26 +54,37 @@ public class Tiberius extends IterativeRobot {
         pickup.pickupIn();
         petals.open();
         pickup.wheelsIn();
-        timer.resetTimer(3000);
+        timer.resetTimer(150);
     }
 
     public void autonomousPeriodic() {
         switch (timer.getStage()) {
             case 0:
-                drive.move(-0.637, -0.7);
                 petals.setEnabledState(true);
                 if (timer.ready()) {
-                    timer.resetTimer(100);
+                    timer.resetTimer(3000);
                     timer.nextStage();
+                    imageObject.request();
                 }
                 break;
             case 1:
+                drive.move(-0.637, -0.7);
+                if (timer.ready()) {
+                    if (imageObject.isHot()) {
+                        timer.resetTimer(100);
+                    } else {
+                        timer.resetTimer(1800);
+                    }
+                    timer.nextStage();
+                }
+                break;
+            case 2:
                 drive.move(0, 0);
                 if (timer.ready()) {
                     timer.nextStage();
                 }
                 break;
-            case 2:
+            case 3:
                 chooChoo.fire();
                 timer.nextStage();
                 break;

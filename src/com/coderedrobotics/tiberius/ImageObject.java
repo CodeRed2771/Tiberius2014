@@ -80,7 +80,7 @@ public class ImageObject implements Runnable {
                             > areaThreshold
                             && ((ParticleAnalysisReport) particles[i]).boundingRectWidth
                             / ((ParticleAnalysisReport) particles[i]).boundingRectHeight
-                            > 2d) {
+                            > 3d) {
                         System.out.println("ACCEPTED: \tX: " + particles[i].center_mass_x + "\tY: " + particles[i].center_mass_y);
                         Debug.printDriverStationMessage(1, 1, particles[i].center_mass_x + " " + particles[i].center_mass_y);
                         Debug.printDriverStationMessage(2, 1, particles[i].boundingRectWidth + " " + particles[i].boundingRectHeight);
