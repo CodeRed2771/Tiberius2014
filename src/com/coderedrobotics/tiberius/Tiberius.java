@@ -68,7 +68,7 @@ public class Tiberius extends IterativeRobot {
                 }
                 break;
             case 1:
-                drive.move(-0.683, -0.7);
+                drive.move(-0.7, -0.7);
                 if (timer.ready()) {
                     if (imageObject.isHot()) {
                         timer.resetTimer(100);

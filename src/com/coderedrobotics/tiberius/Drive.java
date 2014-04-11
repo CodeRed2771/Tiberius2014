@@ -60,7 +60,7 @@ public class Drive {
                 rightController.setOutputRange(0, 0);
             }
         } else {
-            this.left.set(-left * Math.abs(left));
+            this.left.set(-left * Math.abs(left) * 0.952018367);
             this.right.set(right * Math.abs(right));
         }
     }
